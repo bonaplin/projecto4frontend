@@ -3,8 +3,11 @@ import React from "react";
 import { useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
 import FormInput from "../components/formInput/FormInput";
-
+import Layout from "../components/layout/Layout";
+import "./Login.css";
 import { userStore } from "../stores/UserStore";
+import { Link } from "react-router-dom";
+import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 
 function Login() {
   const [inputs, setInputs] = useState({
@@ -52,7 +55,7 @@ function Login() {
 
       // Continue with your existing code...
       updateName(inputs.username);
-      navigate("/home", { replace: true });
+      navigate("/home", { replace: true }); // Cant go back in browser.
     } catch (error) {
       console.log(error);
       // Optionally, we can set an error state variable to display the error message
@@ -60,30 +63,41 @@ function Login() {
   };
 
   return (
-    <div className="Login" id="profile-outer-container">
-      <div className="page-wrap" id="login-page-wrap">
-        <h1>Login</h1>
+    <Layout>
+      <div className="login-outer-container">
+        <div className="login-page-wrap">
+          <h1>Login</h1>
 
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            placeholder="Enter your username"
-            type="text"
-            name="username"
-            value={inputs.username}
-            onChange={handleChange}
-          />
-          <FormInput
-            placeholder="Enter your password"
-            type="password"
-            name="password"
-            value={inputs.password}
-            onChange={handleChange}
-          />
-          <input type="submit" value="Login" />
-        </form>
-        <button onClick={() => navigate("/singup")}>Registo</button>
+          <form onSubmit={handleSubmit}>
+            <FormInput
+              placeholder={"Enter your username"}
+              type="text"
+              name="username"
+              value={inputs.username}
+              onChange={handleChange}
+            />
+            <FormInput
+              placeholder="Enter your password"
+              type="password"
+              name="password"
+              value={inputs.password}
+              onChange={handleChange}
+            />
+            <input type="submit" value="Login" />
+          </form>
+          <p className="small-text">
+            New to ScrumBoard?{" "}
+            <Link
+              to="/singup"
+              className="signup-link"
+              style={{ color: "blue" }}
+            >
+              Create an account
+            </Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 export default Login;
