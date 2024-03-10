@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "../components/navbar/Sidebar.js";
 import "../index.css";
 import { userStore } from "../stores/UserStore.js";
+
 function Home() {
   const username = userStore((state) => state.username);
   return (

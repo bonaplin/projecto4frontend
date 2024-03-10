@@ -3,12 +3,13 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/formInput/FormInput";
-// import "./Singup.css";
+import Layout from "../components/layout/Layout";
+import "../pages/Singup.css";
 import { userStore } from "../stores/UserStore";
 
 function Singup() {
   const navigate = useNavigate();
-
+  const [imgURL, setImgURL] = useState("");
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
@@ -52,63 +53,77 @@ function Singup() {
   };
 
   return (
-    <div className="Singup" id="singup-outer-container">
-      <div className="page-wrap" id="singup-page-wrap">
-        <h1>Singup</h1>
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            placeholder="Enter your username"
-            type="text"
-            name="username"
-            value={inputs.username}
-            onChange={handleChange}
-          />
-          <FormInput
-            placeholder="Enter your password"
-            type="password"
-            name="password"
-            value={inputs.password}
-            onChange={handleChange}
-          />
-          <FormInput
-            placeholder="Enter your email address"
-            type="email"
-            name="email"
-            value={inputs.email}
-            onChange={handleChange}
-          />
-          <FormInput
-            placeholder="Enter your first name"
-            type="text"
-            name="firstname"
-            value={inputs.firstname}
-            onChange={handleChange}
-          />
-          <FormInput
-            placeholder="Enter your last name"
-            type="text"
-            name="lastname"
-            value={inputs.lastname}
-            onChange={handleChange}
-          />
-          <FormInput
-            placeholder="Enter your phone number"
-            type="tel"
-            name="phone"
-            value={inputs.phone}
-            onChange={handleChange}
-          />
-          <FormInput
-            placeholder="Enter your photo URL"
-            type="url"
-            name="photoURL"
-            value={inputs.photoURL}
-            onChange={handleChange}
-          />
-          <input type="submit" value="singup" />
-        </form>
+    <Layout>
+      <div className="signup-outer-container">
+        <div className="signup-page-wrap">
+          <h1>Sign Up </h1>
+          <form onSubmit={handleSubmit}>
+            <FormInput
+              placeholder="Enter your username"
+              type="text"
+              name="username"
+              value={inputs.username}
+              onChange={handleChange}
+            />
+            <FormInput
+              placeholder="Enter your password"
+              type="password"
+              name="password"
+              value={inputs.password}
+              onChange={handleChange}
+            />
+            <FormInput
+              placeholder="Enter your email address"
+              type="email"
+              name="email"
+              value={inputs.email}
+              onChange={handleChange}
+            />
+            <FormInput
+              placeholder="Enter your first name"
+              type="text"
+              name="firstname"
+              value={inputs.firstname}
+              onChange={handleChange}
+            />
+            <FormInput
+              placeholder="Enter your last name"
+              type="text"
+              name="lastname"
+              value={inputs.lastname}
+              onChange={handleChange}
+            />
+            <FormInput
+              placeholder="Enter your phone number"
+              type="tel"
+              name="phone"
+              value={inputs.phone}
+              onChange={handleChange}
+            />
+            <FormInput
+              id="photoURL"
+              placeholder="Enter your photo URL"
+              type="url"
+              name="photoURL"
+              value={inputs.photoURL}
+              onChange={(e) => {
+                setImgURL(e.target.value);
+                handleChange(e);
+              }}
+            />
+
+            <div className="button-group">
+              <input type="submit" value="Submit" />
+              <input
+                type="button"
+                value="Login"
+                onClick={() => navigate("/login")}
+              />
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 
