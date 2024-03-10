@@ -13,8 +13,16 @@ function Activity() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        let token = localStorage.getItem("token");
+        if (!token) {
+          console.log("No token found in local storage");
+          return;
+        } else {
+          console.log(token);
+        }
+
         const response = await fetch(
-          "http://localhost:8080/my_activities_backend/rest/activity/all",
+          "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all",
           {
             method: "GET",
             headers: {
@@ -27,6 +35,7 @@ function Activity() {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        console.log(data);
         setActivities(data);
       } catch (error) {
         console.log(error);

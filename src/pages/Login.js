@@ -1,10 +1,10 @@
 import React from "react";
-import "./Login.css";
+// import "./Login.css";
 import { useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
-import FormInput from "../formInput/FormInput";
+import FormInput from "../components/formInput/FormInput";
 
-import { userStore } from "../../stores/UserStore";
+import { userStore } from "../stores/UserStore";
 
 function Login() {
   const [inputs, setInputs] = useState({
@@ -44,17 +44,11 @@ function Login() {
         throw new Error("Login failed. Please try again.");
       }
 
-      const text = await response.text();
+      const data = await response.json();
 
-      try {
-        // Parse the JSON response
-        const data = await response.json();
-
-        // Store the token in local storage
-        localStorage.setItem("token", data.token);
-      } catch (error) {
-        localStorage.setItem("token", text);
-      }
+      // Store the token in local storage
+      localStorage.setItem("token", data.token);
+      console.log("token" + data.token);
 
       // Continue with your existing code...
       updateName(inputs.username);

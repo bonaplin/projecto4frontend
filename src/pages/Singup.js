@@ -2,9 +2,9 @@ import React from "react";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import FormInput from "../formInput/FormInput";
-import "./Singup.css";
-import { userStore } from "../../stores/UserStore";
+import FormInput from "../components/formInput/FormInput";
+// import "./Singup.css";
+import { userStore } from "../stores/UserStore";
 
 function Singup() {
   const navigate = useNavigate();
