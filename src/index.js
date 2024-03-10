@@ -1,13 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter as Router } from "react-router-dom";
+import Login from "./components/login/Login";
+import Singup from "./components/singup/Singup";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import Activity from "./pages/Activity";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Routes>
+        <Route index element={<App />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/activity" element={<Activity />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/singup" element={<Singup />} />
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 
