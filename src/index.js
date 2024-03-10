@@ -10,6 +10,8 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Activity from "./pages/Activity";
+import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,10 +20,12 @@ root.render(
       <Routes>
         <Route index element={<App />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/header" element={<Header />} />
         <Route path="/activity" element={<Activity />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/singup" element={<Singup />} />
+        <Route path="/footer" element={<Footer />} />
       </Routes>
     </Router>
   </React.StrictMode>
