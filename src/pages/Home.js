@@ -6,7 +6,6 @@ import "./Home.css";
 import TaskColumn from "../components/task/column/TaskColumn.js";
 import Header from "../components/header/Header.js";
 import { TaskElement } from "../components/task/TaskElement.js";
-
 function Home() {
   const username = userStore((state) => state.username);
   return (
@@ -36,7 +35,7 @@ function Home() {
               priority="300"
             />
           </TaskColumn>
-          <TaskColumn className="task-column" title="In Progress">
+          <TaskColumn className="task-column" title="Doing">
             {" "}
             d
           </TaskColumn>

@@ -19,7 +19,7 @@ export function TaskElement(props) {
     <div className="task">
       <div className="owner text">{props.owner}</div>
       <div className="category text">{props.category}</div>
-      <div className="">{props.title}</div>
+      <div className="title">{props.title}</div>
       <div className="priority">
         <div
           className="circle"
