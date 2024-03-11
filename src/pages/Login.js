@@ -70,6 +70,7 @@ function Login() {
 
           <form onSubmit={handleSubmit}>
             <FormInput
+              icon={<Person2OutlinedIcon />}
               placeholder={"Enter your username"}
               type="text"
               name="username"

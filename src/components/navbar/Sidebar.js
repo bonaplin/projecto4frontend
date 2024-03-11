@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { slide as Menu } from "react-burger-menu";
 import "./Sidebar.css";
 
@@ -10,11 +10,15 @@ export default (props) => {
       </a>
 
       <a className="menu-item" href="/activity">
-        Activity
+        Users
       </a>
 
       <a className="menu-item" href="/profile">
-        Profile
+        Categories
+      </a>
+
+      <a className="menu-item" href="/profile">
+        Deleted
       </a>
     </Menu>
   );

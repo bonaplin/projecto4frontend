@@ -1,12 +1,43 @@
-header {
+.header {
   display: flex;
-  justify-content: center;
-  align-items: left;
-  text-align: center;
-  width: 100%;
-  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #ec9191;
+  padding: 0 20px;
+  height: 60px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header__left,
+.header__center,
+.header__right {
+  display: flex;
+  align-items: center;
+}
+
+.header__left > .burger-icon,
+.header__right > .profile-icon {
+  margin-right: 20px; /* Some margin to the right of the icons */
+}
+
+.header__center {
+  flex: 1;
+  margin: 0 20px; /* Some margin on the sides */
+}
+
+.header__center > input {
+  flex: 1;
+  padding: 5px 10px; /* Some padding */
+  border-radius: 4px; /* Rounded corners */
+  border: none; /* Remove border */
+  background-color: #fff; /* White background */
 }
 img {
-  margin-top: 30px;
-  width: 150px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
 }

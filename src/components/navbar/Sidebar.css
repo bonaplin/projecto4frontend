@@ -33,6 +33,7 @@
 }
 /* General sidebar styles */
 .bm-menu {
+  border-top-right-radius: 10px;
   background: #373a47;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
@@ -59,7 +60,7 @@
   margin-bottom: 10px;
   text-align: left;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.5s;
 }
 .bm-item:hover {
   color: #ffffff;

@@ -1,0 +1,21 @@
+.form-input {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.form-input img {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.form-input input {
+  border: none;
+  flex-grow: 1;
+  outline: none;
+  box-shadow: none;
+}
