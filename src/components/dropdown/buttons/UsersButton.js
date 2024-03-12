@@ -1,8 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { userStore } from "../../../stores/UserStore"; // Import the store
 
 export default function UsersButton() {
   const navigate = useNavigate();
+  const token = userStore.getState().token; // Get the token from the store
 
   async function handleClick() {
     console.log("UsersButton click");
@@ -12,15 +14,24 @@ export default function UsersButton() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
+          token: token,
         },
       }
     );
-    const userData = await response.json();
-    console.log(userData); // Log the userData to the console
+    let userData = await response.json();
+
+    // Filter the data
+    userData = userData.map((user) => ({
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      // Add more properties as needed
+    }));
+
+    console.log(userData); // Log the filtered userData to the console
     navigate("/users", { state: { userData: userData } });
   }
-
   console.log("UsersButton");
   return <div onClick={handleClick}>Users</div>;
 }

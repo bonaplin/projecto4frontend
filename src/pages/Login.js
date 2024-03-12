@@ -9,7 +9,6 @@ import { userStore } from "../stores/UserStore";
 import { Link } from "react-router-dom";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 
-import { NotificationManager } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 
 function Login() {
@@ -19,6 +18,8 @@ function Login() {
   });
   console.log(inputs);
   const updateName = userStore((state) => state.updateName);
+  const updateRole = userStore((state) => state.updateRole);
+  const updateToken = userStore((state) => state.updateToken);
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -52,17 +53,11 @@ function Login() {
 
       const data = await response.json();
 
-      // Store the token in local storage
-      localStorage.setItem("token", data.token);
-      console.log("token" + data.token);
-
       // Continue with your existing code...
       updateName(inputs.username);
+      updateRole(data.role);
+      updateToken(data.token);
       navigate("/home", { replace: true }); // Cant go back in browser.
-      NotificationManager.success(
-        "You have successfully logged in!",
-        "Successful Login"
-      );
     } catch (error) {
       console.log(error);
       // Optionally, we can set an error state variable to display the error message
