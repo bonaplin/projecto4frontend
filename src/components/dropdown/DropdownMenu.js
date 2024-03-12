@@ -2,14 +2,14 @@
 import React from "react";
 import "./DropdownMenu.css";
 
-const DropdownMenu = ({ isOpen, children }) => {
+const DropdownMenu = ({ isOpen, children, side }) => {
   if (!isOpen) {
     return null;
   }
 
   return (
-    <div className="dropdown">
-      <button>{children}</button>
+    <div className={side}>
+      <ul>{children}</ul>
     </div>
   );
 };
