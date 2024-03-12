@@ -40,9 +40,9 @@ function Header() {
         }
       );
       const data = await response.json();
-      console.log(data); // Log the data to the console
-      //userStore.getState().updateUsername(data.firstname); // Update the username in the store
-      //userStore.getState().updatePhotoUrl(data.photoUrl); // Update the photo URL in the store
+      userStore.getState().updateUsername(data.firstname); // Update the username in the store
+      userStore.getState().updatePhotoUrl(data.photourl); // Update the photo URL in the store
+      console.log(userStore.getState().photourl); // Log the username to the console
     }
     fetchData();
   }, [token]); // Run the effect when the token changes
@@ -87,11 +87,11 @@ function Header() {
       </div>
 
       <div className="header__right">
-        <label>username</label>
+        <label>{userStore.getState().username}</label>
         <img
           onClick={handleProfileDropdown}
           className="profile-icon"
-          src="https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
+          src={userStore.getState().photourl}
           alt="Profile"
         />
         {isProfileDropdownOpen && (

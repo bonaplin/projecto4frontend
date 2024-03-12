@@ -16,9 +16,15 @@ export const userStore = create(
       username: "", //state variable
       token: "",
       role: "",
-      updateName: (username) => set({ username }), //action
+      firstname: "",
+      lastname: "",
+      photourl: "",
+      updateUsername: (username) => set({ username }), //action
       updateToken: (token) => set({ token }), //new action
       updateRole: (role) => set({ role }), //new action
+      updateFirstname: (firstname) => set({ firstname }), //new action
+      updateLastname: (lastname) => set({ lastname }), //new action
+      updatePhotoUrl: (photourl) => set({ photourl }), //new action
     }),
     {
       name: "mystore", //name of the storage
