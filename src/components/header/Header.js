@@ -8,6 +8,7 @@ import icon from "../../assets/icon/tc.png";
 import UsersButton from "../dropdown/buttons/UsersButton.js";
 import TasksButton from "../dropdown/buttons/TasksButton.js";
 import CategoriesButton from "../dropdown/buttons/CategoriesButton.js";
+import { userStore } from "../../stores/UserStore.js";
 
 function Header() {
   /*dropdown main*/
@@ -22,6 +23,29 @@ function Header() {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
     console.log("Profile Dropdown clicked", isProfileDropdownOpen);
   };
+
+  const token = userStore.getState().token; // Get the token from the store
+
+  // Get the username from the DB and the imgURL
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/getPartial",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token: token, // Use the token from the store
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data); // Log the data to the console
+      //userStore.getState().updateUsername(data.firstname); // Update the username in the store
+      //userStore.getState().updatePhotoUrl(data.photoUrl); // Update the photo URL in the store
+    }
+    fetchData();
+  }, [token]); // Run the effect when the token changes
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -61,11 +85,9 @@ function Header() {
         </DropdownMenu>
         {icon && <img className="icon" src={icon} alt="Icon" />}
       </div>
-      <div className="header__center">
-        <input type="text" placeholder="Search" />
-        <button>Search</button>
-      </div>
+
       <div className="header__right">
+        <label>username</label>
         <img
           onClick={handleProfileDropdown}
           className="profile-icon"

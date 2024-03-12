@@ -14,7 +14,11 @@ export const userStore = create(
   persist(
     (set) => ({
       username: "", //state variable
+      token: "",
+      role: "",
       updateName: (username) => set({ username }), //action
+      updateToken: (token) => set({ token }), //new action
+      updateRole: (role) => set({ role }), //new action
     }),
     {
       name: "mystore", //name of the storage

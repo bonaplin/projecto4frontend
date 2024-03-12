@@ -3,7 +3,7 @@
   flex-direction: column;
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: calc(100vh - 60px); /* Replace 60px with the height of your header */
 }
 
 .page-wrap {
