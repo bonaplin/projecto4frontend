@@ -6,6 +6,9 @@ import DropdownMenu from "../dropdown/DropdownMenu.js";
 import SubDropdownMenu from "../dropdown/submenu/SubdropdownMenu.js";
 import icon from "../../assets/icon/tc.png";
 import UsersButton from "../dropdown/buttons/UsersButton.js";
+import TasksButton from "../dropdown/buttons/TasksButton.js";
+import CategoriesButton from "../dropdown/buttons/CategoriesButton.js";
+
 function Header() {
   /*dropdown main*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -41,11 +44,15 @@ function Header() {
           M
         </button>
         <DropdownMenu isOpen={isDropdownOpen} side="dropdown">
-          <li>Tasks</li>
+          <li>
+            <TasksButton />
+          </li>
           <li>
             <UsersButton />
           </li>
-          <li>Categories</li>
+          <li>
+            <CategoriesButton />
+          </li>
           <SubDropdownMenu father="Delete">
             <li>Tasks</li>
             <li>Users</li>

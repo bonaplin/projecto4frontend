@@ -12,6 +12,8 @@ import Profile from "./pages/Profile";
 import Activity from "./pages/Activity";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
+import Categories from "./pages/Categories";
+import Users from "./pages/Users";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -19,12 +21,16 @@ root.render(
     <Router>
       <Routes>
         <Route index element={<App />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/header" element={<Header />} />
-        <Route path="/activity" element={<Activity />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/singup" element={<Singup />} />
+
+        <Route path="/header" element={<Header />} />
+        <Route path="/home" element={<Home />} />
+
+        <Route path="/users" element={<Users />} />
+        <Route path="/activity" element={<Activity />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/categories" element={<Categories />} />
         <Route path="/footer" element={<Footer />} />
       </Routes>
     </Router>

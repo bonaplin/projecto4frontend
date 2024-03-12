@@ -10,45 +10,46 @@ import { TaskElement } from "../components/task/TaskElement.js";
 function Home() {
   const username = userStore((state) => state.username);
   return (
-    <div className="Home">
+    <>
       <Header />
-
-      <div className="page-wrap" id="home-page-wrap">
-        <h4>{username}! / filters / settings / ... </h4>
-        <div className="scrum-board">
-          <TaskColumn className="task-column" title="To Do">
-            {" "}
-            <TaskElement
-              title="nova"
-              owner="user1"
-              category="Educação"
-              priority="100"
-            />
-            <TaskElement
-              title="nova"
-              owner="user2"
-              category="Desporto"
-              priority="200"
-            />
-            <TaskElement
-              title="nova"
-              owner="user3"
-              category="Cultura"
-              priority="300"
-            />
-          </TaskColumn>
-          <TaskColumn className="task-column" title="Doing">
-            {" "}
-            d
-          </TaskColumn>
-          <TaskColumn className="task-column" title="Done">
-            {" "}
-            f
-          </TaskColumn>
+      <div className="Home">
+        <div className="page-wrap" id="home-page-wrap">
+          <h4>{username}! / filters / settings / ... </h4>
+          <div className="scrum-board">
+            <TaskColumn className="task-column" title="To Do">
+              {" "}
+              <TaskElement
+                title="nova"
+                owner="user1"
+                category="Educação"
+                priority="100"
+              />
+              <TaskElement
+                title="nova"
+                owner="user2"
+                category="Desporto"
+                priority="200"
+              />
+              <TaskElement
+                title="nova"
+                owner="user3"
+                category="Cultura"
+                priority="300"
+              />
+            </TaskColumn>
+            <TaskColumn className="task-column" title="Doing">
+              {" "}
+              d
+            </TaskColumn>
+            <TaskColumn className="task-column" title="Done">
+              {" "}
+              f
+            </TaskColumn>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }
 
