@@ -6,11 +6,13 @@ import "./Home.css";
 import TaskColumn from "../components/task/column/TaskColumn.js";
 import Header from "../components/header/Header.js";
 import { TaskElement } from "../components/task/TaskElement.js";
+import Sidebar from "../components/navbar/Sidebar.js";
 function Home() {
   const username = userStore((state) => state.username);
   return (
     <div className="Home">
       <Header />
+      <Sidebar />
       <div className="page-wrap" id="home-page-wrap">
         <h4>{username}! / filters / settings / ... </h4>
         <div className="scrum-board">

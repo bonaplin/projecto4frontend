@@ -1,50 +1,43 @@
-/* CRIAR ELEMENTO SIDEBAR PARA INSERIR ICONS */
 import React, { useState } from "react";
-import { slide as Menu } from "react-burger-menu";
-import "./Sidebar.css";
+import "./Sidebar.css"; // Assuming you have a CSS file for styling
+import SidebarButton from "./button/SidebarButton";
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (props) => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [isDeletedOpen, setIsDeletedOpen] = useState(false);
 
-  function handleDeletedClick(e) {
+  const handleDeletedClick = (e) => {
     e.preventDefault();
-    setIsDeletedOpen(() => !isDeletedOpen);
-  }
+    setIsDeletedOpen(!isDeletedOpen);
+  };
 
   return (
-    <Menu isOpen={props.isOpen}>
-      <a className="menu-item" href="/home">
-        Home
-      </a>
-
-      <a className="menu-item" href="/activity">
-        Users
-      </a>
-
-      <a className="menu-item" href="/profile">
-        Categories
-      </a>
-
-      <a className="menu-item" href="" onClick={handleDeletedClick}>
-        Deleted
-      </a>
-      {isDeletedOpen && (
-        <ul>
-          <li>
-            <a className="menu-item">Users</a>
-          </li>
-          <li>
-            <a className="menu-item">Tasks</a>
-          </li>
-          <li>
-            <a className="menu-item">Categories</a>
-          </li>
-        </ul>
-      )}
-      <a className="menu-item" href="">
-        Logout
-      </a>
-    </Menu>
+    isOpen && (
+      <div id="mySidebar" className={`sidebar ${isOpen ? "open" : ""}`}>
+        <SidebarButton href="/home" onClick={toggleSidebar}>
+          Home
+        </SidebarButton>
+        <SidebarButton href="/activity" onClick={toggleSidebar}>
+          Users
+        </SidebarButton>
+        <SidebarButton href="/profile" onClick={toggleSidebar}>
+          Categories
+        </SidebarButton>
+        <SidebarButton href="#" onClick={handleDeletedClick}>
+          Deleted
+        </SidebarButton>
+        {isDeletedOpen && (
+          <ul>
+            <li>
+              <SidebarButton href="#">Deleted Users</SidebarButton>
+            </li>
+            <li>
+              <SidebarButton href="#">Deleted Categories</SidebarButton>
+            </li>
+          </ul>
+        )}
+      </div>
+    )
   );
 };
+
+export default Sidebar;
