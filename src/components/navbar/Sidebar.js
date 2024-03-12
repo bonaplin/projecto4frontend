@@ -1,43 +1,21 @@
-import React, { useState } from "react";
-import "./Sidebar.css"; // Assuming you have a CSS file for styling
-import SidebarButton from "./button/SidebarButton";
+import React from "react";
+import { slide as Menu } from "react-burger-menu";
+import "./Sidebar.css";
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
-  const [isDeletedOpen, setIsDeletedOpen] = useState(false);
-
-  const handleDeletedClick = (e) => {
-    e.preventDefault();
-    setIsDeletedOpen(!isDeletedOpen);
-  };
-
+export default (props) => {
   return (
-    isOpen && (
-      <div id="mySidebar" className={`sidebar ${isOpen ? "open" : ""}`}>
-        <SidebarButton href="/home" onClick={toggleSidebar}>
-          Home
-        </SidebarButton>
-        <SidebarButton href="/activity" onClick={toggleSidebar}>
-          Users
-        </SidebarButton>
-        <SidebarButton href="/profile" onClick={toggleSidebar}>
-          Categories
-        </SidebarButton>
-        <SidebarButton href="#" onClick={handleDeletedClick}>
-          Deleted
-        </SidebarButton>
-        {isDeletedOpen && (
-          <ul>
-            <li>
-              <SidebarButton href="#">Deleted Users</SidebarButton>
-            </li>
-            <li>
-              <SidebarButton href="#">Deleted Categories</SidebarButton>
-            </li>
-          </ul>
-        )}
-      </div>
-    )
+    <Menu>
+      <a className="menu-item" href="/home">
+        Home
+      </a>
+
+      <a className="menu-item" href="/activity">
+        Activity
+      </a>
+
+      <a className="menu-item" href="/profile">
+        Profile
+      </a>
+    </Menu>
   );
 };
-
-export default Sidebar;
