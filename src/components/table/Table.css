@@ -3,21 +3,41 @@
   border-collapse: collapse;
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif; /* Change this to your preferred font */
+  cursor: pointer;
 }
 
 .table th,
 .table td {
-  border: 1px solid #ddd;
+  border-right: 1px solid #4caf50; /* Adds a border to the right of each cell */
+  border-left: 1px solid #4caf50; /* Adds a border to the left of each cell */
   padding: 8px;
+  text-align: left; /* Aligns the text to the left */
 }
 
 .table th {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  text-align: left;
   background-color: #4caf50;
   color: white;
   position: sticky;
   top: 0;
-  z-index: 3;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f2f2f2; /* Adds a light grey background to every other row for better readability */
+}
+
+.table tr:hover {
+  background-color: #ddd; /* Changes the background color of a row when you hover over it */
+}
+
+.table td:first-child,
+.table th:first-child {
+  border-left: none; /* Removes the left border from the first cell of each row */
+}
+
+.table td:last-child,
+.table th:last-child {
+  border-right: none; /* Removes the right border from the last cell of each row */
 }

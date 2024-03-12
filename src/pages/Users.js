@@ -14,16 +14,14 @@ function Users() {
   return (
     <>
       <Header />
-      <div className="Home">
+      <div className="Home users">
         <div className="page-wrap">
           <h4>/ filters / settings / ... </h4>
           <div className="main-board">
-            <div className="side-board"></div>
             <div className="table-board">
               <Table class="table" data={userData} />
             </div>
             <div className="preview-board">preview</div>
-            <div className="side-board"></div>
           </div>
         </div>
         <Footer />
