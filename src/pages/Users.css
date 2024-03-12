@@ -1,0 +1,5 @@
+.table-board {
+  height: 500px; /* Adjust this to your needs */
+  overflow-y: auto; /* This will add a vertical scroll to the .table-board */
+  background-color: yellow;
+}
