@@ -9,6 +9,9 @@ import { userStore } from "../stores/UserStore";
 import { Link } from "react-router-dom";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 
+import { NotificationManager } from "react-notifications";
+import "react-notifications/lib/notifications.css";
+
 function Login() {
   const [inputs, setInputs] = useState({
     username: "",
@@ -56,6 +59,10 @@ function Login() {
       // Continue with your existing code...
       updateName(inputs.username);
       navigate("/home", { replace: true }); // Cant go back in browser.
+      NotificationManager.success(
+        "You have successfully logged in!",
+        "Successful Login"
+      );
     } catch (error) {
       console.log(error);
       // Optionally, we can set an error state variable to display the error message
@@ -70,6 +77,7 @@ function Login() {
 
           <form onSubmit={handleSubmit}>
             <FormInput
+              icon={<Person2OutlinedIcon />}
               placeholder={"Enter your username"}
               type="text"
               name="username"

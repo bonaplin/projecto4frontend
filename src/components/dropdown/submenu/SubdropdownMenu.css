@@ -1,0 +1,19 @@
+.subdropdown {
+  position: relative;
+  display: block;
+}
+
+.subdropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  z-index: 1;
+  background-color: white;
+  padding: var(--border-radius);
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
+}
+
+.subdropdown:hover .subdropdown-content {
+  display: block;
+}

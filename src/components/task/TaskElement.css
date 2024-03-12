@@ -1,0 +1,53 @@
+:root {
+  --border-radius: 10px;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  background-color: #f4f4f4;
+  height: 70px;
+  position: relative;
+}
+.task:hover {
+  background-color: #e9e9e9;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  font-size: small;
+  padding: 0.2rem;
+  border-top-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+.title {
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+  color: #4c59af;
+}
+
+.owner {
+  top: 0;
+  left: 0;
+  background-color: #4c59af;
+  color: white;
+}
+
+.category {
+  bottom: 0;
+  right: 0;
+  background-color: bisque;
+}
+.circle {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 1px solid #a09e9e;
+  margin: 10px;
+}
