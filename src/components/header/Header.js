@@ -8,6 +8,8 @@ import icon from "../../assets/icon/tc.png";
 import UsersButton from "../dropdown/buttons/UsersButton.js";
 import TasksButton from "../dropdown/buttons/TasksButton.js";
 import CategoriesButton from "../dropdown/buttons/CategoriesButton.js";
+import LogoutButton from "../dropdown/buttons/LogoutButton.js";
+import ProfileButton from "../dropdown/buttons/ProfileButton.js";
 import { userStore } from "../../stores/UserStore.js";
 
 function Header() {
@@ -25,7 +27,16 @@ function Header() {
   };
 
   const token = userStore.getState().token; // Get the token from the store
+  const [user, setUser] = useState(userStore.getState()); // Get the user from the store
+  useEffect(() => {
+    //subscribe -> Este método é usado para registrar uma função callback que será chamada sempre que um evento específico ocorrer. No seu caso, a função callback é chamada sempre que o estado do userStore muda.
+    //unsubstube -> Este método é usado para cancelar uma assinatura que foi criada anteriormente com subscribe. Ele impede que a função callback seja chamada no futuro. No seu caso, unsubscribe é chamado quando o seu componente é desmontado para evitar vazamentos de memória.
+    const unsubscribe = userStore.subscribe(() => {
+      setUser(userStore.getState());
+    });
 
+    return unsubscribe;
+  }, []);
   // Get the username from the DB and the imgURL
   useEffect(() => {
     async function fetchData() {
@@ -86,7 +97,7 @@ function Header() {
         {icon && <img className="icon" src={icon} alt="Icon" />}
       </div>
 
-      <div className="header__right">
+      <div className="header__right dropdown-container">
         <label>{userStore.getState().username}</label>
         <img
           onClick={handleProfileDropdown}
@@ -94,12 +105,14 @@ function Header() {
           src={userStore.getState().photourl}
           alt="Profile"
         />
-        {isProfileDropdownOpen && (
-          <DropdownMenu isOpen={isProfileDropdownOpen} side="dropdown-right">
-            <li>Profile</li>
-            <li>Logout</li>
-          </DropdownMenu>
-        )}
+        <DropdownMenu isOpen={isProfileDropdownOpen} side="dropdown-right">
+          <li>
+            <ProfileButton />
+          </li>
+          <li>
+            <LogoutButton />
+          </li>
+        </DropdownMenu>
       </div>
     </header>
   );

@@ -27,7 +27,7 @@ export const userStore = create(
       updatePhotoUrl: (photourl) => set({ photourl }), //new action
     }),
     {
-      name: "mystore", //name of the storage
+      name: "userstore", //name of the storage
       storage: createJSONStorage(() => sessionStorage), //storage type
     }
   )
