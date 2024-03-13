@@ -17,7 +17,7 @@ function Login() {
     password: "",
   });
   console.log(inputs);
-  const updateName = userStore((state) => state.updateName);
+  const updateUsername = userStore((state) => state.updateUsername);
   const updateRole = userStore((state) => state.updateRole);
   const updateToken = userStore((state) => state.updateToken);
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ function Login() {
       const data = await response.json();
 
       // Continue with your existing code...
-      updateName(inputs.username);
+      updateUsername(data.username);
       updateRole(data.role);
       updateToken(data.token);
       navigate("/home", { replace: true }); // Cant go back in browser.

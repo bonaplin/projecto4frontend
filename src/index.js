@@ -14,6 +14,7 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import Categories from "./pages/Categories";
 import Users from "./pages/Users";
+import EditProfile from "./pages/EditProfile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -30,6 +31,7 @@ root.render(
         <Route path="/users" element={<Users />} />
         <Route path="/activity" element={<Activity />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/footer" element={<Footer />} />
       </Routes>

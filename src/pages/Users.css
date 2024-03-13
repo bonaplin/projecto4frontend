@@ -5,7 +5,7 @@
 }
 .table-board {
   flex: 3;
-  height: 500px; /* Adjust this to your needs */
+  max-height: 65vh; /* Replace 60px with the height of your header */
   overflow-y: auto; /* This will add a vertical scroll to the .table-board */
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
@@ -20,7 +20,7 @@
 }
 
 .main-board {
-  display: flex;
+  display: block;
   flex: 1;
   gap: 20px;
 }
