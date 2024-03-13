@@ -6,8 +6,19 @@ import Layout from "../components/layout/Layout";
 import FormInput from "../components/formInput/FormInput";
 import "./EditProfile.css";
 import Header from "../components/header/Header";
+import "react-responsive-modal/styles.css";
+// import { Modal } from "react-responsive-modal";
+import Modal from "../components/modal/Modal";
 
 function EditProfile() {
+  const [open, setOpen] = useState(false);
+
+  const onOpenModal = () => setOpen(true);
+  const onCloseModal = () => setOpen(false);
+
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   // const location = useLocation();
   //const userDetails = userStore.getState().userDetails; // Adicione esta linha
   // console.log(JSON.stringify(userDetails) + "user details");
@@ -53,8 +64,6 @@ function EditProfile() {
     if (response.ok) {
       // Se a resposta for bem-sucedida, atualize os detalhes do usuário na store do Zustand
       const data = await response.json();
-
-      navigate("/home");
     } else {
       // Trate o erro aqui
       console.error(
@@ -62,7 +71,28 @@ function EditProfile() {
         response.statusText
       );
     }
+    navigate("/home");
   }
+  const handleChangePassword = () => {
+    setIsChangingPassword(!isChangingPassword);
+  };
+
+  const handlePasswordChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "oldPassword") {
+      setOldPassword(value);
+      console.log("oldPassword", value);
+    } else if (name === "newPassword") {
+      setNewPassword(value);
+    } else if (name === "newPasswordAgain") {
+      setNewPassword(value);
+    }
+  };
+  const handleClickSavePassword = () => {
+    if (oldPassword === newPassword) {
+      return;
+    }
+  };
 
   return (
     <>
@@ -128,7 +158,6 @@ function EditProfile() {
               />
 
               <div className="button-group">
-                <button> Change Password </button>
                 <input type="submit" value="Save" />
                 <input
                   type="button"
@@ -137,6 +166,51 @@ function EditProfile() {
                 />
               </div>
             </form>
+
+            <button
+              type="submit"
+              value="Change Password"
+              onClick={onOpenModal}
+              style={{
+                color: "blue",
+                textDecoration: "underline",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              Change Password
+            </button>
+            <Modal
+              open={open}
+              onClose={onCloseModal}
+              center
+              title="Change Password"
+            >
+              <FormInput
+                placeholder="Enter your old password"
+                type="password"
+                name="password"
+                value={oldPassword}
+                onChange={handlePasswordChange}
+              />
+              <FormInput
+                placeholder="Enter your new password"
+                type="password"
+                name="password"
+                value={newPassword}
+                onChange={handlePasswordChange}
+              />
+
+              <button
+                type="submit"
+                value="Change Password"
+                onClick={handleClickSavePassword}
+                className="login-page-wrap form input"
+              >
+                Save
+              </button>
+            </Modal>
           </div>
         </div>
       </Layout>
