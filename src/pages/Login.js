@@ -54,7 +54,7 @@ function Login() {
       const data = await response.json();
 
       // Continue with your existing code...
-      updateUsername(inputs.username);
+      updateUsername(data.username);
       updateRole(data.role);
       updateToken(data.token);
       navigate("/home", { replace: true }); // Cant go back in browser.

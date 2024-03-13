@@ -41,19 +41,24 @@ function Header() {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/getPartial",
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/getDetails",
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             token: token, // Use the token from the store
+            selectedUser: user.username, // Use the username from the store
           },
         }
       );
       const data = await response.json();
-      userStore.getState().updateUsername(data.firstname); // Update the username in the store
-      userStore.getState().updatePhotoUrl(data.photourl); // Update the photo URL in the store
-      console.log(userStore.getState().photourl); // Log the username to the console
+      userStore.getState().updatePhotoUrl(data.photoURL); // Update the photo URL in the store
+      userStore.getState().updateUsername(data.username); // Update the username in the store
+      userStore.getState().updateFirstname(data.firstname); // Update the firstname in the store
+      userStore.getState().updateLastname(data.lastname); // Update the lastname in the store
+      userStore.getState().updateEmail(data.email); // Update the email in the store
+      userStore.getState().updatePhone(data.phone); // Update the phone in the store
+      userStore.getState().updateRole(data.role); // Update the role in the store
     }
     fetchData();
   }, [token]); // Run the effect when the token changes
@@ -102,7 +107,7 @@ function Header() {
         <img
           onClick={handleProfileDropdown}
           className="profile-icon"
-          src={userStore.getState().photourl}
+          src={userStore.getState().photoURL}
           alt="Profile"
         />
         <DropdownMenu isOpen={isProfileDropdownOpen} side="dropdown-right">
