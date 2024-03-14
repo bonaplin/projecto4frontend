@@ -82,7 +82,7 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
           onChange={(e) => setPhone(e.target.value)}
         />
         <FormInput
-          placeholder={photoURL}
+          placeholder="Enter photo URL"
           type="url"
           name="photoURL"
           value={photoURL}
