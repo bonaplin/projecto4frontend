@@ -113,6 +113,9 @@ function EditProfile() {
 
     if (!response.ok) {
       alert("Failed to change password.");
+    } else {
+      alert("Password changed successfully.");
+      onCloseModal();
     }
   };
 
