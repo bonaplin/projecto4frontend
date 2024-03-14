@@ -10,6 +10,7 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
   const [lastname, setLastname] = useState(user.lastname);
   const [phone, setPhone] = useState(user.phone);
   const [photoURL, setPhotoURL] = useState(user.photoURL);
+  const [role, setRole] = useState(user.role);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,12 +22,23 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
       lastname,
       phone,
       photoURL,
+      role,
     });
   };
 
   return (
     <Modal open={open} onClose={onClose} title={title}>
       <form onSubmit={handleSubmit}>
+        <select
+          name="role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="form-input"
+        >
+          <option value="po">Product Owner</option>
+          <option value="sm">Scrum Master</option>
+          <option value="dev">Developer</option>
+        </select>
         <FormInput
           placeholder="Enter username"
           type="text"

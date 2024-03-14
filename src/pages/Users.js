@@ -33,6 +33,7 @@ function Users() {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
   async function handleCreateUser(user) {
     const response = await fetch(
       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/add",
@@ -41,6 +42,7 @@ function Users() {
         headers: {
           "Content-Type": "application/json",
           token: token,
+          role: role,
         },
         body: JSON.stringify(user),
       }
