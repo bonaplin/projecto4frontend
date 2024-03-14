@@ -46,39 +46,43 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <FormInput
-          placeholder="Enter password"
-          type="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        {
+          (title = "Edit User" && (
+            <FormInput
+              placeholder="Enter password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          ))
+        }
         <FormInput
           placeholder="Enter email"
           type="email"
           name="email"
-          value={""}
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <FormInput
           placeholder="Enter first name"
           type="text"
           name="firstname"
-          value={""}
+          value={firstname}
           onChange={(e) => setFirstname(e.target.value)}
         />
         <FormInput
           placeholder="Enter last name"
           type="text"
           name="lastname"
-          value={""}
+          value={lastname}
           onChange={(e) => setLastname(e.target.value)}
         />
         <FormInput
           placeholder="Enter phone number"
           type="tel"
           name="phone"
-          value={""}
+          value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
         <FormInput

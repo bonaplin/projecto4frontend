@@ -16,14 +16,21 @@ function Users() {
     (state) => state.updateUserActiveStatus
   );
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editUser, setEditUser] = useState(null);
+
   const handleEdit = (user) => {
-    console.log("Editing user:", user);
+    setEditUser(user);
+    setIsEditModalOpen(true);
   };
   const handleDelete = (user) => {
     console.log("Deleting user:", user);
   };
   const handleActiveChange = (user) => {
     console.log("Changing active status for user:", user);
+  };
+  const handleUpdateUser = (user) => {
+    console.log("Updating user:", user);
   };
 
   /* ******* ******* ADD USER BUTTON  ***************** *****/
@@ -117,6 +124,15 @@ function Users() {
                 user={{}} // Pass an empty user object to the UserModal
               />
             </>
+          )}
+          {isEditModalOpen && (
+            <UserModal
+              open={isEditModalOpen}
+              title="Edit User"
+              onClose={() => setIsEditModalOpen(false)}
+              onSubmit={handleUpdateUser} // You need to define this function to handle the user update
+              user={editUser}
+            />
           )}
 
           <div className="main-board">
