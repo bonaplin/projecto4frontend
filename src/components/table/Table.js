@@ -1,16 +1,9 @@
 import React from "react";
 import "./Table.css"; // Importing the CSS
+import UserRow from "../table/rowelement/UserRow"; // Import the UserRow component
 
-const Table = ({ data }) => {
+const Table = ({ data, columns, handleDelete, handleEdit }) => {
   // If data is not empty, get the columns from the first object
-  const columns = [
-    "username",
-    "firstname",
-    "lastname",
-    "email",
-    "role",
-    "actions",
-  ];
 
   return (
     <div className="table-container">
@@ -24,11 +17,13 @@ const Table = ({ data }) => {
         </thead>
         <tbody>
           {data.map((item, index) => (
-            <tr key={index}>
-              {columns.map((column) => (
-                <td key={column}>{item[column]}</td>
-              ))}
-            </tr>
+            <UserRow
+              key={index}
+              item={item}
+              columns={columns}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
           ))}
         </tbody>
       </table>

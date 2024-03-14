@@ -21,16 +21,9 @@ export default function UsersButton() {
     let userData = await response.json();
 
     // Filter the data
-    userData = userData.map((user) => ({
-      username: user.username,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      // Add more properties as needed
-    }));
-
+    userStore.getState().setUsers(userData); // Update the store
     console.log(userData); // Log the filtered userData to the console
-    navigate("/users", { state: { userData: userData } });
+    navigate("/users");
   }
   console.log("UsersButton");
   return <div onClick={handleClick}>Users</div>;

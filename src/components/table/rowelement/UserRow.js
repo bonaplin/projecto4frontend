@@ -1,26 +1,29 @@
 // UserRow.js
+// UserRow.js
 import React from "react";
 
-const UserRow = ({ item, handleEdit, handleDelete }) => {
+const UserRow = ({ item, columns, handleEdit, handleDelete }) => {
+  // Define the keys in the order you want them to be displayed
+
   return (
     <tr>
-      {Object.keys(item).map((key) => (
-        <td key={key}>
-          {key === "photoURL" ? (
+      {columns.map((column) => (
+        <td key={column}>
+          {column === "photoURL" ? (
             <img
-              src={item[key]}
+              src={item[column]}
               alt="User"
               style={{ width: "50px", height: "50px" }}
             />
-          ) : key === "active" ? (
-            <input type="checkbox" checked={item[key]} disabled />
-          ) : key === "actions" ? (
+          ) : column === "active" ? (
+            <input type="checkbox" checked={item[column]} disabled />
+          ) : column === "actions" ? (
             <>
               <button onClick={() => handleEdit(item)}>Edit</button>
               <button onClick={() => handleDelete(item)}>Delete</button>
             </>
           ) : (
-            item[key]
+            item[column]
           )}
         </td>
       ))}
