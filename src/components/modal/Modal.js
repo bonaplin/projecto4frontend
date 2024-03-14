@@ -1,6 +1,6 @@
 import React from "react";
 
-const Modal = ({ open, onClose, children, title }) => {
+const Modal = ({ open, onClose, children, title, image }) => {
   if (!open) return null;
 
   return (
@@ -29,15 +29,22 @@ const Modal = ({ open, onClose, children, title }) => {
           border: "1px solid #000",
         }}
       >
-        <h2
-          style={{
-            margin: "0 0 20px 0",
-            textAlign: "center",
-            fontSize: "1.2em",
-          }}
-        >
-          {title}
-        </h2>
+        <div className="header-profile">
+          <h2
+            style={{
+              margin: "0 0 20px 0",
+              textAlign: "center",
+              fontSize: "1.2em",
+            }}
+          >
+            {title}
+          </h2>
+          {image ? (
+            <img src={image} />
+          ) : (
+            <img src="../../assets/img/tab_logo.png" />
+          )}
+        </div>
         {children}
         <button
           onClick={onClose}

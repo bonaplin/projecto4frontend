@@ -10,6 +10,7 @@ import UserModal from "../components/modal/UserModal";
 function Users() {
   let userData = userStore((state) => state.user);
   const role = userStore.getState().role;
+  const token = userStore.getState().token;
   const [isModalOpen, setModalOpen] = useState(false);
   const updateUserActiveStatus = userStore(
     (state) => state.updateUserActiveStatus
@@ -24,12 +25,6 @@ function Users() {
   const handleActiveChange = (user) => {
     console.log("Changing active status for user:", user);
   };
-  const handleInputChange = (e) => {
-    console.log("Handling input change:", e);
-  };
-  const handleClickSave = () => {
-    console.log("Saving new user");
-  };
 
   /* ******* ******* ADD USER BUTTON  ***************** *****/
   const handleAddUserButton = () => {
@@ -38,14 +33,33 @@ function Users() {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+  async function handleCreateUser(user) {
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+        body: JSON.stringify(user),
+      }
+    );
+    if (response.ok) {
+      console.log("User Created");
+      setModalOpen(false);
+    }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted");
-  };
-  const handleCreateUser = (user) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    let userDetails = await response.json();
+
+    console.log(userDetails); // Log the userDetails to the console
     console.log("Creating user:", user);
-  };
+  }
+
   /* ******* ******* *********************************** *****/
 
   let columns = [
@@ -97,6 +111,8 @@ function Users() {
                 open={isModalOpen}
                 onClose={handleCloseModal}
                 onSubmit={handleCreateUser}
+                title="Create User"
+                user={{}} // Pass an empty user object to the UserModal
               />
             </>
           )}
