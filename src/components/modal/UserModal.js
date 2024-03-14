@@ -28,6 +28,7 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
 
   return (
     <Modal open={open} onClose={onClose} title={title}>
+      <img src={photoURL} alt="User" />
       <form onSubmit={handleSubmit}>
         <select
           name="role"
@@ -39,15 +40,15 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
           <option value="sm">Scrum Master</option>
           <option value="dev">Developer</option>
         </select>
-        <FormInput
-          placeholder="Enter username"
-          type="text"
-          name="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        {
-          (title = "Edit User" && (
+        {title === "Create User" && (
+          <>
+            <FormInput
+              placeholder="Enter username"
+              type="text"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
             <FormInput
               placeholder="Enter password"
               type="password"
@@ -55,8 +56,8 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          ))
-        }
+          </>
+        )}
         <FormInput
           placeholder="Enter email"
           type="email"
