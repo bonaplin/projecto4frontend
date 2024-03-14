@@ -19,20 +19,6 @@ function Users() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editUser, setEditUser] = useState(null);
 
-  const handleEdit = (user) => {
-    setEditUser(user);
-    setIsEditModalOpen(true);
-  };
-  const handleDelete = (user) => {
-    console.log("Deleting user:", user);
-  };
-  const handleActiveChange = (user) => {
-    console.log("Changing active status for user:", user);
-  };
-  const handleUpdateUser = (user) => {
-    console.log("Updating user:", user);
-  };
-
   /* ******* ******* ADD USER BUTTON  ***************** *****/
   const handleAddUserButton = () => {
     setModalOpen(true);
@@ -40,6 +26,8 @@ function Users() {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+  /* ******* ******* *********************************** *****/
+  /* ******* ******* *********************************** *****/
 
   async function handleCreateUser(user) {
     const response = await fetch(
@@ -64,11 +52,47 @@ function Users() {
     }
 
     let userDetails = await response.json();
-
-    console.log(userDetails); // Log the userDetails to the console
-    console.log("Creating user:", user);
+    console.log("User Created", userDetails);
   }
 
+  const handleEdit = (user) => {
+    setEditUser(user);
+    setIsEditModalOpen(true);
+  };
+  const handleDelete = (user) => {
+    console.log("Deleting user:", user);
+  };
+  const handleActiveChange = (user) => {
+    console.log("Changing active status for user:", user);
+  };
+  async function handleUpdateUser(user) {
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/update",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+          selectedUser: user.username,
+        },
+        body: JSON.stringify(user),
+      }
+    );
+    if (response.ok) {
+      console.log("User Updated");
+      setIsEditModalOpen(false);
+    }
+
+    if (!response.ok) {
+      console.log(user);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    let userDetails = await response.json();
+    console.log("User Edited", userDetails);
+  }
+
+  /* ******* ******* *********************************** *****/
   /* ******* ******* *********************************** *****/
 
   let columns = [
