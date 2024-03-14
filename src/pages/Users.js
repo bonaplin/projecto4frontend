@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/header/Header";
 import Table from "../components/table/Table";
 import Footer from "../components/footer/Footer";
@@ -127,6 +127,25 @@ function Users() {
     columns = [""];
     userData = [""];
   }
+
+  useEffect(() => {
+    async function fetchUsers() {
+      const response = await fetch(
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+      userData = await response.json();
+      userStore.getState().setUsers(userData);
+    }
+
+    fetchUsers();
+  }, [userData]); // Dependency array includes editUser, so useEffect will run whenever editUser changes
 
   return (
     <>
