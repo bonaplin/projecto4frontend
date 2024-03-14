@@ -4,11 +4,11 @@ import "./TaskElement.css";
 export function TaskElement(props) {
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case "100":
+      case 100:
         return "green";
-      case "200":
+      case 200:
         return "yellow";
-      case "300":
+      case 300:
         return "red";
       default:
         return "gray";

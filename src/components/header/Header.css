@@ -45,3 +45,18 @@ img {
   border-radius: 50%;
   margin-right: 10px;
 }
+.header-name {
+  margin-right: 2rem;
+  font-weight: bold;
+  text-shadow: #fff 0px 0px 2px;
+}
+.profile-icon,
+#logo-menu {
+  cursor: pointer;
+  transition: transform 0.5s ease;
+}
+
+#logo-menu:hover {
+  opacity: 0.4;
+  transform: rotate(360deg);
+}

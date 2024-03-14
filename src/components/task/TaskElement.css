@@ -12,6 +12,7 @@
   background-color: #f4f4f4;
   height: 70px;
   position: relative;
+  cursor: pointer;
 }
 .task:hover {
   background-color: #e9e9e9;

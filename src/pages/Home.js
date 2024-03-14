@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../index.css";
 import { userStore } from "../stores/UserStore.js";
 import Footer from "../components/footer/Footer.js";
@@ -9,89 +9,91 @@ import { TaskElement } from "../components/task/TaskElement.js";
 //import Sidebar from "../components/navbar/Sidebar.js";
 function Home() {
   const username = userStore((state) => state.username);
+  const [todo, setTodo] = useState([]);
+  const [doing, setDoing] = useState([]);
+  const [done, setDone] = useState([]);
+
+  const token = userStore.getState().token; // Get the token from the store
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const response = await fetch(
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all",
+        {
+          headers: {
+            token: token, // replace `token` with your actual token
+          },
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Failed to fetch tasks:", response.statusText);
+        return;
+      }
+      const tasks = await response.json();
+      console.log(tasks);
+
+      separateTasksByStatus(tasks);
+    };
+
+    fetchTasks();
+  }, []);
+
+  const separateTasksByStatus = (tasks) => {
+    setTodo(tasks.filter((task) => task.status === 100));
+    setDoing(tasks.filter((task) => task.status === 200));
+    setDone(tasks.filter((task) => task.status === 300));
+  };
+  console.log("todo", todo);
+
   return (
     <>
       <Header />
       <div className="Home">
         <div className="page-wrap" id="home-page-wrap">
-          <h4>{username}! / filters / settings / ... </h4>
+          <button className="add-some">+ Add new task</button>
           <div className="scrum-board">
-            <TaskColumn className="task-column" title="To Do">
-              {" "}
-              <TaskElement
-                title="nova"
-                owner="user1"
-                category="Educação"
-                priority="100"
-              />
-              <TaskElement
-                title="nova"
-                owner="user2"
-                category="Desporto"
-                priority="200"
-              />
-              <TaskElement
-                title="nova"
-                owner="user3"
-                category="Cultura"
-                priority="300"
-              />
+            <TaskColumn className="task-column" title="ToDo">
+              {todo.map((task) => (
+                <TaskElement
+                  key={task.title}
+                  title={task.description}
+                  owner={task.owner}
+                  category={task.category}
+                  priority={task.priority}
+                />
+              ))}
             </TaskColumn>
+
             <TaskColumn className="task-column" title="Doing">
-              {" "}
-              d
+              {doing.map((task) => (
+                <TaskElement
+                  key={task.title}
+                  title={task.description}
+                  owner={task.owner}
+                  category={task.category}
+                  priority={task.priority}
+                />
+              ))}
             </TaskColumn>
+
             <TaskColumn className="task-column" title="Done">
-              {" "}
-              f
+              {done.map((task) => (
+                <TaskElement
+                  key={task.title}
+                  title={task.description}
+                  owner={task.owner}
+                  category={task.category}
+                  priority={task.priority}
+                />
+              ))}
             </TaskColumn>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </>
   );
 }
 
 export default Home;
-
-// import React from "react";
-// import Sidebar from "../components/navbar/Sidebar.js";
-// import "../index.css";
-// import { userStore } from "../stores/UserStore.js";
-// import Footer from "../components/footer/Footer.js";
-// import "./Home.css";
-// import TaskColumn from "../components/task/column/TaskColumn.js";
-// import Header from "../components/header/Header.js";
-// function Home() {
-//   const username = userStore((state) => state.username);
-//   return (
-//     <div className="Home">
-//       <Header />
-//       <Sidebar
-//         pageWrapId={"home-page-wrap"}
-//         outerContainerId={"home-outer-container"}
-//       />
-//       <div className="page-wrap" id="home-page-wrap">
-//         <h4>{username}! / filters / settings / ... </h4>
-//         <div className="scrum-board">
-//           <TaskColumn className="task-column" title="To Do">
-//             {" "}
-//             s
-//           </TaskColumn>
-//           <TaskColumn className="task-column" title="In Progress">
-//             {" "}
-//             d
-//           </TaskColumn>
-//           <TaskColumn className="task-column" title="Done">
-//             {" "}
-//             f
-//           </TaskColumn>
-//         </div>
-//       </div>
-//       <Footer />
-//     </div>
-//   );
-// }
-
-// export default Home;

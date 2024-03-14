@@ -16,12 +16,11 @@ function Users() {
       <Header />
       <div className="Home users">
         <div className="page-wrap">
-          <h4>/ filters / settings / ... </h4>
+          <button className="add-some">Adicionar novo usuário</button>
           <div className="main-board">
             <div className="table-board">
               <Table class="table" data={userData} />
             </div>
-            <div className="preview-board">preview</div>
           </div>
         </div>
         <Footer />

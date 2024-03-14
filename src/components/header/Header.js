@@ -80,9 +80,14 @@ function Header() {
   return (
     <header className="header">
       <div className="header__left dropdown-container">
-        <button onClick={handleDropdown} className="menu-button">
-          M
-        </button>
+        <img
+          id="logo-menu"
+          onClick={handleDropdown}
+          className="icon"
+          src={icon}
+          alt="Icon"
+          draggable="false"
+        />
         <DropdownMenu isOpen={isDropdownOpen} side="dropdown">
           <li>
             <TasksButton />
@@ -99,11 +104,10 @@ function Header() {
             <li>Categories</li>
           </SubDropdownMenu>
         </DropdownMenu>
-        {icon && <img className="icon" src={icon} alt="Icon" />}
       </div>
 
       <div className="header__right dropdown-container">
-        <label>{userStore.getState().username}</label>
+        <label className="header-name">{userStore.getState().username}</label>
         <img
           onClick={handleProfileDropdown}
           className="profile-icon"
