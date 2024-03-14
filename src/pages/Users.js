@@ -1,30 +1,52 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState } from "react";
 import Header from "../components/header/Header";
 import Table from "../components/table/Table";
 import Footer from "../components/footer/Footer";
 import "./Users.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { userStore } from "../stores/UserStore";
+import UserModal from "../components/modal/UserModal";
 
 function Users() {
   let userData = userStore((state) => state.user);
   const role = userStore.getState().role;
-  console.log("Entrou em Users.js");
+  const [isModalOpen, setModalOpen] = useState(false);
+  const updateUserActiveStatus = userStore(
+    (state) => state.updateUserActiveStatus
+  );
 
   const handleEdit = (user) => {
-    // Perform your edit operation here
-    // This could involve navigating to an edit page, opening a modal, etc.
     console.log("Editing user:", user);
   };
   const handleDelete = (user) => {
-    // Perform your delete operation here
-    // This could involve opening a modal, showing a confirmation dialog, etc.
     console.log("Deleting user:", user);
   };
+  const handleActiveChange = (user) => {
+    console.log("Changing active status for user:", user);
+  };
+  const handleInputChange = (e) => {
+    console.log("Handling input change:", e);
+  };
+  const handleClickSave = () => {
+    console.log("Saving new user");
+  };
 
-  // const columns =
-  //   userData.length > 0 ? [...Object.keys(userData[0]), "actions"] : [];
+  /* ******* ******* ADD USER BUTTON  ***************** *****/
+  const handleAddUserButton = () => {
+    setModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted");
+  };
+  const handleCreateUser = (user) => {
+    console.log("Creating user:", user);
+  };
+  /* ******* ******* *********************************** *****/
 
   let columns = [
     "photoURL",
@@ -32,9 +54,11 @@ function Users() {
     "firstname",
     "lastname",
     "phone",
+    "role",
     "active",
     "actions",
   ];
+
   if (role === "sm") {
     // Filter the userData array to exclude inactive users
     userData = userData.filter((user) => user.active);
@@ -63,9 +87,20 @@ function Users() {
       <div className="Home users">
         <div className="page-wrap">
           <h2>All Users</h2>
-          <span className="add-some">
-            <AddCircleIcon fontSize="large" />
-          </span>
+          {role === "po" && (
+            <>
+              <span className="add-some">
+                <AddCircleIcon onClick={handleAddUserButton} fontSize="large" />
+              </span>
+
+              <UserModal
+                open={isModalOpen}
+                onClose={handleCloseModal}
+                onSubmit={handleCreateUser}
+              />
+            </>
+          )}
+
           <div className="main-board">
             <div className="table-board">
               <Table
@@ -74,6 +109,7 @@ function Users() {
                 columns={columns}
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
+                handleActiveChange={handleActiveChange}
               />
             </div>
           </div>

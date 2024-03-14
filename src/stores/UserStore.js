@@ -22,6 +22,7 @@ export const userStore = create(
       email: "",
       phone: "",
       user: [],
+
       setUsers: (user) => set({ user }),
       updateUsername: (username) => set({ username }), //action
       updateToken: (token) => set({ token }), //new action

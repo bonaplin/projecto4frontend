@@ -1,8 +1,12 @@
-// UserRow.js
-// UserRow.js
 import React from "react";
 
-const UserRow = ({ item, columns, handleEdit, handleDelete }) => {
+const UserRow = ({
+  item,
+  columns,
+  handleEdit,
+  handleDelete,
+  handleActiveChange,
+}) => {
   // Define the keys in the order you want them to be displayed
 
   return (
@@ -16,7 +20,14 @@ const UserRow = ({ item, columns, handleEdit, handleDelete }) => {
               style={{ width: "50px", height: "50px" }}
             />
           ) : column === "active" ? (
-            <input type="checkbox" checked={item[column]} disabled />
+            <input
+              type="checkbox"
+              className="my-checkbox"
+              checked={item[column]}
+              onChange={() => {
+                handleActiveChange(item);
+              }}
+            />
           ) : column === "actions" ? (
             <>
               <button onClick={() => handleEdit(item)}>Edit</button>

@@ -36,7 +36,7 @@ const Modal = ({ open, onClose, children, title }) => {
             fontSize: "1.2em",
           }}
         >
-          Change Password
+          {title}
         </h2>
         {children}
         <button
