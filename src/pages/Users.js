@@ -8,7 +8,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { userStore } from "../stores/UserStore";
 
 function Users() {
-  const userData = userStore((state) => state.user);
+  let userData = userStore((state) => state.user);
+  const role = userStore.getState().role;
   console.log("Entrou em Users.js");
 
   const handleEdit = (user) => {
@@ -25,14 +26,36 @@ function Users() {
   // const columns =
   //   userData.length > 0 ? [...Object.keys(userData[0]), "actions"] : [];
 
-  const columns = [
+  let columns = [
     "photoURL",
     "username",
     "firstname",
     "lastname",
     "phone",
+    "active",
     "actions",
   ];
+  if (role === "sm") {
+    // Filter the userData array to exclude inactive users
+    userData = userData.filter((user) => user.active);
+    // Find the index of the "actions" column
+    const actionsIndex = columns.indexOf("actions");
+    // If the "actions" column exists, remove it
+    if (actionsIndex !== -1) {
+      columns.splice(actionsIndex, 1);
+    }
+    // Find the index of the "active" column
+    const activeIndex = columns.indexOf("active");
+    // If the "active" column exists, remove it
+    if (activeIndex !== -1) {
+      columns.splice(activeIndex, 1);
+    }
+  } else if (role === "po") {
+    // Perform your operations for the "po" role here
+  } else {
+    columns = [""];
+    userData = [""];
+  }
 
   return (
     <>
