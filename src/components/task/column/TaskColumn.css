@@ -15,11 +15,11 @@
 .title-column {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: rgb(138, 197, 165);
+  justify-content: left;
+
   border-radius: var(--border-radius);
 
   height: 2rem;
-  color: white;
+  cursor: default;
   margin: 0;
 }

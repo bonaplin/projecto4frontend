@@ -16,9 +16,9 @@ function EditProfile() {
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
 
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   // const location = useLocation();
   //const userDetails = userStore.getState().userDetails; // Adicione esta linha
   // console.log(JSON.stringify(userDetails) + "user details");
@@ -73,24 +73,46 @@ function EditProfile() {
     }
     navigate("/home");
   }
-  const handleChangePassword = () => {
-    setIsChangingPassword(!isChangingPassword);
-  };
 
   const handlePasswordChange = (event) => {
     const { name, value } = event.target;
-    if (name === "oldPassword") {
+    console.log("name", name);
+    if (name === "password") {
       setOldPassword(value);
-      console.log("oldPassword", value);
-    } else if (name === "newPassword") {
+      console.log("old", value);
+    } else if (name === "password-new") {
       setNewPassword(value);
-    } else if (name === "newPasswordAgain") {
-      setNewPassword(value);
+      console.log("new", value);
+    } else if (name === "password-again") {
+      setConfirmPassword(value);
+      console.log("new confirm", value);
     }
   };
-  const handleClickSavePassword = () => {
-    if (oldPassword === newPassword) {
+  const handleClickSavePassword = async () => {
+    if (newPassword !== confirmPassword) {
+      console.log(newPassword + " new " + confirmPassword + " confirm");
+      alert("New password and confirmation password do not match.");
       return;
+    }
+    console.log(oldPassword + " old " + newPassword + " new");
+    // Send the old password and new password to the backend
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/updatePassword",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token: userStore.getState().token,
+        },
+        body: JSON.stringify({
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      alert("Failed to change password.");
     }
   };
 
@@ -197,8 +219,15 @@ function EditProfile() {
               <FormInput
                 placeholder="Enter your new password"
                 type="password"
-                name="password"
+                name="password-new"
                 value={newPassword}
+                onChange={handlePasswordChange}
+              />
+              <FormInput
+                placeholder="Enter your new password again"
+                type="password"
+                name="password-again"
+                value={confirmPassword}
                 onChange={handlePasswordChange}
               />
 

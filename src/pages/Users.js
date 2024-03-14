@@ -4,6 +4,7 @@ import Header from "../components/header/Header";
 import Table from "../components/table/Table";
 import Footer from "../components/footer/Footer";
 import "./Users.css";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 function Users() {
   const location = useLocation();
@@ -16,7 +17,10 @@ function Users() {
       <Header />
       <div className="Home users">
         <div className="page-wrap">
-          <button className="add-some">Adicionar novo usuário</button>
+          <h2>All Users</h2>
+          <span className="add-some">
+            <AddCircleIcon fontSize="large" />
+          </span>
           <div className="main-board">
             <div className="table-board">
               <Table class="table" data={userData} />

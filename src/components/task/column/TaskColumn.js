@@ -4,7 +4,7 @@ function TaskColumn({ children, title }) {
   return (
     <div className="task-column">
       <div className="title-column">
-        <h3>{title}</h3>
+        <h4>{title}</h4>
       </div>
       <div className="container-tasks">{children}</div>
     </div>
