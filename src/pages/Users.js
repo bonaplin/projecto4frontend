@@ -6,6 +6,7 @@ import "./Users.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { userStore } from "../stores/UserStore";
 import UserModal from "../components/modal/UserModal";
+import Modal from "../components/modal/Modal";
 
 function Users() {
   let userData = userStore((state) => state.user);
@@ -55,7 +56,6 @@ function Users() {
     setEditUser(user);
     setIsEditModalOpen(true);
   };
-
   async function handleUpdateUser(user) {
     const response = await fetch(
       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/update",
@@ -84,10 +84,11 @@ function Users() {
     console.log("User Edited", userDetails);
   }
   /* ******* ******* *********************************** *****/
-  const [setIsDeleteModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleDelete = (user) => {
     setEditUser(user);
     setIsDeleteModalOpen(true);
+    console.dir(user);
   };
   async function handleDeleteUser(user) {
     const response = await fetch(
@@ -99,13 +100,12 @@ function Users() {
           token: token,
           selectedUser: user.username,
         },
-        body: JSON.stringify(user),
       }
     );
     if (response.ok) {
       console.log("User Deleted");
       setIsChange(!isChange);
-      //setIsDeleteModalOpen(false);
+      setIsDeleteModalOpen(false);
       //setIsEditModalOpen(false);
     }
 
@@ -202,6 +202,15 @@ function Users() {
               title="Edit User"
               onClose={() => setIsEditModalOpen(false)}
               onSubmit={handleUpdateUser} // You need to define this function to handle the user update
+              user={editUser}
+            />
+          )}
+          {isDeleteModalOpen && (
+            <UserModal
+              open={isDeleteModalOpen}
+              title="Delete User"
+              onClose={() => setIsDeleteModalOpen(false)}
+              onSubmit={handleDeleteUser}
               user={editUser}
             />
           )}

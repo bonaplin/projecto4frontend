@@ -1,12 +1,6 @@
 import React from "react";
 
-const UserRow = ({
-  item,
-  columns,
-  handleEdit,
-  handleDelete,
-  handleActiveChange,
-}) => {
+const UserRow = ({ item, columns, handleEdit, handleDelete }) => {
   // Define the keys in the order you want them to be displayed
 
   return (
@@ -24,9 +18,6 @@ const UserRow = ({
               type="checkbox"
               className="my-checkbox"
               checked={item[column]}
-              onChange={() => {
-                handleActiveChange(item);
-              }}
             />
           ) : column === "actions" ? (
             <>
