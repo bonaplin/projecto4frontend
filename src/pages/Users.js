@@ -165,7 +165,6 @@ function Users() {
       username: user.username,
       active: user.active,
     };
-
     const response = await fetch(
       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/updateactive",
       {

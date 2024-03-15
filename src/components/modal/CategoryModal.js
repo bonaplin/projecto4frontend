@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import FormInput from "../formInput/FormInput";
 
@@ -12,6 +12,12 @@ const CategoryModal = ({
   const [title, setTitle] = useState(category.title);
   const [description, setDescription] = useState(category.description);
 
+  console.log("CategoryModal -> category", category);
+
+  useEffect(() => {
+    setTitle(category.title);
+    setDescription(category.description);
+  }, [category]); // Depend on category
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({

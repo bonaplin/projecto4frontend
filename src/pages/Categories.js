@@ -139,25 +139,24 @@ function Categories() {
               </span>
             </>
           )}
-          {isDeleteModalOpen && (
-            <CategoryModal
-              open={isDeleteModalOpen}
-              title_category="Delete Category"
-              onClose={() => setIsDeleteModalOpen(false)}
-              onSubmit={handleDeleteCategory}
-              user={editCategory}
-            />
-          )}
           {isEditModalOpen && (
             <CategoryModal
               open={isEditModalOpen}
               title_category="Edit Category"
               onClose={() => setIsEditModalOpen(false)}
               onSubmit={handleEditCategory}
-              user={editCategory}
+              category={editCategory}
             />
           )}
-
+          {isDeleteModalOpen && (
+            <CategoryModal
+              open={isDeleteModalOpen}
+              title_category="Delete Category"
+              onClose={() => setIsDeleteModalOpen(false)}
+              onSubmit={handleDeleteCategory}
+              category={editCategory}
+            />
+          )}
           <div className="main-board">
             <div className="table-board">
               <Table
@@ -165,8 +164,8 @@ function Categories() {
                 type="category"
                 data={categorieData}
                 columns={columns}
-                handleDelete={handleDeleteCategory}
-                handleEdit={handleEditCategory}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
               />
             </div>
           </div>
