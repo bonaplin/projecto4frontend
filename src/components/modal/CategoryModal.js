@@ -11,18 +11,14 @@ const CategoryModal = ({
 }) => {
   const [title, setTitle] = useState(category.title);
   const [description, setDescription] = useState(category.description);
+  const [id, setId] = useState(0);
 
-  console.log("CategoryModal -> category", category);
-
-  useEffect(() => {
-    setTitle(category.title);
-    setDescription(category.description);
-  }, [category]); // Depend on category
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({
       title,
       description,
+      id,
     });
     resetForm();
   };
@@ -44,7 +40,7 @@ const CategoryModal = ({
             Cancel
           </button>
         </form>
-      ) : (
+      ) : title_category === "Create Category" ? (
         <form onSubmit={handleSubmit}>
           <FormInput
             placeholder="Enter category name"
@@ -66,7 +62,7 @@ const CategoryModal = ({
             Cancel
           </button>
         </form>
-      )}
+      ) : null}
     </Modal>
   );
 };

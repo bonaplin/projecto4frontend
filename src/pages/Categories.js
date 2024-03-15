@@ -13,6 +13,7 @@ import { userStore } from "../stores/UserStore";
 function Categories() {
   const navigate = useNavigate();
   const token = userStore.getState().token;
+  const username = userStore.getState().username;
   const role = userStore.getState().role;
   const [categorieData, setCategorieData] = useState([]);
   const [editCategory, setEditCategory] = useState(null);
@@ -46,7 +47,6 @@ function Categories() {
     console.dir(category);
   };
   async function handleDeleteCategory(category) {
-    console.log("Delete Category id", category.id);
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/delete/${category.id}`,
       {
@@ -60,10 +60,7 @@ function Categories() {
     if (response.status === 200) {
       fetchCategories();
       setIsDeleteModalOpen(false);
-      console.log("Categorie Deleted");
     } else if (response.status === 400) {
-      const body = await response.text();
-      console.log(body);
     }
   }
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -72,7 +69,6 @@ function Categories() {
     setIsEditModalOpen(true);
   };
   async function handleEditCategory(category) {
-    console.log("Edit Category", category);
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/update/${category.id}`,
       {
@@ -90,7 +86,35 @@ function Categories() {
       console.log("Categorie Updated");
     } else if (response.status === 400) {
       const body = await response.text();
-      console.log(body);
+    }
+  }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleAddCategoryButton = () => {
+    setIsModalOpen(true);
+  };
+
+  async function handleCreateCategory(category) {
+    console.log("Create Category", category);
+    category.owner = username;
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Add this line
+          token: token,
+        },
+        body: JSON.stringify(category),
+      }
+    );
+    if (response.status === 200) {
+      fetchCategories();
+      setIsModalOpen(false);
+    } else {
+      console.log(await response.text());
     }
   }
 
@@ -135,8 +159,19 @@ function Categories() {
           {role === "po" && (
             <>
               <span className="add-some">
-                <AddCircleIcon onClick={handleAddUserButton} fontSize="large" />
+                <AddCircleIcon
+                  onClick={handleAddCategoryButton}
+                  fontSize="large"
+                />
               </span>
+
+              <CategoryModal
+                open={isModalOpen}
+                onClose={handleCloseModal}
+                onSubmit={handleCreateCategory}
+                title_category="Create Category"
+                user={{}} // Pass an empty user object to the UserModal
+              />
             </>
           )}
           {isEditModalOpen && (
