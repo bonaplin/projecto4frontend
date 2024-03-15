@@ -46,9 +46,9 @@ function Categories() {
     console.dir(category);
   };
   async function handleDeleteCategory(category) {
-    console.log("Delete Category", category);
+    console.log("Delete Category id", category.id);
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/delete?title=${category.title}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/delete/${category.id}`,
       {
         method: "DELETE",
         headers: {
@@ -74,7 +74,7 @@ function Categories() {
   async function handleEditCategory(category) {
     console.log("Edit Category", category);
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/update?title=${category.title}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/update/${category.id}`,
       {
         method: "PUT",
         headers: {
@@ -166,7 +166,7 @@ function Categories() {
                 data={categorieData}
                 columns={columns}
                 handleDelete={handleDeleteCategory}
-                handleEdit={handleEdit}
+                handleEdit={handleEditCategory}
               />
             </div>
           </div>
