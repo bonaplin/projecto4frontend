@@ -298,6 +298,7 @@ function Users() {
               <Table
                 class="table"
                 data={userData}
+                type="user"
                 columns={columns}
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
