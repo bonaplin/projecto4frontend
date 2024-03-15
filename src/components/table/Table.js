@@ -5,8 +5,9 @@ import UserRow from "../table/rowelement/UserRow"; // Import the UserRow compone
 const Table = ({
   data,
   columns,
-  handleDelete,
   handleEdit,
+  handleDelete,
+  handleDeleteTasks,
   handleActiveChange,
 }) => {
   // If data is not empty, get the columns from the first object
@@ -29,6 +30,7 @@ const Table = ({
               columns={columns}
               handleEdit={handleEdit}
               handleDelete={handleDelete}
+              handleDeleteTasks={handleDeleteTasks}
               handleActiveChange={handleActiveChange}
             />
           ))}

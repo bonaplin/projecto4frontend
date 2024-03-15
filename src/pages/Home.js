@@ -19,7 +19,7 @@ function Home() {
   useEffect(() => {
     const fetchTasks = async () => {
       const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all",
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/active",
         {
           headers: {
             token: token, // replace `token` with your actual token

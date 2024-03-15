@@ -1,6 +1,6 @@
 import React from "react";
 
-const Modal = ({ open, onClose, children, title, image }) => {
+const Modal = ({ open, onClose, children, title }) => {
   if (!open) return null;
 
   return (
@@ -39,11 +39,6 @@ const Modal = ({ open, onClose, children, title, image }) => {
           >
             {title}
           </h2>
-          {image ? (
-            <img src={image} />
-          ) : (
-            <img src="../../assets/img/tab_logo.png" />
-          )}
         </div>
         {children}
         <button

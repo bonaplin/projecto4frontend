@@ -5,6 +5,7 @@ const UserRow = ({
   columns,
   handleEdit,
   handleDelete,
+  handleDeleteTasks,
   handleActiveChange,
 }) => {
   // Define the keys in the order you want them to be displayed
@@ -24,14 +25,13 @@ const UserRow = ({
               type="checkbox"
               className="my-checkbox"
               checked={item[column]}
-              onChange={() => {
-                handleActiveChange(item);
-              }}
+              onChange={() => handleActiveChange(item)}
             />
           ) : column === "actions" ? (
             <>
               <button onClick={() => handleEdit(item)}>Edit</button>
               <button onClick={() => handleDelete(item)}>Delete</button>
+              <button onClick={() => handleDeleteTasks(item)}>DTasks</button>
             </>
           ) : (
             item[column]
