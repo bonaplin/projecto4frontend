@@ -117,10 +117,79 @@ function Users() {
     let userDetails = await response.json();
     console.log("User Deleted", userDetails);
   }
+
+  /* ******* ******* *********************************** *****/
+  const [isDeleteTasksModalOpen, setIsDeleteModalTasksOpen] = useState(false);
+  const handleDeleteTasks = (user) => {
+    setEditUser(user);
+    setIsDeleteModalTasksOpen(true);
+    console.dir(user);
+  };
+  async function handleDeleteTasksUser(user) {
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/deleteTasks",
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+          selectedUser: user.username,
+        },
+      }
+    );
+    if (response.ok) {
+      console.log("User Tasks Deleted");
+      setIsChange(!isChange);
+      setIsDeleteModalTasksOpen(false);
+    }
+
+    if (!response.ok) {
+      console.log(user);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    let userDetails = await response.json();
+    console.log("User Tasks Deleted", userDetails);
+  }
+
+  /* ******* ******* *********************************** *****/
+
   const handleActiveChange = (user) => {
-    console.log("Changing active status for user:", user);
+    const newUser = { ...user, active: !user.active };
+    console.dir("user :" + user + "newUser :" + newUser);
+    handleUpdateUserActive(newUser);
   };
 
+  async function handleUpdateUserActive(user) {
+    const body = {
+      username: user.username,
+      active: user.active,
+    };
+
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/updateactive",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    if (response.ok) {
+      console.log("User Active Updated");
+      setIsChange(!isChange);
+    }
+
+    if (!response.ok) {
+      console.log(user);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    let userDetails = await response.json();
+    console.log("User Active Edited", userDetails);
+  }
   /* ******* ******* *********************************** *****/
 
   let columns = [
@@ -214,6 +283,15 @@ function Users() {
               user={editUser}
             />
           )}
+          {isDeleteTasksModalOpen && (
+            <UserModal
+              open={isDeleteTasksModalOpen}
+              title="Delete User Tasks"
+              onClose={() => setIsDeleteModalTasksOpen(false)}
+              onSubmit={handleDeleteTasksUser}
+              user={editUser}
+            />
+          )}
 
           <div className="main-board">
             <div className="table-board">
@@ -223,6 +301,7 @@ function Users() {
                 columns={columns}
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
+                handleDeleteTasks={handleDeleteTasks}
                 handleActiveChange={handleActiveChange}
               />
             </div>

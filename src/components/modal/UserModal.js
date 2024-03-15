@@ -40,10 +40,14 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
 
   return (
     <Modal open={open} onClose={onClose} title={title}>
-      {title === "Delete User" ? (
+      {title === "Delete User" || title === "Delete User Tasks" ? (
         <form onSubmit={handleSubmit}>
-          <div>
-            <p>Are you sure you want to delete this user?</p>
+          <div className="delete-modal-headers">
+            {title === "Delete User" ? (
+              <p>Are you sure you want to delete this user?</p>
+            ) : (
+              <p>Are you sure you want to delete this user's tasks?</p>
+            )}
             <img src={user.photoURL} />
           </div>
           <button type="submit">Yes</button>

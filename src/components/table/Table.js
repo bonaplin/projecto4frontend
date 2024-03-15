@@ -2,7 +2,14 @@ import React from "react";
 import "./Table.css"; // Importing the CSS
 import UserRow from "../table/rowelement/UserRow"; // Import the UserRow component
 
-const Table = ({ data, columns, handleDelete, handleEdit }) => {
+const Table = ({
+  data,
+  columns,
+  handleEdit,
+  handleDelete,
+  handleDeleteTasks,
+  handleActiveChange,
+}) => {
   // If data is not empty, get the columns from the first object
 
   return (
@@ -23,6 +30,8 @@ const Table = ({ data, columns, handleDelete, handleEdit }) => {
               columns={columns}
               handleEdit={handleEdit}
               handleDelete={handleDelete}
+              handleDeleteTasks={handleDeleteTasks}
+              handleActiveChange={handleActiveChange}
             />
           ))}
         </tbody>
