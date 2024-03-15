@@ -24,6 +24,18 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
       photoURL,
       role,
     });
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setRole("");
+    setUsername("");
+    setPassword("");
+    setEmail("");
+    setFirstname("");
+    setLastname("");
+    setPhone("");
+    setPhotoURL("");
   };
 
   return (

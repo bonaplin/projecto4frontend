@@ -9,26 +9,20 @@ import UserModal from "../components/modal/UserModal";
 
 function Users() {
   let userData = userStore((state) => state.user);
+  const [isChange, setIsChange] = useState(false); //to change the fetch
   const role = userStore.getState().role;
   const token = userStore.getState().token;
-  const [isModalOpen, setModalOpen] = useState(false);
-  const updateUserActiveStatus = userStore(
-    (state) => state.updateUserActiveStatus
-  );
-
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  // User selected
   const [editUser, setEditUser] = useState(null);
 
   /* ******* ******* ADD USER BUTTON  ***************** *****/
-  const handleAddUserButton = () => {
-    setModalOpen(true);
-  };
+  const [isModalOpen, setModalOpen] = useState(false);
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-  /* ******* ******* *********************************** *****/
-  /* ******* ******* *********************************** *****/
-
+  const handleAddUserButton = () => {
+    setModalOpen(true);
+  };
   async function handleCreateUser(user) {
     const response = await fetch(
       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/add",
@@ -45,6 +39,7 @@ function Users() {
     if (response.ok) {
       console.log("User Created");
       setModalOpen(false);
+      setIsChange(!isChange);
     }
 
     if (!response.ok) {
@@ -54,17 +49,13 @@ function Users() {
     let userDetails = await response.json();
     console.log("User Created", userDetails);
   }
-
+  // Modal -> EDIT /* ******* ******* *********************************** *****/
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleEdit = (user) => {
     setEditUser(user);
     setIsEditModalOpen(true);
   };
-  const handleDelete = (user) => {
-    console.log("Deleting user:", user);
-  };
-  const handleActiveChange = (user) => {
-    console.log("Changing active status for user:", user);
-  };
+
   async function handleUpdateUser(user) {
     const response = await fetch(
       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/update",
@@ -81,6 +72,7 @@ function Users() {
     if (response.ok) {
       console.log("User Updated");
       setIsEditModalOpen(false);
+      setIsChange(!isChange);
     }
 
     if (!response.ok) {
@@ -91,8 +83,44 @@ function Users() {
     let userDetails = await response.json();
     console.log("User Edited", userDetails);
   }
-
   /* ******* ******* *********************************** *****/
+  const [setIsDeleteModalOpen] = useState(false);
+  const handleDelete = (user) => {
+    setEditUser(user);
+    setIsDeleteModalOpen(true);
+  };
+  async function handleDeleteUser(user) {
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/delete",
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+          selectedUser: user.username,
+        },
+        body: JSON.stringify(user),
+      }
+    );
+    if (response.ok) {
+      console.log("User Deleted");
+      setIsChange(!isChange);
+      //setIsDeleteModalOpen(false);
+      //setIsEditModalOpen(false);
+    }
+
+    if (!response.ok) {
+      console.log(user);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    let userDetails = await response.json();
+    console.log("User Deleted", userDetails);
+  }
+  const handleActiveChange = (user) => {
+    console.log("Changing active status for user:", user);
+  };
+
   /* ******* ******* *********************************** *****/
 
   let columns = [
@@ -145,7 +173,7 @@ function Users() {
     }
 
     fetchUsers();
-  }, [userData]); // Dependency array includes editUser, so useEffect will run whenever editUser changes
+  }, [isChange]); // Dependency array includes editUser, so useEffect will run whenever editUser changes
 
   return (
     <>
