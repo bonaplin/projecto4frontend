@@ -7,15 +7,15 @@ import TaskColumn from "../components/task/column/TaskColumn.js";
 import Header from "../components/header/Header.js";
 import { TaskElement } from "../components/task/TaskElement.js";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Modal } from "@mui/material";
+import TaskModal from "../components/modal/TaskModal.js";
 //import Sidebar from "../components/navbar/Sidebar.js";
 function Home() {
-  const username = userStore((state) => state.username);
+  const [selectedTask, setSelectedTask] = useState({});
   const [todo, setTodo] = useState([]);
   const [doing, setDoing] = useState([]);
   const [done, setDone] = useState([]);
-
   const token = userStore.getState().token; // Get the token from the store
+  const [isAddTaskModal, setIsAddTaskModal] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -33,20 +33,42 @@ function Home() {
         return;
       }
       const tasks = await response.json();
-      console.log(tasks);
 
       separateTasksByStatus(tasks);
     };
 
     fetchTasks();
-  }, []);
+  }, [isAddTaskModal]);
 
   const separateTasksByStatus = (tasks) => {
     setTodo(tasks.filter((task) => task.status === 100));
     setDoing(tasks.filter((task) => task.status === 200));
     setDone(tasks.filter((task) => task.status === 300));
   };
-  console.log("todo", todo);
+
+  function handleAddClick() {
+    setIsAddTaskModal(true);
+  }
+  async function AddTask(task) {
+    console.log("task", task);
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+        body: JSON.stringify(task),
+      }
+    );
+    if (response.ok) {
+      console.log("Task added successfully");
+    } else {
+      console.error("Failed to add task:", response.statusText);
+      return;
+    }
+  }
 
   return (
     <>
@@ -55,14 +77,28 @@ function Home() {
         <div className="page-wrap" id="home-page-wrap">
           <h2>Tasks</h2>
           <div>
-            <AddCircleIcon className="add-some" fontSize="large" />
+            <AddCircleIcon
+              onClick={handleAddClick}
+              className="add-some"
+              fontSize="large"
+            />
           </div>
+          {
+            <TaskModal
+              open={isAddTaskModal}
+              title_modal="Add task"
+              onClose={() => setIsAddTaskModal(false)}
+              onSubmit={AddTask}
+              task={selectedTask}
+            />
+          }
           <div className="scrum-board">
             <TaskColumn className="task-column" title="ToDo">
               {todo.map((task) => (
                 <TaskElement
-                  key={task.title}
-                  title={task.description}
+                  key={task.id}
+                  title={task.title}
+                  description={task.description}
                   owner={task.owner}
                   category={task.category}
                   priority={task.priority}
@@ -73,8 +109,9 @@ function Home() {
             <TaskColumn className="task-column" title="Doing">
               {doing.map((task) => (
                 <TaskElement
-                  key={task.title}
-                  title={task.description}
+                  key={task.id}
+                  title={task.title}
+                  description={task.description}
                   owner={task.owner}
                   category={task.category}
                   priority={task.priority}
@@ -85,8 +122,9 @@ function Home() {
             <TaskColumn className="task-column" title="Done">
               {done.map((task) => (
                 <TaskElement
-                  key={task.title}
-                  title={task.description}
+                  key={task.id}
+                  title={task.title}
+                  description={task.description}
                   owner={task.owner}
                   category={task.category}
                   priority={task.priority}

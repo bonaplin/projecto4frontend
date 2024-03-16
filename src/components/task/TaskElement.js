@@ -17,9 +17,21 @@ export function TaskElement(props) {
 
   return (
     <div className="task">
-      <div className="owner text">{props.owner}</div>
-      <div className="category text">{props.category}</div>
-      <div className="title">{props.title}</div>
+      <div className="owner text">
+        {props.owner.length > 12
+          ? props.owner.substring(0, 12) + "..."
+          : props.owner}
+      </div>
+      <div className="category text">
+        {props.category.length > 12
+          ? props.category.substring(0, 12) + "..."
+          : props.category}
+      </div>
+      <div className="title">
+        {props.title.length > 12
+          ? props.title.substring(0, 12) + "..."
+          : props.title}
+      </div>
       <div className="priority">
         <div
           className="circle"
