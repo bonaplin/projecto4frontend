@@ -44,7 +44,7 @@ function Users() {
     }
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(response.status);
     }
 
     let userDetails = await response.json();
@@ -73,15 +73,10 @@ function Users() {
       console.log("User Updated");
       setIsEditModalOpen(false);
       setIsChange(!isChange);
-    }
-
-    if (!response.ok) {
+    } else if (!response.ok) {
       console.log(user);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(response.status);
     }
-
-    let userDetails = await response.json();
-    console.log("User Edited", userDetails);
   }
   /* ******* ******* *********************************** *****/
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -106,12 +101,11 @@ function Users() {
       console.log("User Deleted");
       setIsChange(!isChange);
       setIsDeleteModalOpen(false);
-      //setIsEditModalOpen(false);
     }
 
     if (!response.ok) {
       console.log(user);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(`HTTP error! status: ${response.status}`);
     }
 
     let userDetails = await response.json();
@@ -145,7 +139,7 @@ function Users() {
 
     if (!response.ok) {
       console.log(user);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(`HTTP error! status: ${response.status}`);
     }
 
     let userDetails = await response.json();
@@ -183,7 +177,7 @@ function Users() {
 
     if (!response.ok) {
       console.log(user);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(`HTTP error! status: ${response.status}`);
     }
 
     let userDetails = await response.json();

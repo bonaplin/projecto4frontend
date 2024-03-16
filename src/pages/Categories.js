@@ -17,9 +17,6 @@ function Categories() {
   const role = userStore.getState().role;
   const [categorieData, setCategorieData] = useState([]);
   const [editCategory, setEditCategory] = useState(null);
-  const handleAddUserButton = () => {
-    console.log("Add User Button");
-  };
 
   const fetchCategories = async () => {
     const response = await fetch(
@@ -32,7 +29,7 @@ function Categories() {
     );
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(await response.text());
     }
 
     const data = await response.json();
@@ -63,12 +60,19 @@ function Categories() {
     } else if (response.status === 400) {
     }
   }
+  /* ******* ******* *********************************** *****/
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleEdit = (category) => {
     setEditCategory(category);
     setIsEditModalOpen(true);
   };
+
   async function handleEditCategory(category) {
+    console.log("Edit Category", category);
+    console.log(
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/update/${category.id}`
+    );
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/update/${category.id}`,
       {
@@ -77,17 +81,19 @@ function Categories() {
           "Content-Type": "application/json", // Add this line
           token: token,
         },
+        body: JSON.stringify(category),
       }
     );
 
-    if (response.status === 200) {
+    if (response.ok) {
       fetchCategories();
       setIsEditModalOpen(false);
       console.log("Categorie Updated");
-    } else if (response.status === 400) {
-      const body = await response.text();
+    } else if (!response.ok) {
+      alert(await response.text());
     }
   }
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -104,17 +110,17 @@ function Categories() {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Add this line
+          "Content-Type": "application/json",
           token: token,
         },
         body: JSON.stringify(category),
       }
     );
-    if (response.status === 200) {
+    if (response.ok) {
       fetchCategories();
       setIsModalOpen(false);
     } else {
-      console.log(await response.text());
+      alert(await response.text());
     }
   }
 
@@ -177,7 +183,7 @@ function Categories() {
           {isEditModalOpen && (
             <CategoryModal
               open={isEditModalOpen}
-              title_category="Edit Category"
+              title_modal="Edit Category"
               onClose={() => setIsEditModalOpen(false)}
               onSubmit={handleEditCategory}
               category={editCategory}
@@ -186,7 +192,7 @@ function Categories() {
           {isDeleteModalOpen && (
             <CategoryModal
               open={isDeleteModalOpen}
-              title_category="Delete Category"
+              title_modal="Delete Category"
               onClose={() => setIsDeleteModalOpen(false)}
               onSubmit={handleDeleteCategory}
               category={editCategory}

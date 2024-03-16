@@ -6,12 +6,12 @@ const CategoryModal = ({
   open,
   onClose,
   onSubmit,
-  title_category,
+  title_modal,
   category = {},
 }) => {
   const [title, setTitle] = useState(category.title);
   const [description, setDescription] = useState(category.description);
-  const [id, setId] = useState(0);
+  const [id, setId] = useState(category.id); // Add always a default value 0 for id.
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,17 +20,20 @@ const CategoryModal = ({
       description,
       id,
     });
+    console.log("title " + title + "description " + description + "id" + id);
     resetForm();
   };
 
   const resetForm = () => {
     setTitle("");
     setDescription("");
+    setId(0);
+    onClose();
   };
 
   return (
-    <Modal open={open} onClose={onClose} title={title_category}>
-      {title_category === "Delete Category" ? (
+    <Modal open={open} onClose={onClose} title={title_modal}>
+      {title_modal === "Delete Category" ? (
         <form onSubmit={handleSubmit}>
           <div className="delete-modal-headers">
             <p>Are you sure you want to delete this category?</p>
@@ -40,7 +43,7 @@ const CategoryModal = ({
             Cancel
           </button>
         </form>
-      ) : title_category === "Create Category" ? (
+      ) : title_modal === "Create Category" ? (
         <form onSubmit={handleSubmit}>
           <FormInput
             placeholder="Enter category name"
@@ -56,7 +59,27 @@ const CategoryModal = ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-
+          <button type="submit">Save</button>
+          <button type="button" onClick={onClose}>
+            Cancel
+          </button>
+        </form>
+      ) : title_modal === "Edit Category" ? (
+        <form onSubmit={handleSubmit}>
+          <FormInput
+            placeholder="Enter category name"
+            type="text"
+            name="name"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <FormInput
+            placeholder="Enter category description"
+            type="text"
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
           <button type="submit">Save</button>
           <button type="button" onClick={onClose}>
             Cancel
