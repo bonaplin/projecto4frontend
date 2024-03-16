@@ -6,7 +6,6 @@ import "./Users.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { userStore } from "../stores/UserStore";
 import UserModal from "../components/modal/UserModal";
-import Modal from "../components/modal/Modal";
 
 function Users() {
   let userData = userStore((state) => state.user);
@@ -245,8 +244,12 @@ function Users() {
           <h2>All Users</h2>
           {role === "po" && (
             <>
-              <span className="add-some">
-                <AddCircleIcon onClick={handleAddUserButton} fontSize="large" />
+              <span>
+                <AddCircleIcon
+                  className="add-some"
+                  onClick={handleAddUserButton}
+                  fontSize="large"
+                />
               </span>
 
               <UserModal

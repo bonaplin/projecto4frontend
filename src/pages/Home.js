@@ -53,8 +53,8 @@ function Home() {
       <div className="Home">
         <div className="page-wrap" id="home-page-wrap">
           <h2>Tasks</h2>
-          <span className="add-some">
-            <AddCircleIcon fontSize="large" />
+          <span>
+            <AddCircleIcon className="add-some" fontSize="large" />
           </span>
           <div className="scrum-board">
             <TaskColumn className="task-column" title="ToDo">

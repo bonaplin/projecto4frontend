@@ -33,17 +33,7 @@ const CategoryModal = ({
 
   return (
     <Modal open={open} onClose={onClose} title={title_modal}>
-      {title_modal === "Delete Category" ? (
-        <form onSubmit={handleSubmit}>
-          <div className="delete-modal-headers">
-            <p>Are you sure you want to delete this category?</p>
-          </div>
-          <button type="submit">Yes</button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
-        </form>
-      ) : title_modal === "Create Category" ? (
+      {title_modal === "Create Category" ? (
         <form onSubmit={handleSubmit}>
           <FormInput
             placeholder="Enter category name"
@@ -85,7 +75,9 @@ const CategoryModal = ({
             Cancel
           </button>
         </form>
-      ) : null}
+      ) : (
+        <h1>oops</h1>
+      )}
     </Modal>
   );
 };
