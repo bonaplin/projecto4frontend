@@ -11,7 +11,6 @@ const Table = ({
   handleDeleteTasks,
   handleActiveChange,
   type,
-  ...props
 }) => {
   // If data is not empty, get the columns from the first object
 

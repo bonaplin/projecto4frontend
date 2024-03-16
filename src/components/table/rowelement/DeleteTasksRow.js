@@ -1,8 +1,6 @@
 import React from "react";
 
 const DeleteTasksRow = ({ item, columns, handleEdit, handleDelete }) => {
-  // Define the keys in the order you want them to be displayed
-
   return (
     <tr>
       {columns.map((column) => (

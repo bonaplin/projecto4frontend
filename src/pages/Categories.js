@@ -9,7 +9,8 @@ import Footer from "../components/footer/Footer";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CategoryModal from "../components/modal/CategoryModal";
 import { userStore } from "../stores/UserStore";
-
+import ModalYesNo from "../components/modal/ModalYesNo";
+import Modal from "react-responsive-modal";
 function Categories() {
   const navigate = useNavigate();
   const token = userStore.getState().token;
@@ -42,7 +43,8 @@ function Categories() {
     setIsDeleteModalOpen(true);
     console.dir(category);
   };
-  async function handleDeleteCategory(category) {
+  async function handleDeleteCategory() {
+    const category = editCategory;
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/delete/${category.id}`,
       {
@@ -173,7 +175,7 @@ function Categories() {
                 open={isModalOpen}
                 onClose={handleCloseModal}
                 onSubmit={handleCreateCategory}
-                title_category="Create Category"
+                title_modal="Create Category"
                 user={{}} // Pass an empty user object to the UserModal
               />
             </>
@@ -188,13 +190,16 @@ function Categories() {
             />
           )}
           {isDeleteModalOpen && (
-            <CategoryModal
-              open={isDeleteModalOpen}
-              title_modal="Delete Category"
-              onClose={() => setIsDeleteModalOpen(false)}
-              onSubmit={handleDeleteCategory}
-              category={editCategory}
-            />
+            <>
+              <ModalYesNo
+                title="Delete Category"
+                message="Are you sure you want to delete this category?"
+                open={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onYes={handleDeleteCategory}
+                onNo={() => setIsDeleteModalOpen(false)}
+              />
+            </>
           )}
           <div className="main-board">
             <div className="table-board">
