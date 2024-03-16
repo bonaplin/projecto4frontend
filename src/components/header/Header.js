@@ -11,8 +11,10 @@ import CategoriesButton from "../dropdown/buttons/CategoriesButton.js";
 import LogoutButton from "../dropdown/buttons/LogoutButton.js";
 import ProfileButton from "../dropdown/buttons/ProfileButton.js";
 import { userStore } from "../../stores/UserStore.js";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
   /*dropdown main*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleDropdown = () => {
@@ -77,6 +79,11 @@ function Header() {
     };
   }, []);
 
+  const handleTasksDeletedClick = () => {
+    console.log("Tasks deleted");
+    navigate("/deletedtasks");
+  };
+
   return (
     <header className="header">
       <div className="header__left dropdown-container">
@@ -98,11 +105,7 @@ function Header() {
           <li>
             <CategoriesButton />
           </li>
-          <SubDropdownMenu father="Delete">
-            <li>Tasks</li>
-            <li>Users</li>
-            <li>Categories</li>
-          </SubDropdownMenu>
+          <li onClick={handleTasksDeletedClick}>Deleted Tasks</li>
         </DropdownMenu>
       </div>
 
@@ -128,3 +131,11 @@ function Header() {
 }
 
 export default Header;
+
+/* 
+<SubDropdownMenu father="Delete">
+            <li onClick={handleTasksDeletedClick}>Tasks</li>
+            <li>Users</li>
+            <li>Categories</li>
+          </SubDropdownMenu>
+*/

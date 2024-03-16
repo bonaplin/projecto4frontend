@@ -44,3 +44,41 @@
     transform: rotate(360deg);
   }
 }
+
+.add-some {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  color: cadetblue;
+  cursor: pointer;
+  transition: transform 0.5 ease;
+}
+.add-some:hover {
+  opacity: 0.4;
+  transform: scale(0.9);
+}
+
+.top-buttons {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.restore-some {
+  color: #c64490;
+
+  cursor: pointer;
+}
+.restore-some:hover {
+  opacity: 0.4;
+  transform: scale(0.9);
+}
+
+.add-some::after {
+  position: absolute;
+  white-space: nowrap;
+  left: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: left 0.5s ease-in-out;
+  opacity: 0;
+}

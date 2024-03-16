@@ -17,36 +17,3 @@
   border-radius: 10px;
   max-width: 20rem;
 }
-
-.add-some {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-
-  transition: transform 0.5s ease;
-  border-radius: 50%;
-  background-color: white;
-  color: cadetblue;
-  cursor: pointer;
-  transition: transform 0.5 ease;
-}
-
-.add-some:hover {
-  opacity: 0.4;
-  transform: scale(0.9);
-}
-.add-some::after {
-  content: "Add New";
-  position: absolute;
-  white-space: nowrap;
-  left: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: left 0.5s ease-in-out;
-  opacity: 0;
-}
-
-.add-some:hover::after {
-  left: calc(50% + 1rem);
-  opacity: 0.5;
-}

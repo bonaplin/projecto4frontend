@@ -161,8 +161,9 @@ function Categories() {
           <h2>All Category</h2>
           {role === "po" && (
             <>
-              <span className="add-some">
+              <span>
                 <AddCircleIcon
+                  className="add-some"
                   onClick={handleAddCategoryButton}
                   fontSize="large"
                 />
