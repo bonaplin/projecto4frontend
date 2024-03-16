@@ -31,7 +31,6 @@ function Categories() {
     if (!response.ok) {
       alert(await response.text());
     }
-
     const data = await response.json();
     setCategorieData(data);
   };
@@ -54,10 +53,11 @@ function Categories() {
       }
     );
 
-    if (response.status === 200) {
+    if (response.ok) {
       fetchCategories();
       setIsDeleteModalOpen(false);
-    } else if (response.status === 400) {
+    } else if (!response.ok) {
+      alert(await response.text());
     }
   }
   /* ******* ******* *********************************** *****/
@@ -69,10 +69,6 @@ function Categories() {
   };
 
   async function handleEditCategory(category) {
-    console.log("Edit Category", category);
-    console.log(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/update/${category.id}`
-    );
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/update/${category.id}`,
       {
@@ -93,6 +89,7 @@ function Categories() {
       alert(await response.text());
     }
   }
+  /* ******* ******* *********************************** *****/
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleCloseModal = () => {
