@@ -44,7 +44,7 @@ function Users() {
     }
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(response.status);
     }
 
     let userDetails = await response.json();
@@ -73,15 +73,10 @@ function Users() {
       console.log("User Updated");
       setIsEditModalOpen(false);
       setIsChange(!isChange);
-    }
-
-    if (!response.ok) {
+    } else if (!response.ok) {
       console.log(user);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(response.status);
     }
-
-    let userDetails = await response.json();
-    console.log("User Edited", userDetails);
   }
   /* ******* ******* *********************************** *****/
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -106,12 +101,11 @@ function Users() {
       console.log("User Deleted");
       setIsChange(!isChange);
       setIsDeleteModalOpen(false);
-      //setIsEditModalOpen(false);
     }
 
     if (!response.ok) {
       console.log(user);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(`HTTP error! status: ${response.status}`);
     }
 
     let userDetails = await response.json();
@@ -145,7 +139,7 @@ function Users() {
 
     if (!response.ok) {
       console.log(user);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(`HTTP error! status: ${response.status}`);
     }
 
     let userDetails = await response.json();
@@ -165,7 +159,6 @@ function Users() {
       username: user.username,
       active: user.active,
     };
-
     const response = await fetch(
       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/updateactive",
       {
@@ -184,7 +177,7 @@ function Users() {
 
     if (!response.ok) {
       console.log(user);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      alert(`HTTP error! status: ${response.status}`);
     }
 
     let userDetails = await response.json();
@@ -298,6 +291,7 @@ function Users() {
               <Table
                 class="table"
                 data={userData}
+                type="user"
                 columns={columns}
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}

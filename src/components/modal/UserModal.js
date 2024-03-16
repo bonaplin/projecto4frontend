@@ -36,6 +36,7 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
     setLastname("");
     setPhone("");
     setPhotoURL("");
+    onClose();
   };
 
   return (
