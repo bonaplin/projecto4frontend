@@ -8,6 +8,7 @@ import Table from "../components/table/Table";
 import Footer from "../components/footer/Footer";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { userStore } from "../stores/UserStore";
 import Modal from "../components/modal/Modal";
 import ModalYesNo from "../components/modal/ModalYesNo";
@@ -91,6 +92,50 @@ function DeletedTasks() {
       alert(await response.text());
     }
   }
+  const [isDeleteAllTasksModalOpen, setIsDeleteAllTasksModalOpen] =
+    useState(false);
+  function handleDeleteAll() {
+    setIsDeleteAllTasksModalOpen(true);
+  }
+  async function handleDeleteAllTasks() {
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/deleteAll",
+      {
+        method: "DELETE",
+        headers: {
+          token: token,
+        },
+      }
+    );
+    if (response.ok) {
+      fetchCategories();
+      setIsDeleteAllTasksModalOpen(false);
+    } else {
+      alert(await response.text());
+    }
+  }
+  const [isRestoreAllTaskModalOpen, setIsRestoreAllTaskModalOpen] =
+    useState(false);
+  function handleRestoreAll() {
+    setIsRestoreAllTaskModalOpen(true);
+  }
+  async function handleRestoreAllTask() {
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/restoreAll",
+      {
+        method: "PUT",
+        headers: {
+          token: token,
+        },
+      }
+    );
+    if (response.ok) {
+      fetchCategories();
+      setIsRestoreAllTaskModalOpen(false);
+    } else {
+      alert(await response.text());
+    }
+  }
 
   return (
     <>
@@ -101,15 +146,40 @@ function DeletedTasks() {
           {role === "po" && (
             <div className="top-buttons">
               <div>
-                <AddCircleIcon className="add-some" fontSize="large" />
+                <DeleteForeverIcon
+                  onClick={handleDeleteAll}
+                  className="add-some"
+                  fontSize="large"
+                />
               </div>
               <div>
                 <RestoreFromTrashIcon
+                  onClick={handleRestoreAll}
                   className="restore-some"
                   fontSize="large"
                 />
               </div>
             </div>
+          )}
+          {isDeleteAllTasksModalOpen && (
+            <ModalYesNo
+              title="Delete All Tasks"
+              message="Are you sure you want to delete all tasks?"
+              open={isDeleteAllTasksModalOpen}
+              onClose={() => setIsDeleteAllTasksModalOpen(false)}
+              onYes={handleDeleteAllTasks}
+              onNo={() => setIsDeleteAllTasksModalOpen(false)}
+            />
+          )}
+          {isRestoreAllTaskModalOpen && (
+            <ModalYesNo
+              title="Restore All Tasks"
+              message="Are you sure you want to restore all tasks?"
+              open={isRestoreAllTaskModalOpen}
+              onClose={() => setIsRestoreAllTaskModalOpen(false)}
+              onYes={handleRestoreAllTask}
+              onNo={() => setIsRestoreAllTaskModalOpen(false)}
+            />
           )}
           {isDeleteTaskModalOpen && (
             <ModalYesNo
@@ -123,7 +193,7 @@ function DeletedTasks() {
           )}
           {isRestoreTaskModalOpen && (
             <ModalYesNo
-              title="Delete Task"
+              title="Restore Task"
               message="Are you sure you want to Restore this task?"
               open={isRestoreTaskModalOpen}
               onClose={() => setIsRestoreTaskModalOpen(false)}

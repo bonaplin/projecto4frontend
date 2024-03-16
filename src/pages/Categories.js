@@ -129,31 +129,7 @@ function Categories() {
 
   /* ******* ******* *********************************** *****/
 
-  let columns = ["title", "description", "owner", "actions"];
-
-  /* ACESS RULLES
-  if (role === "sm") {
-    // Filter the userData array to exclude inactive users
-    categorieData = categorieData.filter((user) => user.active);
-    // Find the index of the "actions" column
-    const actionsIndex = columns.indexOf("actions");
-    // If the "actions" column exists, remove it
-    if (actionsIndex !== -1) {
-      columns.splice(actionsIndex, 1);
-    }
-    // Find the index of the "active" column
-    const activeIndex = columns.indexOf("active");
-    // If the "active" column exists, remove it
-    if (activeIndex !== -1) {
-      columns.splice(activeIndex, 1);
-    }
-  } else if (role === "po") {
-    // Perform your operations for the "po" role here
-  } else {
-    columns = [""];
-    categorieData = [""];
-  }
-  */
+  let columns = ["id", "title", "description", "owner", "actions"];
 
   return (
     <>

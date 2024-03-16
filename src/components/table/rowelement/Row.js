@@ -1,13 +1,17 @@
 import React from "react";
 
-const DeleteTasksRow = ({ item, columns, handleEdit, handleDelete }) => {
+const Row = ({ item, columns, handleEdit, handleDelete, type }) => {
   return (
     <tr>
       {columns.map((column) => (
         <td key={column}>
           {column === "actions" ? (
             <>
-              <button onClick={() => handleEdit(item)}>Restore</button>
+              {type === "category" ? (
+                <button onClick={() => handleEdit(item)}>Edit</button>
+              ) : (
+                <button onClick={() => handleEdit(item)}>Restore</button>
+              )}
               <button onClick={() => handleDelete(item)}>Delete</button>
             </>
           ) : (
@@ -19,4 +23,4 @@ const DeleteTasksRow = ({ item, columns, handleEdit, handleDelete }) => {
   );
 };
 
-export default DeleteTasksRow;
+export default Row;

@@ -1,8 +1,7 @@
 import React from "react";
 import "./Table.css"; // Importing the CSS
 import UserRow from "../table/rowelement/UserRow"; // Import the UserRow component
-import CategoryRow from "../table/rowelement/CategoryRow"; // Import the CategoryRow component
-import DeletedTasksRow from "../table/rowelement/DeleteTasksRow"; // Import the DeletedTasksRow component
+import Row from "./rowelement/Row"; // Import the DeletedTasksRow component
 const Table = ({
   data,
   columns,
@@ -40,16 +39,9 @@ const Table = ({
                 handleDeleteTasks={handleDeleteTasks}
                 handleActiveChange={handleActiveChange}
               />
-            ) : type === "deleted_tasks" ? (
-              <DeletedTasksRow
-                key={index}
-                item={item}
-                columns={columns}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-              />
             ) : (
-              <CategoryRow
+              <Row
+                type={type}
                 key={index}
                 item={item}
                 columns={columns}

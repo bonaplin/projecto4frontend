@@ -7,6 +7,7 @@ import TaskColumn from "../components/task/column/TaskColumn.js";
 import Header from "../components/header/Header.js";
 import { TaskElement } from "../components/task/TaskElement.js";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Modal } from "@mui/material";
 //import Sidebar from "../components/navbar/Sidebar.js";
 function Home() {
   const username = userStore((state) => state.username);
@@ -53,9 +54,9 @@ function Home() {
       <div className="Home">
         <div className="page-wrap" id="home-page-wrap">
           <h2>Tasks</h2>
-          <span>
+          <div>
             <AddCircleIcon className="add-some" fontSize="large" />
-          </span>
+          </div>
           <div className="scrum-board">
             <TaskColumn className="task-column" title="ToDo">
               {todo.map((task) => (
