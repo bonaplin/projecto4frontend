@@ -19,28 +19,26 @@ import DeletedTasks from "./pages/DeletedTasks";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <Router>
-      <Routes>
-        <Route index element={<App />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/singup" element={<Singup />} />
+  <Router>
+    <Routes>
+      <Route index element={<App />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/singup" element={<Singup />} />
 
-        <Route path="/header" element={<Header />} />
-        <Route path="/home" element={<Home />} />
+      <Route path="/header" element={<Header />} />
+      <Route path="/home" element={<Home />} />
 
-        <Route path="/users" element={<Users />} />
-        <Route path="/activity" element={<Activity />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
-        <Route path="/categories" element={<Categories />} />
+      <Route path="/users" element={<Users />} />
+      <Route path="/activity" element={<Activity />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/edit-profile" element={<EditProfile />} />
+      <Route path="/categories" element={<Categories />} />
 
-        <Route path="/deletedtasks" element={<DeletedTasks />} />
+      <Route path="/deletedtasks" element={<DeletedTasks />} />
 
-        <Route path="/footer" element={<Footer />} />
-      </Routes>
-    </Router>
-  </React.StrictMode>
+      <Route path="/footer" element={<Footer />} />
+    </Routes>
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function
