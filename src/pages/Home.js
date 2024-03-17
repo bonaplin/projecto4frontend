@@ -8,6 +8,7 @@ import Header from "../components/header/Header.js";
 import { TaskElement } from "../components/task/TaskElement.js";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import TaskModal from "../components/modal/TaskModal.js";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 //import Sidebar from "../components/navbar/Sidebar.js";
 function Home() {
   const [selectedTask, setSelectedTask] = useState({});
@@ -33,12 +34,10 @@ function Home() {
         return;
       }
       const tasks = await response.json();
-
-      separateTasksByStatus(tasks);
     };
 
     fetchTasks();
-  }, [isAddTaskModal]);
+  });
 
   const separateTasksByStatus = (tasks) => {
     setTodo(tasks.filter((task) => task.status === 100));
@@ -70,6 +69,16 @@ function Home() {
     }
   }
 
+  function handleOnDragEnd(result) {
+    if (!result.destination) {
+      return;
+    }
+    const items = Array.from(todo);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setTodo(items);
+  }
+
   return (
     <>
       <Header />
@@ -94,16 +103,39 @@ function Home() {
           }
           <div className="scrum-board">
             <TaskColumn className="task-column" title="ToDo">
-              {todo.map((task) => (
-                <TaskElement
-                  key={task.id}
-                  title={task.title}
-                  description={task.description}
-                  owner={task.owner}
-                  category={task.category}
-                  priority={task.priority}
-                />
-              ))}
+              <DragDropContext onDragEnd={handleOnDragEnd}>
+                <Droppable droppableId="todo">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {todo.map((task, index) => (
+                        <Draggable
+                          key={task.id}
+                          draggableId={String(task.id)}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              {...provided.draggableProps}
+                              ref={provided.innerRef}
+                              {...provided.dragHandleProps}
+                            >
+                              <TaskElement
+                                key={task.id}
+                                title={task.title}
+                                description={task.description}
+                                owner={task.owner}
+                                category={task.category}
+                                priority={task.priority}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </TaskColumn>
 
             <TaskColumn className="task-column" title="Doing">
