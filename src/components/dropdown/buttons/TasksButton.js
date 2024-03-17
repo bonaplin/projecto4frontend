@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function TasksButton() {
   function handleClick() {
     console.log("TasksButton click");
-    navigate("/home");
+    navigate("/scrum-board");
   }
   const navigate = useNavigate();
 

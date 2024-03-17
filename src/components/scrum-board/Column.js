@@ -12,7 +12,9 @@ export default function Column({ title, tasks, id }) {
       <Droppable droppableId={id}>
         {(provided, snapshot) => (
           <div
-            className="container-tasks"
+            className={`container-tasks ${
+              snapshot.isDraggingOver ? "dragging-over" : ""
+            }`}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >

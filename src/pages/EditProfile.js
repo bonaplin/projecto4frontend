@@ -71,7 +71,7 @@ function EditProfile() {
         response.statusText
       );
     }
-    navigate("/home");
+    navigate("/scrum-board");
   }
 
   const handlePasswordChange = (event) => {
@@ -187,7 +187,7 @@ function EditProfile() {
                 <input
                   type="button"
                   value="Cancel"
-                  onClick={() => navigate("/home")}
+                  onClick={() => navigate("/scrum-board")}
                 />
               </div>
             </form>

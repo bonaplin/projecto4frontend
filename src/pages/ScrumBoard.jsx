@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { userStore } from "../stores/UserStore";
+import "./ScrumBoard.css";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "../components/scrum-board/Column";
 import Header from "../components/header/Header";
+import Footer from "../components/footer/Footer";
 
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import TaskModal from "../components/modal/TaskModal.js";
 export default function ScrumBoard() {
   const token = userStore.getState().token; // Get the token from the store
+  const [isAddTaskModal, setIsAddTaskModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState({});
 
   const [todo, setTodo] = useState([]);
   const [doing, setDoing] = useState([]);
@@ -123,25 +129,63 @@ export default function ScrumBoard() {
     };
     fetchTasksDone();
   }, []);
+
+  function handleAddClick() {
+    setIsAddTaskModal(true);
+  }
+  async function AddTask(task) {
+    console.log("task", task);
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+        body: JSON.stringify(task),
+      }
+    );
+    if (response.ok) {
+      console.log("Task added successfully");
+    } else {
+      console.error("Failed to add task:", response.statusText);
+      return;
+    }
+  }
+
   return (
     <>
       <Header />
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <h2 style={{ textAlign: "center" }}>PORGRESS BOARD</h2>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Column title={"TO DO"} tasks={todo} id={"100"} />
-          <Column title={"DOING"} tasks={doing} id={"200"} />
-          <Column title={"DONE"} tasks={done} id={"300"} />
+      <div className="Home">
+        <div className="page-wrap" id="home-page-wrap">
+          <h2>Tasks</h2>
+          <div>
+            <AddCircleIcon
+              onClick={handleAddClick}
+              className="add-some"
+              fontSize="large"
+            />
+          </div>
+          {
+            <TaskModal
+              open={isAddTaskModal}
+              title_modal="Add task"
+              onClose={() => setIsAddTaskModal(false)}
+              onSubmit={AddTask}
+              task={selectedTask}
+            />
+          }
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <div className="scrum-board">
+              <Column title={"TO DO"} tasks={todo} id={"100"} />
+              <Column title={"DOING"} tasks={doing} id={"200"} />
+              <Column title={"DONE"} tasks={done} id={"300"} />
+            </div>
+          </DragDropContext>
         </div>
-      </DragDropContext>
+        <Footer />
+      </div>
     </>
   );
 }

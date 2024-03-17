@@ -1,5 +1,4 @@
 .Home {
-  display: flex;
   flex-direction: column;
   position: sticky;
   top: 0;
@@ -17,3 +16,11 @@
   border-radius: 10px;
   max-width: 20rem;
 }
+
+/* style={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+             */
