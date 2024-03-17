@@ -16,6 +16,7 @@ import Categories from "./pages/Categories";
 import Users from "./pages/Users";
 import EditProfile from "./pages/EditProfile";
 import DeletedTasks from "./pages/DeletedTasks";
+import ScrumBoard from "./pages/ScrumBoard";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -27,7 +28,7 @@ root.render(
 
       <Route path="/header" element={<Header />} />
       <Route path="/home" element={<Home />} />
-
+      <Route path="/scrum-board" element={<ScrumBoard />} />
       <Route path="/users" element={<Users />} />
       <Route path="/activity" element={<Activity />} />
       <Route path="/profile" element={<Profile />} />

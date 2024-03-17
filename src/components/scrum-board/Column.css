@@ -1,0 +1,25 @@
+.task-column {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: var(--box-shadow);
+  margin: 5px;
+}
+
+.task-column h2 {
+  margin-bottom: 20px;
+}
+
+.title-column {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+
+  border-radius: var(--border-radius);
+
+  height: 2rem;
+  cursor: default;
+  margin: 0;
+}

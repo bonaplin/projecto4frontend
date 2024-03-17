@@ -57,7 +57,7 @@ function Login() {
       updateUsername(data.username);
       updateRole(data.role);
       updateToken(data.token);
-      navigate("/home", { replace: true }); // Cant go back in browser.
+      navigate("/scrum-board", { replace: true }); // Cant go back in browser.
     } catch (error) {
       console.log(error);
       // Optionally, we can set an error state variable to display the error message

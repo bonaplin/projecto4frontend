@@ -3,14 +3,14 @@ import "./App.css";
 import { DragDropContext } from "react-beautiful-dnd";
 
 import Login from "./pages/Login";
-import ScrumBoard from "./components/scrum-board/ScrumBoard";
+import ScrumBoard from "./pages/ScrumBoard";
 import Task from "./components/scrum-board/Task";
 // Import other pages here
 
 function App() {
   return (
     <div className="App">
-      <ScrumBoard />
+      <Login />
     </div>
   );
 }
