@@ -3,7 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 import "./Task.css";
 import { userStore } from "../../stores/UserStore";
 
-export default function Task({ task, index, handleDelete }) {
+export default function Task({ task, index, handleDelete, handleEdit }) {
   const role = userStore.getState().role;
   const username = userStore.getState().username;
 
@@ -36,7 +36,7 @@ export default function Task({ task, index, handleDelete }) {
           </div>
           {role === "po" || username === task.owner ? (
             <div className="task-buttons" style={{ display: "block" }}>
-              <button>Edit</button>
+              <button onClick={() => handleEdit(task)}>Edit</button>
               <button onClick={() => handleDelete(task)}>Delete</button>
             </div>
           ) : null}

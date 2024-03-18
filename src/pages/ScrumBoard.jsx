@@ -186,11 +186,37 @@ export default function ScrumBoard() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleEdit = (task) => {
     setSelectedTask(task);
-    setIsAddTaskModal(true);
+    setIsEditModalOpen(true);
+    console.log("task", task);
   };
   async function handleEditTask(task) {
-    const response = await fetch();
+    console.log("inputs", JSON.stringify(task));
+    console.log(task);
+    const response = await fetch(
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/update/${task.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+        body: JSON.stringify(task),
+      }
+    )
+      .then((response) => {
+        console.log(response.status);
+        if (response.ok) {
+          console.log("Task deleted successfully");
+          setIsEditModalOpen(false);
+        } else {
+          console.error("Failed to delete task:", response.statusText);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to delete task:", error);
+      });
   }
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleDelete = (task) => {
     setSelectedTask(task);
@@ -248,15 +274,15 @@ export default function ScrumBoard() {
               onNo={() => setIsDeleteModalOpen(false)}
             />
           )}
-          {
+          {isEditModalOpen && (
             <TaskModal
               open={isEditModalOpen}
+              onClose={() => setIsEditModalOpen(false)}
               title_modal="Edit task"
-              onClose={() => setIsAddTaskModal(false)}
               onSubmit={handleEditTask}
               task={selectedTask}
             />
-          }
+          )}
           {
             <TaskModal
               open={isAddTaskModal}
@@ -273,20 +299,23 @@ export default function ScrumBoard() {
                 tasks={todo}
                 id={"100"}
                 handleDelete={handleDelete}
+                handleEdit={handleEdit}
               />
               <Column
                 title={"DOING"}
                 tasks={doing}
                 id={"200"}
                 handleDelete={handleDelete}
+                handleEdit={handleEdit}
               />
               <Column
                 title={"DONE"}
                 tasks={done}
                 id={"300"}
                 handleDelete={handleDelete}
-              />
-            </div>
+                handleEdit={handleEdit}
+              />{" "}
+            </div>{" "}
           </DragDropContext>
         </div>
         <Footer />
