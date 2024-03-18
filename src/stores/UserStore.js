@@ -24,6 +24,9 @@ export const userStore = create(
       user: [],
 
       setUsers: (user) => set({ user }),
+      getUsers: () => {
+        return userStore.getState().user;
+      },
       updateUsername: (username) => set({ username }), //action
       updateToken: (token) => set({ token }), //new action
       updateRole: (role) => set({ role }), //new action

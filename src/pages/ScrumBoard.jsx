@@ -11,6 +11,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import TaskModal from "../components/modal/TaskModal.js";
 import ModalYesNo from "../components/modal/ModalYesNo.js";
 import Task from "../components/scrum-board/Task.js";
+import { categoriesStore } from "../stores/CategoriesStore.js";
+import Dropdown from "../components/dropdown/Dropdown.js";
 export default function ScrumBoard() {
   const token = userStore.getState().token; // Get the token from the store
   const [isAddTaskModal, setIsAddTaskModal] = useState(false);
@@ -248,6 +250,94 @@ export default function ScrumBoard() {
       });
   }
 
+  const fetchCategories = async () => {
+    // Check if categories are already stored
+    // "let" variable to get the data if is empty
+    let categories = categoriesStore.getState().getCategories();
+
+    if (!categories || categories.length === 0) {
+      // If not, fetch categories
+      try {
+        const response = await fetch(
+          "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
+          {
+            headers: {
+              token: token,
+            },
+          }
+        );
+        if (!response.ok) {
+          console.log("Fetch error: ", response);
+          alert(await response.text());
+          return;
+        }
+        const data = await response.json();
+        categories.setCategories(data);
+        categories = data;
+      } catch (error) {
+        console.log("Fetch error: ", error);
+      }
+    }
+    const categoriesTitle = categories.map((category) => category.title);
+    console.log("categories", categoriesTitle);
+    return categoriesTitle;
+  };
+  const fetchUsers = async () => {
+    // Check if users are already stored
+    // "let" variable to get the data if is empty
+    let users = userStore.getState().getUsers();
+
+    if (!users || users.length === 0) {
+      // If not, fetch users
+      try {
+        const response = await fetch(
+          "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
+          {
+            headers: {
+              token: token,
+            },
+          }
+        );
+        if (!response.ok) {
+          console.log("Fetch error: ", response);
+          alert(await response.text());
+          return;
+        }
+        const data = await response.json();
+        users.setUsers(data);
+        users = data;
+      } catch (error) {
+        console.log("Fetch error: ", error);
+      }
+    }
+    const usersTitle = users.map((user) => user.username);
+    console.log("users", usersTitle);
+    return usersTitle;
+  };
+
+  //DROP DOWN -- FILTER
+  const [categoriesData, setCategoriesData] = useState([]);
+  useEffect(() => {
+    fetchCategories().then((categories) => {
+      console.log("categories array", categories);
+      setCategoriesData(categories);
+    });
+  }, []);
+  const [usersData, setUsersData] = useState([]);
+  useEffect(() => {
+    fetchUsers().then((users) => {
+      console.log("users array", users);
+      setUsersData(users);
+    });
+  }, []);
+
+  //want to create a filter button, and do the request depending on the filter, user chose or category chose
+  //http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=admin&category=backlog
+  //http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?category=backlog
+  // set the chose in the UserStore
+  // criar um botão para filtrar por categoria, dropdown que recebe todas as categorias
+  // criar um dropdown para filtrar por user.
+
   return (
     <>
       <Header />
@@ -260,6 +350,11 @@ export default function ScrumBoard() {
               className="add-some"
               fontSize="large"
             />
+            <div className="">
+              <Dropdown data={categoriesData} />
+              <Dropdown data={usersData} />
+              <button>Filter Apply</button>
+            </div>
           </div>
           {isDeleteModalOpen && (
             <ModalYesNo

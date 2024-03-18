@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import "./Users.css";
 import Header from "../components/header/Header";
 import Table from "../components/table/Table";
@@ -10,7 +9,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CategoryModal from "../components/modal/CategoryModal";
 import { userStore } from "../stores/UserStore";
 import ModalYesNo from "../components/modal/ModalYesNo";
-import Modal from "react-responsive-modal";
+import { categoriesStore } from "../stores/CategoriesStore";
 function Categories() {
   const navigate = useNavigate();
   const token = userStore.getState().token;
@@ -20,20 +19,28 @@ function Categories() {
   const [editCategory, setEditCategory] = useState(null);
 
   const fetchCategories = async () => {
-    const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
-      {
-        headers: {
-          token: token,
-        },
-      }
-    );
+    try {
+      const response = await fetch(
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
 
-    if (!response.ok) {
-      alert(await response.text());
+      if (!response.ok) {
+        console.log("Fetch error: ", response);
+        alert(await response.text());
+        return;
+      }
+
+      const data = await response.json();
+      setCategorieData(data);
+      categoriesStore.getState().setCategories(data);
+    } catch (error) {
+      console.log("Fetch error: ", error);
     }
-    const data = await response.json();
-    setCategorieData(data);
   };
 
   /* ******* ******* *********************************** *****/
