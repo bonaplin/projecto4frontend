@@ -145,7 +145,13 @@ export default function ScrumBoard() {
         method: "PUT",
         headers: { token: token },
       }
-    );
+    ).then((response) => {
+      if (response.ok) {
+        console.log("Task updated successfully");
+      } else {
+        console.error("Failed to update task:", response.statusText);
+      }
+    });
   }
   function handleAddClick() {
     setIsAddTaskModal(true);
