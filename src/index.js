@@ -7,7 +7,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Login from "./pages/Login";
 import Singup from "./pages/Singup";
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Activity from "./pages/Activity";
 import Header from "./components/header/Header";
@@ -23,11 +22,11 @@ root.render(
   <Router>
     <Routes>
       <Route index element={<App />} />
+      <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/singup" element={<Singup />} />
 
       <Route path="/header" element={<Header />} />
-      <Route path="/home" element={<Home />} />
       <Route path="/scrum-board" element={<ScrumBoard />} />
       <Route path="/users" element={<Users />} />
       <Route path="/activity" element={<Activity />} />

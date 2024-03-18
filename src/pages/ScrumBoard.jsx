@@ -158,7 +158,7 @@ export default function ScrumBoard() {
     <>
       <Header />
       <div className="Home">
-        <div className="page-wrap" id="home-page-wrap">
+        <div className="page-wrap">
           <h2>Tasks</h2>
           <div>
             <AddCircleIcon

@@ -1,14 +1,8 @@
-.Home {
+/* .Home {
   flex-direction: column;
   position: sticky;
   top: 0;
-}
-
-.scrum-board {
-  display: flex;
-
-  justify-content: center;
-}
+} */
 
 .scrum-board .task-column {
   flex: 1;
