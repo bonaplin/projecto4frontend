@@ -1,0 +1,18 @@
+.Home {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+}
+
+.scrum-board {
+  display: flex;
+  justify-content: center;
+}
+
+.task-column {
+  flex: 1;
+  border: 1px solid white;
+  border-radius: 10px;
+  max-width: 20rem;
+}

@@ -21,3 +21,8 @@ code {
   padding-bottom: 10px;
   padding-top: 10px;
 }
+html {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

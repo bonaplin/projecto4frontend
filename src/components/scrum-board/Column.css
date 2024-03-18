@@ -23,3 +23,9 @@
   cursor: default;
   margin: 0;
 }
+
+.dragging-over {
+  background-color: #ce3d3d;
+  border-radius: var(--border-radius);
+  transition: background-color s;
+}
