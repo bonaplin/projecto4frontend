@@ -3,7 +3,7 @@ import { Droppable } from "react-beautiful-dnd";
 import "./Column.css";
 import Task from "./Task";
 
-export default function Column({ title, tasks, id }) {
+export default function Column({ title, tasks, id, handleDelete }) {
   return (
     <div className="task-column">
       <div className="title-column">
@@ -19,7 +19,12 @@ export default function Column({ title, tasks, id }) {
             {...provided.droppableProps}
           >
             {tasks.map((task, index) => (
-              <Task key={task.id} task={task} index={index} />
+              <Task
+                key={task.id}
+                task={task}
+                index={index}
+                handleDelete={handleDelete}
+              />
             ))}
             {provided.placeholder}
           </div>

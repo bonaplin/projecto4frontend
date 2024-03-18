@@ -1,8 +1,12 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import "./Task.css";
+import { userStore } from "../../stores/UserStore";
 
-export default function Task({ task, index }) {
+export default function Task({ task, index, handleDelete }) {
+  const role = userStore.getState().role;
+  const username = userStore.getState().username;
+
   const getPriorityColor = (priority) => {
     switch (priority) {
       case 100:
@@ -30,6 +34,12 @@ export default function Task({ task, index }) {
               ? task.owner.substring(0, 12) + "..."
               : task.owner}
           </div>
+          {role === "po" || username === task.owner ? (
+            <div className="task-buttons" style={{ display: "block" }}>
+              <button>Edit</button>
+              <button onClick={() => handleDelete(task)}>Delete</button>
+            </div>
+          ) : null}
           <div className="category text">
             {task.category.length > 12
               ? task.category.substring(0, 12) + "..."

@@ -9,6 +9,8 @@ import Footer from "../components/footer/Footer";
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import TaskModal from "../components/modal/TaskModal.js";
+import ModalYesNo from "../components/modal/ModalYesNo.js";
+import Task from "../components/scrum-board/Task.js";
 export default function ScrumBoard() {
   const token = userStore.getState().token; // Get the token from the store
   const [isAddTaskModal, setIsAddTaskModal] = useState(false);
@@ -168,13 +170,56 @@ export default function ScrumBoard() {
         },
         body: JSON.stringify(task),
       }
-    );
-    if (response.ok) {
-      console.log("Task added successfully");
-    } else {
-      console.error("Failed to add task:", response.statusText);
-      return;
-    }
+    )
+      .then((response) => {
+        console.log(response.status);
+        if (response.ok) {
+          console.log("Task added successfully");
+          setIsAddTaskModal(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to add task:", error);
+      });
+  }
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const handleEdit = (task) => {
+    setSelectedTask(task);
+    setIsAddTaskModal(true);
+  };
+  async function handleEditTask(task) {
+    const response = await fetch();
+  }
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDelete = (task) => {
+    setSelectedTask(task);
+    setIsDeleteModalOpen(true);
+  };
+  async function handleDeleteTask(task) {
+    console.log("task", task);
+    const response = await fetch(
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/desactivate/${task.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+      }
+    )
+      .then((response) => {
+        console.log(response.status);
+        if (response.ok) {
+          console.log("Task deleted successfully");
+          setIsDeleteModalOpen(false);
+        } else {
+          console.error("Failed to delete task:", response.statusText);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to delete task:", error);
+      });
   }
 
   return (
@@ -190,6 +235,28 @@ export default function ScrumBoard() {
               fontSize="large"
             />
           </div>
+          {isDeleteModalOpen && (
+            <ModalYesNo
+              open={isDeleteModalOpen}
+              onClose={() => setIsDeleteModalOpen(false)}
+              title={"Delete task"}
+              message={"Are you sure you want to delete this task?"}
+              onYes={() => {
+                setIsDeleteModalOpen(false);
+                handleDeleteTask(selectedTask);
+              }}
+              onNo={() => setIsDeleteModalOpen(false)}
+            />
+          )}
+          {
+            <TaskModal
+              open={isEditModalOpen}
+              title_modal="Edit task"
+              onClose={() => setIsAddTaskModal(false)}
+              onSubmit={handleEditTask}
+              task={selectedTask}
+            />
+          }
           {
             <TaskModal
               open={isAddTaskModal}
@@ -201,9 +268,24 @@ export default function ScrumBoard() {
           }
           <DragDropContext onDragEnd={handleDragEnd}>
             <div className="scrum-board">
-              <Column title={"TO DO"} tasks={todo} id={"100"} />
-              <Column title={"DOING"} tasks={doing} id={"200"} />
-              <Column title={"DONE"} tasks={done} id={"300"} />
+              <Column
+                title={"TO DO"}
+                tasks={todo}
+                id={"100"}
+                handleDelete={handleDelete}
+              />
+              <Column
+                title={"DOING"}
+                tasks={doing}
+                id={"200"}
+                handleDelete={handleDelete}
+              />
+              <Column
+                title={"DONE"}
+                tasks={done}
+                id={"300"}
+                handleDelete={handleDelete}
+              />
             </div>
           </DragDropContext>
         </div>
