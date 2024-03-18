@@ -7,13 +7,21 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   const today = new Date().toISOString();
   const [title, setTitle] = useState(task.title || "");
   const [description, setDescription] = useState(task.description || "");
-  const [initialDate, setStartDate] = useState(task.startDate || today);
-  const [finalDate, setEndDate] = useState(task.endDate || "");
+  const [initialDate, setStartDate] = useState(
+    task.initialDate
+      ? new Date(task.initialDate).toISOString().split("T")[0]
+      : today
+  );
+  const [finalDate, setEndDate] = useState(
+    task.finalDate ? new Date(task.finalDate).toISOString().split("T")[0] : ""
+  );
   const [priority, setPriority] = useState(task.priority || 200);
   const [status, setStatus] = useState(task.status || 100);
   const [category, setCategory] = useState(task.category || "Backlog");
   const [categories, setCategories] = useState([]);
+  const id = task.id;
   const token = userStore.getState().token;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({
@@ -24,6 +32,7 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
       priority,
       status,
       category,
+      id,
     });
     resetForm();
   };
