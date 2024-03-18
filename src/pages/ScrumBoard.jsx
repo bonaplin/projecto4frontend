@@ -27,6 +27,8 @@ export default function ScrumBoard() {
   }
 
   function handleDragEnd(result) {
+    console.log(result.draggableId);
+
     if (!result.destination) {
       return;
     }
@@ -55,14 +57,18 @@ export default function ScrumBoard() {
     if (destination.droppableId === "100") {
       newTodo = [{ ...task, doing: true }, ...newTodo];
       newStatus = 100;
-      console.log(newStatus);
+      updateStatus(result.draggableId, newStatus);
+      //request to update task
     } else if (destination.droppableId === "200") {
       newDoing = [{ ...task, todo: true }, ...newDoing];
       newStatus = 200;
-      console.log(newStatus);
+      updateStatus(result.draggableId, newStatus);
+      //request to update task
     } else if (destination.droppableId === "300") {
       newDone = [{ ...task, done: true }, ...newDone];
       newStatus = 300;
+      updateStatus(result.draggableId, newStatus);
+      //request to update task
     }
 
     // Update the state once with the new arrays
@@ -70,6 +76,7 @@ export default function ScrumBoard() {
     setDoing(newDoing);
     setDone(newDone);
   }
+  //! TODO
   useEffect(() => {
     const fetchTasksTodo = async () => {
       const response = await fetch(
@@ -89,7 +96,7 @@ export default function ScrumBoard() {
     };
     fetchTasksTodo();
   }, []);
-
+  //! DOING
   useEffect(() => {
     const fetchTasksDoing = async () => {
       const response = await fetch(
@@ -109,7 +116,7 @@ export default function ScrumBoard() {
     };
     fetchTasksDoing();
   }, []);
-
+  //! DONE
   useEffect(() => {
     const fetchTasksDone = async () => {
       const response = await fetch(
@@ -130,6 +137,16 @@ export default function ScrumBoard() {
     fetchTasksDone();
   }, []);
 
+  async function updateStatus(id, newStatus) {
+    const response = fetch(
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/updateStatus/?id=${id}&status=${newStatus}`,
+      {
+        "Content-Type": "application/json",
+        method: "PUT",
+        headers: { token: token },
+      }
+    );
+  }
   function handleAddClick() {
     setIsAddTaskModal(true);
   }
