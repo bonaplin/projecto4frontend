@@ -330,6 +330,43 @@ export default function ScrumBoard() {
       setUsersData(users);
     });
   }, []);
+  //DROP DOWN -- FILTER
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const fetchTasks = async (username, category) => {
+    let url = "";
+    if (username !== null && category !== null) {
+      url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${username}&category=${category}`;
+    } else if (username !== null && category === null) {
+      url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${username}`;
+    } else if (username === null && category !== null) {
+      url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?category=${category}`;
+    } else {
+      url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/`;
+    }
+    try {
+      const response = fetch(url, {
+        header: token,
+      });
+      const tasks = await response.json();
+      setTodo(tasks.filter((task) => task.status === "TO DO"));
+      setDoing(tasks.filter((task) => task.status === "DOING"));
+      setDone(tasks.filter((task) => task.status === "DONE"));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Use useEffect to fetch tasks whenever the selected user or category changes
+  useEffect(() => {
+    console.log("Selected user:", selectedUser);
+    console.log("Selected category:", selectedCategory);
+
+    if (selectedUser || selectedCategory) {
+      fetchTasks(selectedUser, selectedCategory);
+    }
+  }, [selectedUser, selectedCategory]);
 
   //want to create a filter button, and do the request depending on the filter, user chose or category chose
   //http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=admin&category=backlog
@@ -351,9 +388,15 @@ export default function ScrumBoard() {
               fontSize="large"
             />
             <div className="">
-              <Dropdown data={categoriesData} />
-              <Dropdown data={usersData} />
-              <button>Filter Apply</button>
+              <Dropdown
+                data={usersData}
+                onChange={(selectedValue) => setSelectedUser(selectedValue)}
+              />
+              <Dropdown
+                data={categoriesData}
+                onChange={(selectedValue) => setSelectedCategory(selectedValue)}
+              />
+              <button>Reset Filter</button>
             </div>
           </div>
           {isDeleteModalOpen && (

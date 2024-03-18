@@ -1,8 +1,11 @@
 import React from "react";
 
-const Dropdown = ({ data }) => {
+const Dropdown = ({ data, onChange }) => {
+  const handleChange = (e) => {
+    onChange(e.target.value);
+  };
   return (
-    <select>
+    <select onChange={handleChange}>
       {data.map((value, index) => (
         <option key={index} value={value}>
           {value}
