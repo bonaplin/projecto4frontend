@@ -6,7 +6,7 @@
   border: 1px solid #ccc;
   border-radius: var(--border-radius);
   background-color: #f4f4f4;
-  height: 70px;
+  height: 5rem;
   position: relative;
   cursor: pointer;
 }
@@ -33,7 +33,7 @@
   top: 0;
   left: 0;
   background-color: var(--task-color);
-  color: var(--task-color-text);
+  color: var(--task-versus-color);
 }
 .tasks-button {
   background: none;
@@ -41,7 +41,7 @@
   margin-right: 0.9rem;
   padding: 0;
   cursor: pointer;
-  color: var(--secondary-color);
+  color: var(--task-versus-color);
   font-size: small;
   height: 0.3rem;
   width: 0.3rem;
@@ -55,8 +55,8 @@
 .category {
   bottom: 0;
   right: 0;
-  background-color: var(--plus);
-  color: var(--task-color-text);
+  background-color: var(--task-versus-color);
+  color: var(--task-color);
 }
 .circle {
   height: 12px;

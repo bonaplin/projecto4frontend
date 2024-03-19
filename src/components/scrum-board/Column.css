@@ -3,7 +3,6 @@
   flex-direction: column;
   padding: 10px;
   border-radius: 5px;
-  background-color: #f9f9f9;
   box-shadow: var(--box-shadow);
   margin: 5px;
 }
@@ -30,6 +29,12 @@
   padding: 0;
   border-color: var(--primary-color);
   border-radius: var(--border-radius);
+}
+.dragging-over:hover {
+  /* background-color: black; */
+  margin: 0;
+  padding: 0;
+  border: none;
 }
 .tasks-number {
   font-size: small;

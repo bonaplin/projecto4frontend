@@ -7,7 +7,7 @@
   --primary-color: #ffffff; /* Primary color */
   --secondary-color: #ec9191; /* Secondary color */
   --task-color: #4c59af;
-  --task-color-text: #ffffff;
+  --task-versus-color: rgb(221, 220, 220);
   /*colors*/
 }
 /* @media (prefers-reduced-motion: no-preference) {
