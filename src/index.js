@@ -34,7 +34,7 @@ root.render(
       <Route path="/edit-profile" element={<EditProfile />} />
       <Route path="/categories" element={<Categories />} />
 
-      <Route path="/deleted-tasks" element={<DeletedTasks />} />
+      <Route path="/deletedtasks" element={<DeletedTasks />} />
 
       <Route path="/footer" element={<Footer />} />
     </Routes>

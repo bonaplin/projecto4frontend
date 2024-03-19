@@ -2,6 +2,8 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import "./Task.css";
 import { userStore } from "../../stores/UserStore";
+import Delete from "../icon-buttons/delete";
+import Edit from "../icon-buttons/edit";
 
 export default function Task({ task, index, handleDelete, handleEdit }) {
   const role = userStore.getState().role;
@@ -36,8 +38,8 @@ export default function Task({ task, index, handleDelete, handleEdit }) {
           </div>
           {role === "po" || username === task.owner ? (
             <div className="task-buttons" style={{ display: "block" }}>
-              <button onClick={() => handleEdit(task)}>Edit</button>
-              <button onClick={() => handleDelete(task)}>Delete</button>
+              <Edit onClick={() => handleEdit(task)} />
+              <Delete onClick={() => handleDelete(task)} />
             </div>
           ) : null}
           <div className="category text">

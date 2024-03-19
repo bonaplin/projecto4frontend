@@ -3,6 +3,11 @@
   --padding: 12px 16px; /* Some padding */
   --box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.5); /* Shadow effect */
   --max-width: 20rem; /* Max width for the task column */
+  --plus: cadetblue;
+  --primary-color: #ffffff; /* Primary color */
+  --secondary-color: #ec9191; /* Secondary color */
+  --task-color: #4c59af;
+  --task-color-text: #ffffff;
   /*colors*/
 }
 /* @media (prefers-reduced-motion: no-preference) {

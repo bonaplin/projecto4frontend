@@ -26,27 +26,44 @@
 .title {
   font-size: 1.2rem;
   margin: 0 0.5rem;
-  color: #4c59af;
+  color: var(--task-color);
 }
 
 .owner {
   top: 0;
   left: 0;
-  background-color: #4c59af;
-  color: white;
+  background-color: var(--task-color);
+  color: var(--task-color-text);
+}
+.tasks-button {
+  background: none;
+  border: none;
+  margin-right: 0.9rem;
+  padding: 0;
+  cursor: pointer;
+  color: var(--secondary-color);
+  font-size: small;
+  height: 0.3rem;
+  width: 0.3rem;
+}
+.tasks-button:hover {
+  color: var(
+    --task-color
+  ); /* Change the color to whatever you prefer when hovering */
 }
 
 .category {
   bottom: 0;
   right: 0;
-  background-color: bisque;
+  background-color: var(--plus);
+  color: var(--task-color-text);
 }
 .circle {
   height: 12px;
   width: 12px;
   border-radius: 50%;
-  border: 1px solid #a09e9e;
   margin: 10px;
+  border: 1px solid var(--task-color);
 }
 .task-buttons {
   display: flex;
@@ -56,7 +73,7 @@
   top: 0;
   right: 0;
   padding: 0.2rem;
+
   border-top-right-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
-  background-color: black;
 }

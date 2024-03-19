@@ -8,6 +8,7 @@ export default function Column({ title, tasks, id, handleDelete, handleEdit }) {
     <div className="task-column">
       <div className="title-column">
         <h4>{title}</h4>
+        <div className="tasks-number">{tasks.length}</div>
       </div>
       <Droppable droppableId={id}>
         {(provided, snapshot) => (

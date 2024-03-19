@@ -5,7 +5,7 @@
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: #ec9191;
+  background-color: var(--secondary-color);
   padding: 0 20px;
   height: 60px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,6 @@
   padding: 5px 10px; /* Some padding */
   border-radius: 4px; /* Rounded corners */
   border: none; /* Remove border */
-  background-color: #fff; /* White background */
 }
 img {
   width: 50px;
