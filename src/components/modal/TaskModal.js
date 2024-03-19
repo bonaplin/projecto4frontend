@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import FormInput from "../formInput/FormInput";
 import { userStore } from "../../stores/UserStore";
+import Dropdown from "../dropdown/Dropdown";
 
 const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   const today = new Date().toISOString();
@@ -66,19 +67,14 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   return (
     <Modal open={open} onClose={onClose} title={title_modal}>
       <form onSubmit={handleSubmit}>
-        <label className="label-input">
-          Category
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            {categories.map((category) => (
-              <option key={category.title} value={category.title}>
-                {category.title}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Dropdown
+          data={categories.map((category) => ({
+            value: category.title,
+            label: category.title,
+          }))}
+          onChange={setCategory}
+          type="Select a category"
+        />
 
         <FormInput
           placeholder={"Enter task title"}
@@ -104,25 +100,27 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
           value={finalDate}
           onChange={(e) => setEndDate(e.target.value)}
         />
-        <label className="label-input">
-          Priority
-          <select
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
-          >
-            <option value={100}>Low</option>
-            <option value={200}>Medium</option>
-            <option value={300}>High</option>
-          </select>
-        </label>
-        <label className="label-input">
-          Status
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option value={100}>Todo</option>
-            <option value={200}>Doing</option>
-            <option value={300}>Done</option>
-          </select>
-        </label>
+
+        <Dropdown
+          data={[
+            { value: 100, label: "Low" },
+            { value: 200, label: "Medium" },
+            { value: 300, label: "High" },
+          ]}
+          onChange={setPriority}
+          type="Select a priority"
+        />
+
+        <Dropdown
+          data={[
+            { value: 100, label: "Todo" },
+            { value: 200, label: "Doing" },
+            { value: 300, label: "Done" },
+          ]}
+          onChange={setStatus}
+          type="Select a status"
+        />
+
         <button type="submit">Submit</button>
       </form>
     </Modal>

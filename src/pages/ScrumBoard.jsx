@@ -22,6 +22,9 @@ export default function ScrumBoard() {
   const [doing, setDoing] = useState([]);
   const [done, setDone] = useState([]);
 
+  const [username, setUsername] = useState(null);
+  const [category, setCategory] = useState(null);
+
   function removeItemById(array, id) {
     return array.filter((item) => String(item.id) !== id);
   }
@@ -81,65 +84,66 @@ export default function ScrumBoard() {
     setDone(newDone);
   }
   //! TODO
-  useEffect(() => {
-    const fetchTasksTodo = async () => {
-      const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=100",
-        {
-          headers: {
-            token: token,
-          },
-        }
-      );
-      if (!response.ok) {
-        console.error("Failed to fetch tasks:", response.statusText);
-        return;
-      }
-      const todo = await response.json();
-      setTodo(todo);
-    };
-    fetchTasksTodo();
-  }, []);
-  //! DOING
-  useEffect(() => {
-    const fetchTasksDoing = async () => {
-      const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=200",
-        {
-          headers: {
-            token: token,
-          },
-        }
-      );
-      if (!response.ok) {
-        console.error("Failed to fetch tasks:", response.statusText);
-        return;
-      }
-      const doing = await response.json();
-      setDoing(doing);
-    };
-    fetchTasksDoing();
-  }, []);
-  //! DONE
-  useEffect(() => {
-    const fetchTasksDone = async () => {
-      const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=300",
-        {
-          headers: {
-            token: token, // replace `token` with your actual token
-          },
-        }
-      );
-      if (!response.ok) {
-        console.error("Failed to fetch tasks:", response.statusText);
-        return;
-      }
-      const done = await response.json();
-      setDone(done);
-    };
-    fetchTasksDone();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchTasksTodo() {
+  //     const response = await fetch(
+  //       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=100",
+  //       {
+  //         headers: {
+  //           token: token,
+  //         },
+  //       }
+  //     );
+  //     if (!response.ok) {
+  //       console.error("Failed to fetch tasks:", response.statusText);
+  //       return;
+  //     }
+  //     const todo = await response.json();
+  //     setTodo(todo);
+  //   }
+  //   fetchTasksTodo();
+  // }, []);
+  // //! DOING
+  // useEffect(() => {
+  //   async function fetchTasksDoing() {
+  //     const response = await fetch(
+  //       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=200",
+  //       {
+  //         headers: {
+  //           token: token,
+  //         },
+  //       }
+  //     );
+  //     if (!response.ok) {
+  //       console.error("Failed to fetch tasks:", response.statusText);
+  //       return;
+  //     }
+  //     const doing = await response.json();
+  //     setDoing(doing);
+  //   }
+  //   fetchTasksDoing();
+  // }, []);
+
+  // //! DONE
+  // useEffect(() => {
+  //   async function fetchTasksDone() {
+  //     const response = await fetch(
+  //       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=300",
+  //       {
+  //         headers: {
+  //           token: token, // replace `token` with your actual token
+  //         },
+  //       }
+  //     );
+  //     if (!response.ok) {
+  //       console.error("Failed to fetch tasks:", response.statusText);
+  //       return;
+  //     }
+  //     const done = await response.json();
+  //     setDone(done);
+  //   }
+  //   fetchTasksDone();
+  // }, []);
 
   async function updateStatus(id, newStatus) {
     const response = fetch(
@@ -184,7 +188,6 @@ export default function ScrumBoard() {
         console.error("Failed to add task:", error);
       });
   }
-
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleEdit = (task) => {
     setSelectedTask(task);
@@ -249,131 +252,99 @@ export default function ScrumBoard() {
         console.error("Failed to delete task:", error);
       });
   }
-
-  const fetchCategories = async () => {
-    // Check if categories are already stored
-    // "let" variable to get the data if is empty
-    let categories = categoriesStore.getState().getCategories();
-
-    if (!categories || categories.length === 0) {
-      // If not, fetch categories
+  useEffect(() => {
+    async function fetchTasks() {
+      let url = "";
+      if (username !== null && category !== null) {
+        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${username}&category=${category}`;
+      } else if (username !== null && category === null) {
+        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${username}`;
+      } else if (username === null && category !== null) {
+        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${category}`;
+      } else {
+        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/`;
+      }
       try {
-        const response = await fetch(
-          "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
-          {
-            headers: {
-              token: token,
-            },
-          }
-        );
-        if (!response.ok) {
-          console.log("Fetch error: ", response);
-          alert(await response.text());
-          return;
+        const response = await fetch(url, {
+          headers: {
+            token: token,
+          },
+        });
+        console.log(response.status);
+        if (response.ok) {
+          const data = await response.json();
+          const todo = data.filter((task) => task.status === 100);
+          const doing = data.filter((task) => task.status === 200);
+          const done = data.filter((task) => task.status === 300);
+
+          console.log("todo", todo);
+          console.log("doing", doing);
+          console.log("done", done);
+
+          setTodo(todo);
+          setDoing(doing);
+          setDone(done);
+        } else {
+          console.error("Failed to fetch tasks:", response.statusText);
         }
-        const data = await response.json();
-        categories.setCategories(data);
-        categories = data;
       } catch (error) {
-        console.log("Fetch error: ", error);
+        console.error("Failed to fetch tasks:", error);
       }
     }
-    const categoriesTitle = categories.map((category) => category.title);
-    console.log("categories", categoriesTitle);
-    return categoriesTitle;
-  };
-  const fetchUsers = async () => {
-    // Check if users are already stored
-    // "let" variable to get the data if is empty
-    let users = userStore.getState().getUsers();
+    fetchTasks();
+  }, [username, category]);
 
-    if (!users || users.length === 0) {
-      // If not, fetch users
-      try {
-        const response = await fetch(
-          "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
-          {
-            headers: {
-              token: token,
-            },
-          }
-        );
-        if (!response.ok) {
-          console.log("Fetch error: ", response);
-          alert(await response.text());
-          return;
+  function handleResetFilter() {
+    setUsername(null);
+    setCategory(null);
+  }
+
+  const [users, setUsers] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  // Fetch users
+  useEffect(() => {
+    async function fetchUsers() {
+      const response = await fetch(
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
+        {
+          headers: {
+            token: token, // replace `token` with your actual token
+          },
         }
-        const data = await response.json();
-        users.setUsers(data);
-        users = data;
-      } catch (error) {
-        console.log("Fetch error: ", error);
+      );
+      if (!response.ok) {
+        console.error("Failed to fetch users:", response.statusText);
+        return;
       }
+      const users = await response.json();
+      const userNames = users.map((user) => user.username);
+      setUsers(userNames); // replace `setUsers` with your actual state update function
     }
-    const usersTitle = users.map((user) => user.username);
-    console.log("users", usersTitle);
-    return usersTitle;
-  };
-
-  //DROP DOWN -- FILTER
-  const [categoriesData, setCategoriesData] = useState([]);
-  useEffect(() => {
-    fetchCategories().then((categories) => {
-      console.log("categories array", categories);
-      setCategoriesData(categories);
-    });
+    fetchUsers();
   }, []);
-  const [usersData, setUsersData] = useState([]);
+
+  // Fetch categories
   useEffect(() => {
-    fetchUsers().then((users) => {
-      console.log("users array", users);
-      setUsersData(users);
-    });
+    async function fetchCategories() {
+      const response = await fetch(
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
+        {
+          headers: {
+            token: token, // replace `token` with your actual token
+          },
+        }
+      );
+      if (!response.ok) {
+        console.error("Failed to fetch categories:", response.statusText);
+        return;
+      }
+      const categories = await response.json();
+      const categoryTitles = categories.map((category) => category.title);
+      setCategories(categoryTitles); // replace `setCategories` with your actual state update function
+    }
+    fetchCategories();
   }, []);
-  //DROP DOWN -- FILTER
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-
-  const fetchTasks = async (username, category) => {
-    let url = "";
-    if (username !== null && category !== null) {
-      url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${username}&category=${category}`;
-    } else if (username !== null && category === null) {
-      url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${username}`;
-    } else if (username === null && category !== null) {
-      url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?category=${category}`;
-    } else {
-      url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/`;
-    }
-    try {
-      const response = fetch(url, {
-        header: token,
-      });
-      const tasks = await response.json();
-      setTodo(tasks.filter((task) => task.status === "TO DO"));
-      setDoing(tasks.filter((task) => task.status === "DOING"));
-      setDone(tasks.filter((task) => task.status === "DONE"));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // Use useEffect to fetch tasks whenever the selected user or category changes
-  useEffect(() => {
-    console.log("Selected user:", selectedUser);
-    console.log("Selected category:", selectedCategory);
-
-    if (selectedUser || selectedCategory) {
-      fetchTasks(selectedUser, selectedCategory);
-    }
-  }, [selectedUser, selectedCategory]);
-
-  //want to create a filter button, and do the request depending on the filter, user chose or category chose
-  //http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=admin&category=backlog
-  //http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?category=backlog
-  // set the chose in the UserStore
-  // criar um botão para filtrar por categoria, dropdown que recebe todas as categorias
-  // criar um dropdown para filtrar por user.
 
   return (
     <>
@@ -387,16 +358,20 @@ export default function ScrumBoard() {
               className="add-some"
               fontSize="large"
             />
-            <div className="">
-              <Dropdown
-                data={usersData}
-                onChange={(selectedValue) => setSelectedUser(selectedValue)}
-              />
-              <Dropdown
-                data={categoriesData}
-                onChange={(selectedValue) => setSelectedCategory(selectedValue)}
-              />
-              <button>Reset Filter</button>
+            <div className="filter-container">
+              <div className="filter-side">
+                <Dropdown
+                  data={users}
+                  type={"Username"}
+                  onChange={(selectedValue) => setUsername(selectedValue)}
+                />
+                <Dropdown
+                  data={categories}
+                  type={"Category"}
+                  onChange={(selectedValue) => setCategory(selectedValue)}
+                />
+                <button onClick={handleResetFilter}>Reset Filter</button>
+              </div>
             </div>
           </div>
           {isDeleteModalOpen && (
