@@ -141,7 +141,7 @@ function Categories() {
   return (
     <>
       <Header />
-      {(role === "po" || role === "sm")(
+      {(role === "po" || role === "sm") && (
         <div className="Home users">
           <div className="page-wrap">
             <h2>All Category</h2>

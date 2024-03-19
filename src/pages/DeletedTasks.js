@@ -12,6 +12,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { userStore } from "../stores/UserStore";
 import Modal from "../components/modal/Modal";
 import ModalYesNo from "../components/modal/ModalYesNo";
+
 function DeletedTasks() {
   const navigate = useNavigate();
   const token = userStore.getState().token;
@@ -140,83 +141,85 @@ function DeletedTasks() {
   return (
     <>
       <Header />
-      <div className="Home users">
-        <div className="page-wrap">
-          <h2>Deleted Tasks List</h2>
-          {role === "po" && (
-            <div className="top-buttons">
-              <div>
-                <DeleteForeverIcon
-                  onClick={handleDeleteAll}
-                  className="add-some"
-                  fontSize="large"
-                />
+      {(role === "po" || role === "sm") && (
+        <div className="Home users">
+          <div className="page-wrap">
+            <h2>Deleted Tasks List</h2>
+            {role === "po" && (
+              <div className="top-buttons">
+                <div>
+                  <DeleteForeverIcon
+                    onClick={handleDeleteAll}
+                    className="add-some"
+                    fontSize="large"
+                  />
+                </div>
+                <div>
+                  <RestoreFromTrashIcon
+                    onClick={handleRestoreAll}
+                    className="restore-some"
+                    fontSize="large"
+                  />
+                </div>
               </div>
-              <div>
-                <RestoreFromTrashIcon
-                  onClick={handleRestoreAll}
-                  className="restore-some"
-                  fontSize="large"
-                />
-              </div>
-            </div>
-          )}
-          {isDeleteAllTasksModalOpen && (
-            <ModalYesNo
-              title="Delete All Tasks"
-              message="Are you sure you want to delete all tasks?"
-              open={isDeleteAllTasksModalOpen}
-              onClose={() => setIsDeleteAllTasksModalOpen(false)}
-              onYes={handleDeleteAllTasks}
-              onNo={() => setIsDeleteAllTasksModalOpen(false)}
-            />
-          )}
-          {isRestoreAllTaskModalOpen && (
-            <ModalYesNo
-              title="Restore All Tasks"
-              message="Are you sure you want to restore all tasks?"
-              open={isRestoreAllTaskModalOpen}
-              onClose={() => setIsRestoreAllTaskModalOpen(false)}
-              onYes={handleRestoreAllTask}
-              onNo={() => setIsRestoreAllTaskModalOpen(false)}
-            />
-          )}
-          {isDeleteTaskModalOpen && (
-            <ModalYesNo
-              title="Delete Task"
-              message="Are you sure you want to delete this task?"
-              open={isDeleteTaskModalOpen}
-              onClose={() => setIsDeleteTaskModalOpen(false)}
-              onYes={handleDeleteTask}
-              onNo={() => setIsDeleteTaskModalOpen(false)}
-            />
-          )}
-          {isRestoreTaskModalOpen && (
-            <ModalYesNo
-              title="Restore Task"
-              message="Are you sure you want to Restore this task?"
-              open={isRestoreTaskModalOpen}
-              onClose={() => setIsRestoreTaskModalOpen(false)}
-              onYes={handleRestoreTask}
-              onNo={() => setIsRestoreTaskModalOpen(false)}
-            />
-          )}
-
-          <div className="main-board">
-            <div className="table-board">
-              <Table
-                class="table"
-                type="deleted_tasks"
-                data={deletedTasksData}
-                columns={columns}
-                handleDelete={handleDelete}
-                handleEdit={handleRestore}
+            )}
+            {isDeleteAllTasksModalOpen && (
+              <ModalYesNo
+                title="Delete All Tasks"
+                message="Are you sure you want to delete all tasks?"
+                open={isDeleteAllTasksModalOpen}
+                onClose={() => setIsDeleteAllTasksModalOpen(false)}
+                onYes={handleDeleteAllTasks}
+                onNo={() => setIsDeleteAllTasksModalOpen(false)}
               />
+            )}
+            {isRestoreAllTaskModalOpen && (
+              <ModalYesNo
+                title="Restore All Tasks"
+                message="Are you sure you want to restore all tasks?"
+                open={isRestoreAllTaskModalOpen}
+                onClose={() => setIsRestoreAllTaskModalOpen(false)}
+                onYes={handleRestoreAllTask}
+                onNo={() => setIsRestoreAllTaskModalOpen(false)}
+              />
+            )}
+            {isDeleteTaskModalOpen && (
+              <ModalYesNo
+                title="Delete Task"
+                message="Are you sure you want to delete this task?"
+                open={isDeleteTaskModalOpen}
+                onClose={() => setIsDeleteTaskModalOpen(false)}
+                onYes={handleDeleteTask}
+                onNo={() => setIsDeleteTaskModalOpen(false)}
+              />
+            )}
+            {isRestoreTaskModalOpen && (
+              <ModalYesNo
+                title="Restore Task"
+                message="Are you sure you want to Restore this task?"
+                open={isRestoreTaskModalOpen}
+                onClose={() => setIsRestoreTaskModalOpen(false)}
+                onYes={handleRestoreTask}
+                onNo={() => setIsRestoreTaskModalOpen(false)}
+              />
+            )}
+
+            <div className="main-board">
+              <div className="table-board">
+                <Table
+                  class="table"
+                  type="deleted_tasks"
+                  data={deletedTasksData}
+                  columns={columns}
+                  handleDelete={handleDelete}
+                  handleEdit={handleRestore}
+                />
+              </div>
             </div>
           </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      )}
     </>
   );
 }
