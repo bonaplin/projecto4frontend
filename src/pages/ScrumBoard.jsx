@@ -18,6 +18,7 @@ export default function ScrumBoard() {
   const [isAddTaskModal, setIsAddTaskModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState({});
 
+  const [isChanged, setIsChanged] = useState(false);
   const [todo, setTodo] = useState([]);
   const [doing, setDoing] = useState([]);
   const [done, setDone] = useState([]);
@@ -213,6 +214,7 @@ export default function ScrumBoard() {
         if (response.ok) {
           console.log("Task deleted successfully");
           setIsEditModalOpen(false);
+          setIsChanged(!isChanged);
         } else {
           console.error("Failed to delete task:", response.statusText);
         }
@@ -244,6 +246,7 @@ export default function ScrumBoard() {
         if (response.ok) {
           console.log("Task deleted successfully");
           setIsDeleteModalOpen(false);
+          setIsChanged(!isChanged);
         } else {
           console.error("Failed to delete task:", response.statusText);
         }
@@ -292,7 +295,7 @@ export default function ScrumBoard() {
       }
     }
     fetchTasks();
-  }, [username, category]);
+  }, [username, category, isChanged]);
 
   function handleResetFilter() {
     setUsername(null);
