@@ -39,15 +39,10 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   };
 
   const resetForm = () => {
-    setTitle("");
-    setDescription("");
-    setStartDate("");
-    setEndDate("");
-    setPriority("");
-    setStatus("");
-    setCategory("");
-    onClose();
+    document.querySelector("form").reset();
   };
+
+  //
 
   useEffect(() => {
     fetch("http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all", {

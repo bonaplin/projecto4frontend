@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 function Header() {
   const navigate = useNavigate();
+  const role = userStore.getState().role; // Get the role from the store
   /*dropdown main*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleDropdown = () => {
@@ -98,14 +99,19 @@ function Header() {
           <li>
             <TasksButton />
           </li>
-
-          <li>
-            <UsersButton />
-          </li>
-          <li>
-            <CategoriesButton />
-          </li>
-          <li onClick={handleTasksDeletedClick}>Deleted Tasks</li>
+          {role === "po" || role === "sm" ? (
+            <li>
+              <UsersButton />
+            </li>
+          ) : null}
+          {role === "po" ? (
+            <li>
+              <CategoriesButton />
+            </li>
+          ) : null}
+          {role === "po" || role === "sm" ? (
+            <li onClick={handleTasksDeletedClick}>Deleted Tasks</li>
+          ) : null}
         </DropdownMenu>
       </div>
 

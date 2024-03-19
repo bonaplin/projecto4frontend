@@ -10,21 +10,21 @@ import Footer from "../components/footer/Footer";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import TaskModal from "../components/modal/TaskModal.js";
 import ModalYesNo from "../components/modal/ModalYesNo.js";
-import Task from "../components/scrum-board/Task.js";
-import { categoriesStore } from "../stores/CategoriesStore.js";
+
 import Dropdown from "../components/dropdown/Dropdown.js";
+
 export default function ScrumBoard() {
   const token = userStore.getState().token; // Get the token from the store
   const [isAddTaskModal, setIsAddTaskModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState({});
-
+  const role = userStore.getState().role;
   const [isChanged, setIsChanged] = useState(false);
   const [todo, setTodo] = useState([]);
   const [doing, setDoing] = useState([]);
   const [done, setDone] = useState([]);
 
-  const [username, setUsername] = useState(null);
-  const [category, setCategory] = useState(null);
+  const [usernameDD, setUsername] = useState(null);
+  const [categoryDD, setCategory] = useState(null);
 
   function removeItemById(array, id) {
     return array.filter((item) => String(item.id) !== id);
@@ -33,118 +33,6 @@ export default function ScrumBoard() {
   function findItemById(array, id) {
     return array.find((item) => String(item.id) === id);
   }
-
-  function handleDragEnd(result) {
-    console.log(result.draggableId);
-
-    if (!result.destination) {
-      return;
-    }
-    const { destination, source, draggableId } = result;
-
-    // Create new arrays for the tasks
-    let newTodo = [...todo];
-    let newDoing = [...doing];
-    let newDone = [...done];
-
-    // Find the task and remove it from its source column
-    const allTasks = [...newTodo, ...newDoing, ...newDone];
-    const task = findItemById(allTasks, draggableId);
-
-    // Remove the task from the source column
-    if (source.droppableId === "100") {
-      newTodo = removeItemById(newTodo, draggableId);
-    } else if (source.droppableId === "200") {
-      newDoing = removeItemById(newDoing, draggableId);
-    } else if (source.droppableId === "300") {
-      newDone = removeItemById(newDone, draggableId);
-    }
-
-    // Add the task to the destination column
-    let newStatus;
-    if (destination.droppableId === "100") {
-      newTodo = [{ ...task, doing: true }, ...newTodo];
-      newStatus = 100;
-      updateStatus(result.draggableId, newStatus);
-      //request to update task
-    } else if (destination.droppableId === "200") {
-      newDoing = [{ ...task, todo: true }, ...newDoing];
-      newStatus = 200;
-      updateStatus(result.draggableId, newStatus);
-      //request to update task
-    } else if (destination.droppableId === "300") {
-      newDone = [{ ...task, done: true }, ...newDone];
-      newStatus = 300;
-      updateStatus(result.draggableId, newStatus);
-      //request to update task
-    }
-
-    // Update the state once with the new arrays
-    setTodo(newTodo);
-    setDoing(newDoing);
-    setDone(newDone);
-  }
-  //! TODO
-  // useEffect(() => {
-  //   async function fetchTasksTodo() {
-  //     const response = await fetch(
-  //       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=100",
-  //       {
-  //         headers: {
-  //           token: token,
-  //         },
-  //       }
-  //     );
-  //     if (!response.ok) {
-  //       console.error("Failed to fetch tasks:", response.statusText);
-  //       return;
-  //     }
-  //     const todo = await response.json();
-  //     setTodo(todo);
-  //   }
-  //   fetchTasksTodo();
-  // }, []);
-  // //! DOING
-  // useEffect(() => {
-  //   async function fetchTasksDoing() {
-  //     const response = await fetch(
-  //       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=200",
-  //       {
-  //         headers: {
-  //           token: token,
-  //         },
-  //       }
-  //     );
-  //     if (!response.ok) {
-  //       console.error("Failed to fetch tasks:", response.statusText);
-  //       return;
-  //     }
-  //     const doing = await response.json();
-  //     setDoing(doing);
-  //   }
-  //   fetchTasksDoing();
-  // }, []);
-
-  // //! DONE
-  // useEffect(() => {
-  //   async function fetchTasksDone() {
-  //     const response = await fetch(
-  //       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=300",
-  //       {
-  //         headers: {
-  //           token: token, // replace `token` with your actual token
-  //         },
-  //       }
-  //     );
-  //     if (!response.ok) {
-  //       console.error("Failed to fetch tasks:", response.statusText);
-  //       return;
-  //     }
-  //     const done = await response.json();
-  //     setDone(done);
-  //   }
-  //   fetchTasksDone();
-  // }, []);
 
   async function updateStatus(id, newStatus) {
     const response = fetch(
@@ -156,7 +44,7 @@ export default function ScrumBoard() {
       }
     ).then((response) => {
       if (response.ok) {
-        console.log("Task updated successfully");
+        console.log("resposta" + response.status);
       } else {
         console.error("Failed to update task:", response.statusText);
       }
@@ -183,6 +71,7 @@ export default function ScrumBoard() {
         if (response.ok) {
           console.log("Task added successfully");
           setIsAddTaskModal(false);
+          setIsChanged(!isChanged);
         }
       })
       .catch((error) => {
@@ -193,11 +82,9 @@ export default function ScrumBoard() {
   const handleEdit = (task) => {
     setSelectedTask(task);
     setIsEditModalOpen(true);
-    console.log("task", task);
   };
   async function handleEditTask(task) {
-    console.log("inputs", JSON.stringify(task));
-    console.log(task);
+    console.log("task", task);
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/update/${task.id}`,
       {
@@ -213,6 +100,7 @@ export default function ScrumBoard() {
         console.log(response.status);
         if (response.ok) {
           console.log("Task deleted successfully");
+          console.log(task);
           setIsEditModalOpen(false);
           setIsChanged(!isChanged);
         } else {
@@ -258,14 +146,14 @@ export default function ScrumBoard() {
   useEffect(() => {
     async function fetchTasks() {
       let url = "";
-      if (username !== null && category !== null) {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${username}&category=${category}`;
-      } else if (username !== null && category === null) {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${username}`;
-      } else if (username === null && category !== null) {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${category}`;
+      if (usernameDD !== null && categoryDD !== null) {
+        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${usernameDD}&category=${categoryDD}`;
+      } else if (usernameDD !== null && categoryDD === null) {
+        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${usernameDD}`;
+      } else if (usernameDD === null && categoryDD !== null) {
+        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?category=${categoryDD}`;
       } else {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/`;
+        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/active/`;
       }
       try {
         const response = await fetch(url, {
@@ -280,10 +168,6 @@ export default function ScrumBoard() {
           const doing = data.filter((task) => task.status === 200);
           const done = data.filter((task) => task.status === 300);
 
-          console.log("todo", todo);
-          console.log("doing", doing);
-          console.log("done", done);
-
           setTodo(todo);
           setDoing(doing);
           setDone(done);
@@ -295,7 +179,7 @@ export default function ScrumBoard() {
       }
     }
     fetchTasks();
-  }, [username, category, isChanged]);
+  }, [usernameDD, categoryDD, isChanged]);
 
   function handleResetFilter() {
     setUsername(null);
@@ -312,7 +196,7 @@ export default function ScrumBoard() {
         "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
         {
           headers: {
-            token: token, // replace `token` with your actual token
+            token: token,
           },
         }
       );
@@ -322,10 +206,10 @@ export default function ScrumBoard() {
       }
       const users = await response.json();
       const userNames = users.map((user) => user.username);
-      setUsers(userNames); // replace `setUsers` with your actual state update function
+      setUsers(userNames);
     }
     fetchUsers();
-  }, []);
+  }, [userStore.getState().users]);
 
   // Fetch categories
   useEffect(() => {
@@ -334,7 +218,7 @@ export default function ScrumBoard() {
         "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
         {
           headers: {
-            token: token, // replace `token` with your actual token
+            token: token,
           },
         }
       );
@@ -344,11 +228,88 @@ export default function ScrumBoard() {
       }
       const categories = await response.json();
       const categoryTitles = categories.map((category) => category.title);
-      setCategories(categoryTitles); // replace `setCategories` with your actual state update function
+      setCategories(categoryTitles);
     }
     fetchCategories();
   }, []);
 
+  const fetchTasks = async (status, setTask) => {
+    const response = await fetch(
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=${status}`,
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
+    if (!response.ok) {
+      console.error("Failed to fetch tasks:", response.statusText);
+      return;
+    }
+    const tasks = await response.json();
+    setTask(tasks);
+  };
+
+  useEffect(() => {
+    fetchTasks(100, setTodo);
+    fetchTasks(200, setDoing);
+    fetchTasks(300, setDone);
+  }, [isChanged]);
+
+  function handleDragEnd(result) {
+    if (!result.destination) {
+      return;
+    }
+    const { destination, source, draggableId } = result;
+
+    // Create new arrays for the tasks
+    let newTodo = [...todo];
+    let newDoing = [...doing];
+    let newDone = [...done];
+
+    // Find the task and remove it from its source column
+    const allTasks = [...newTodo, ...newDoing, ...newDone];
+    const task = findItemById(allTasks, draggableId);
+
+    // Remove the task from the source column
+    if (source.droppableId === "100") {
+      newTodo = removeItemById(newTodo, draggableId);
+    } else if (source.droppableId === "200") {
+      newDoing = removeItemById(newDoing, draggableId);
+    } else if (source.droppableId === "300") {
+      newDone = removeItemById(newDone, draggableId);
+    }
+
+    // Add the task to the destination column depending on the droppableId
+    if (destination.droppableId === "100") {
+      task.todo = true;
+      task.doing = false;
+      task.done = false;
+      task.status = 100;
+      newTodo.splice(destination.index, 0, task);
+      updateStatus(result.draggableId, 100);
+    } else if (destination.droppableId === "200") {
+      task.todo = false;
+      task.done = true;
+      task.doing = false;
+      task.status = 200;
+      newDoing.splice(destination.index, 0, task);
+      updateStatus(result.draggableId, 200);
+    } else if (destination.droppableId === "300") {
+      task.done = false;
+      task.todo = false;
+      task.doing = true;
+      newDone.splice(destination.index, 0, task);
+      task.status = 300;
+      updateStatus(result.draggableId, 300);
+    }
+
+    // Update the state once with the new arrays
+    setSelectedTask(task);
+    setTodo(newTodo);
+    setDoing(newDoing);
+    setDone(newDone);
+  }
   return (
     <>
       <Header />
@@ -361,21 +322,23 @@ export default function ScrumBoard() {
               className="add-some"
               fontSize="large"
             />
-            <div className="filter-container">
-              <div className="filter-side">
-                <Dropdown
-                  data={users}
-                  type={"Username"}
-                  onChange={(selectedValue) => setUsername(selectedValue)}
-                />
-                <Dropdown
-                  data={categories}
-                  type={"Category"}
-                  onChange={(selectedValue) => setCategory(selectedValue)}
-                />
-                <button onClick={handleResetFilter}>Reset Filter</button>
+            {role === "po" && (
+              <div className="filter-container">
+                <div className="filter-side">
+                  <Dropdown
+                    data={users}
+                    type={"Username"}
+                    onChange={(selectedValue) => setUsername(selectedValue)}
+                  />
+                  <Dropdown
+                    data={categories}
+                    type={"Category"}
+                    onChange={(selectedValue) => setCategory(selectedValue)}
+                  />
+                  <button onClick={handleResetFilter}>Reset Filter</button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {isDeleteModalOpen && (
             <ModalYesNo
