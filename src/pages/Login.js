@@ -16,7 +16,6 @@ function Login() {
     username: "",
     password: "",
   });
-  console.log(inputs);
   const updateUsername = userStore((state) => state.updateUsername);
   const updateRole = userStore((state) => state.updateRole);
   const updateToken = userStore((state) => state.updateToken);

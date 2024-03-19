@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import "./Users.css";
 import Header from "../components/header/Header";
 import Table from "../components/table/Table";
@@ -10,7 +9,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CategoryModal from "../components/modal/CategoryModal";
 import { userStore } from "../stores/UserStore";
 import ModalYesNo from "../components/modal/ModalYesNo";
-import Modal from "react-responsive-modal";
+import { categoriesStore } from "../stores/CategoriesStore";
 function Categories() {
   const navigate = useNavigate();
   const token = userStore.getState().token;
@@ -20,20 +19,28 @@ function Categories() {
   const [editCategory, setEditCategory] = useState(null);
 
   const fetchCategories = async () => {
-    const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
-      {
-        headers: {
-          token: token,
-        },
-      }
-    );
+    try {
+      const response = await fetch(
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
 
-    if (!response.ok) {
-      alert(await response.text());
+      if (!response.ok) {
+        console.log("Fetch error: ", response);
+        alert(await response.text());
+        return;
+      }
+
+      const data = await response.json();
+      setCategorieData(data);
+      categoriesStore.getState().setCategories(data);
+    } catch (error) {
+      console.log("Fetch error: ", error);
     }
-    const data = await response.json();
-    setCategorieData(data);
   };
 
   /* ******* ******* *********************************** *****/
@@ -134,64 +141,66 @@ function Categories() {
   return (
     <>
       <Header />
-      <div className="Home users">
-        <div className="page-wrap">
-          <h2>All Category</h2>
-          {role === "po" && (
-            <>
-              <span>
-                <AddCircleIcon
-                  className="add-some"
-                  onClick={handleAddCategoryButton}
-                  fontSize="large"
-                />
-              </span>
+      {(role === "po" || role === "sm")(
+        <div className="Home users">
+          <div className="page-wrap">
+            <h2>All Category</h2>
+            {role === "po" && (
+              <>
+                <span>
+                  <AddCircleIcon
+                    className="add-some"
+                    onClick={handleAddCategoryButton}
+                    fontSize="large"
+                  />
+                </span>
 
+                <CategoryModal
+                  open={isModalOpen}
+                  onClose={handleCloseModal}
+                  onSubmit={handleCreateCategory}
+                  title_modal="Create Category"
+                  user={{}} // Pass an empty user object to the UserModal
+                />
+              </>
+            )}
+            {isEditModalOpen && (
               <CategoryModal
-                open={isModalOpen}
-                onClose={handleCloseModal}
-                onSubmit={handleCreateCategory}
-                title_modal="Create Category"
-                user={{}} // Pass an empty user object to the UserModal
+                open={isEditModalOpen}
+                title_modal="Edit Category"
+                onClose={() => setIsEditModalOpen(false)}
+                onSubmit={handleEditCategory}
+                category={editCategory}
               />
-            </>
-          )}
-          {isEditModalOpen && (
-            <CategoryModal
-              open={isEditModalOpen}
-              title_modal="Edit Category"
-              onClose={() => setIsEditModalOpen(false)}
-              onSubmit={handleEditCategory}
-              category={editCategory}
-            />
-          )}
-          {isDeleteModalOpen && (
-            <>
-              <ModalYesNo
-                title="Delete Category"
-                message="Are you sure you want to delete this category?"
-                open={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
-                onYes={handleDeleteCategory}
-                onNo={() => setIsDeleteModalOpen(false)}
-              />
-            </>
-          )}
-          <div className="main-board">
-            <div className="table-board">
-              <Table
-                class="table"
-                type="category"
-                data={categorieData}
-                columns={columns}
-                handleDelete={handleDelete}
-                handleEdit={handleEdit}
-              />
+            )}
+            {isDeleteModalOpen && (
+              <>
+                <ModalYesNo
+                  title="Delete Category"
+                  message="Are you sure you want to delete this category?"
+                  open={isDeleteModalOpen}
+                  onClose={() => setIsDeleteModalOpen(false)}
+                  onYes={handleDeleteCategory}
+                  onNo={() => setIsDeleteModalOpen(false)}
+                />
+              </>
+            )}
+            <div className="main-board">
+              <div className="table-board">
+                <Table
+                  class="table"
+                  type="category"
+                  data={categorieData}
+                  columns={columns}
+                  handleDelete={handleDelete}
+                  handleEdit={handleEdit}
+                />
+              </div>
             </div>
           </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      )}
     </>
   );
 }

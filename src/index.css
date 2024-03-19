@@ -26,3 +26,13 @@ html {
   display: flex;
   flex-direction: column;
 }
+.filter-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+.filter-side {
+  display: flex;
+  background-color: black;
+  max-width: var(--max-width);
+}
