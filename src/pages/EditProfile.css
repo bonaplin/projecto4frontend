@@ -31,6 +31,8 @@
   padding: 10px;
 }
 .header-profile {
+  margin-bottom: 1rem;
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
@@ -39,4 +41,9 @@
   width: 70px;
   height: 70px;
   border: 2px solid black;
+}
+.button-group input[type="submit"],
+.button-group input[type="button"],
+.form-input {
+  cursor: pointer;
 }

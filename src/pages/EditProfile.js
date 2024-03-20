@@ -238,7 +238,7 @@ function EditProfile() {
                 type="submit"
                 value="Change Password"
                 onClick={handleClickSavePassword}
-                className="login-page-wrap form input"
+                className="yes-no yes"
               >
                 Save
               </button>

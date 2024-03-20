@@ -136,7 +136,9 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
               onChange={(e) => setEndDate(e.target.value)}
             />
 
-            <button type="submit">Submit</button>
+            <button className="submit-button" type="submit">
+              Submit
+            </button>
           </div>
         </form>
       </Modal>

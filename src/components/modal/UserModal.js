@@ -49,12 +49,15 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
             ) : (
               <p>Are you sure you want to delete this user's tasks?</p>
             )}
-            <img src={user.photoURL} />
           </div>
-          <button type="submit">Yes</button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+          <div className="button-container">
+            <button type="submit" className="yes yes-no">
+              Yes
+            </button>
+            <button type="button" className="no yes-no" onClick={onClose}>
+              No
+            </button>
+          </div>
         </form>
       ) : (
         <>
@@ -124,11 +127,14 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
               value={photoURL}
               onChange={(e) => setPhotoURL(e.target.value)}
             />
-
-            <button type="submit">Save</button>
-            <button type="button" onClick={onClose}>
-              Cancel
-            </button>
+            <div className="button-container">
+              <button type="submit" className="yes-no yes">
+                Save
+              </button>
+              <button type="button" className="yes-no no" onClick={onClose}>
+                Cancel
+              </button>
+            </div>
           </form>
         </>
       )}

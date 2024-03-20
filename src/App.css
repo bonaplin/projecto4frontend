@@ -68,13 +68,13 @@
 .view {
   font-size: 1.5rem !important;
 }
-.form-input {
+/* .form-input {
   background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-}
+} */
 
 .form-input img {
   margin-right: 5px;
@@ -87,8 +87,20 @@
   outline: none;
   box-shadow: none;
 }
-form button {
-  margin: 1rem;
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+}
+
+.form-group select,
+.form-group input {
+  padding: 0.5rem;
   border-radius: var(--border-radius-half);
 }
 
@@ -170,23 +182,43 @@ select:hover {
 select {
   width: 100%;
   padding: 0.5rem;
-
   border-radius: var(--border-radius-half);
 }
 
-.form-group {
+form button {
+  margin-top: 1rem;
+  background-color: var(--task-color);
+  color: var(--primary-color);
+  border-radius: var(--border-radius-half);
+  height: 2rem;
+  border-style: none;
+}
+
+.yes-no {
+  border: none;
+  border-radius: var(--border-radius-half);
+  height: 2rem;
+  width: 5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.yes {
+  background-color: var(--task-color);
+  color: var(--primary-color);
+}
+.submit-button:hover,
+.no:hover,
+.yes:hover {
+  opacity: 0.7;
+}
+.no {
+  background-color: var(--task-versus-color);
+  color: var(--task-color);
+}
+.no:hover {
+}
+.button-container {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  margin-bottom: 0.5rem;
-}
-
-.form-group select,
-.form-group input {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  justify-content: center;
 }
