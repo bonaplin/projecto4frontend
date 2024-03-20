@@ -1,5 +1,8 @@
 import React from "react";
-
+import Delete from "../../icon-buttons/delete.js";
+import Edit from "../../icon-buttons/edit.js";
+import Restore from "../../icon-buttons/restore.js";
+import DeleteTask from "../../icon-buttons/delete-tasks.js";
 const UserRow = ({
   item,
   columns,
@@ -29,9 +32,11 @@ const UserRow = ({
             />
           ) : column === "actions" ? (
             <>
-              <button onClick={() => handleEdit(item)}>Edit</button>
-              <button onClick={() => handleDelete(item)}>Delete</button>
-              <button onClick={() => handleDeleteTasks(item)}>DTasks</button>
+              <Edit onClick={() => handleEdit(item)}>Edit</Edit>
+              <Delete onClick={() => handleDelete(item)}>Delete</Delete>
+              <DeleteTask onClick={() => handleDeleteTasks(item)}>
+                DTasks
+              </DeleteTask>
             </>
           ) : (
             item[column]
