@@ -1,7 +1,6 @@
 import React from "react";
 import Modal from "./Modal";
-import "./style.css";
-import { Label } from "@mui/icons-material";
+import "./Style.css";
 import moment from "moment"; // Import moment.js for date calculations
 
 const TaskViewModal = ({ open, onClose, task }) => {

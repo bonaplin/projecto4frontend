@@ -27,7 +27,7 @@
     transform: rotate(360deg);
   }
 } */
-
+.restore-button,
 .add-some {
   display: block;
   justify-content: center;
@@ -36,6 +36,7 @@
   cursor: pointer;
   transition: transform 0.5 ease;
 }
+.restore-button:hover,
 .add-some:hover {
   opacity: 0.4;
   transform: scale(0.9);
@@ -47,15 +48,13 @@
   width: 100%;
 }
 .restore-some {
-  color: #c64490;
-
   cursor: pointer;
 }
 .restore-some:hover {
   opacity: 0.4;
   transform: scale(0.9);
 }
-
+.restore-button::after,
 .add-some::after {
   position: absolute;
   white-space: nowrap;
@@ -68,4 +67,126 @@
 
 .view {
   font-size: 1.5rem !important;
+}
+.form-input {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.form-input img {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.form-input input {
+  border: none;
+  flex-grow: 1;
+  outline: none;
+  box-shadow: none;
+}
+form button {
+  margin: 1rem;
+  border-radius: var(--border-radius-half);
+}
+
+select,
+form input {
+  width: 100%;
+  border: none;
+}
+select:focus {
+  outline: none;
+}
+select:hover {
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--primary-color);
+  padding: 2rem;
+  z-index: 2;
+  border-radius: 10px;
+  width: 20rem;
+  border: 1px solid #000;
+  max-width: 50%;
+}
+
+.header-profile .long-text {
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.task-card {
+  position: relative;
+  padding-top: 10px;
+  max-width: 100%;
+}
+
+.priority-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+}
+
+.task-detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.task-detail-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.time-left {
+  white-space: nowrap;
+}
+.text-content {
+  max-height: 200px; /* Adjust as needed */
+  overflow-y: auto; /* Add scroll if needed */
+  white-space: pre-wrap; /* Preserves line breaks and spaces, and wraps long lines */
+  word-wrap: break-word; /* Breaks the word at the end of the line */
+}
+select {
+  width: 100%;
+  padding: 0.5rem;
+
+  border-radius: var(--border-radius-half);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+}
+
+.form-group select,
+.form-group input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

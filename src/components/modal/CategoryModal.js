@@ -38,7 +38,7 @@ const CategoryModal = ({
           <FormInput
             placeholder="Enter category name"
             type="text"
-            name="name"
+            name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />

@@ -141,66 +141,65 @@ function Categories() {
   return (
     <>
       <Header />
-      {(role === "po" || role === "sm") && (
-        <div className="Home users">
-          <div className="page-wrap">
-            <h2>All Category</h2>
-            {role === "po" && (
-              <>
-                <span>
-                  <AddCircleIcon
-                    className="add-some"
-                    onClick={handleAddCategoryButton}
-                    fontSize="large"
-                  />
-                </span>
 
-                <CategoryModal
-                  open={isModalOpen}
-                  onClose={handleCloseModal}
-                  onSubmit={handleCreateCategory}
-                  title_modal="Create Category"
-                  user={{}} // Pass an empty user object to the UserModal
+      <div className="Home users">
+        <div className="page-wrap">
+          <h2>All Category</h2>
+          {role === "po" && (
+            <>
+              <span>
+                <AddCircleIcon
+                  className="add-some"
+                  onClick={handleAddCategoryButton}
+                  fontSize="large"
                 />
-              </>
-            )}
-            {isEditModalOpen && (
+              </span>
+
               <CategoryModal
-                open={isEditModalOpen}
-                title_modal="Edit Category"
-                onClose={() => setIsEditModalOpen(false)}
-                onSubmit={handleEditCategory}
-                category={editCategory}
+                open={isModalOpen}
+                onClose={handleCloseModal}
+                onSubmit={handleCreateCategory}
+                title_modal="Create Category"
+                user={{}} // Pass an empty user object to the UserModal
               />
-            )}
-            {isDeleteModalOpen && (
-              <>
-                <ModalYesNo
-                  title="Delete Category"
-                  message="Are you sure you want to delete this category?"
-                  open={isDeleteModalOpen}
-                  onClose={() => setIsDeleteModalOpen(false)}
-                  onYes={handleDeleteCategory}
-                  onNo={() => setIsDeleteModalOpen(false)}
-                />
-              </>
-            )}
-            <div className="main-board">
-              <div className="table-board">
-                <Table
-                  class="table"
-                  type="category"
-                  data={categorieData}
-                  columns={columns}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                />
-              </div>
+            </>
+          )}
+          {isEditModalOpen && (
+            <CategoryModal
+              open={isEditModalOpen}
+              title_modal="Edit Category"
+              onClose={() => setIsEditModalOpen(false)}
+              onSubmit={handleEditCategory}
+              category={editCategory}
+            />
+          )}
+          {isDeleteModalOpen && (
+            <>
+              <ModalYesNo
+                title="Delete Category"
+                message="Are you sure you want to delete this category?"
+                open={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onYes={handleDeleteCategory}
+                onNo={() => setIsDeleteModalOpen(false)}
+              />
+            </>
+          )}
+          <div className="main-board">
+            <div className="table-board">
+              <Table
+                class="table"
+                type="category"
+                data={categorieData}
+                columns={columns}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+              />
             </div>
           </div>
-          <Footer />
         </div>
-      )}
+        <Footer />
+      </div>
     </>
   );
 }

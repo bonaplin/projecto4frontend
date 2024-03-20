@@ -9,6 +9,7 @@ import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RestoreIcon from "@mui/icons-material/Restore";
 import TaskModal from "../components/modal/TaskModal.js";
 import ModalYesNo from "../components/modal/ModalYesNo.js";
 import TaskViewModal from "../components/modal/TaskViewModal.js";
@@ -350,6 +351,11 @@ export default function ScrumBoard() {
     setDoing(newDoing);
     setDone(newDone);
   }
+
+  function handleCloseAddModal() {
+    setIsAddTaskModal(false);
+    setSelectedTask({});
+  }
   return (
     <>
       <Header />
@@ -375,7 +381,11 @@ export default function ScrumBoard() {
                     type={"Category"}
                     onChange={(selectedValue) => setCategory(selectedValue)}
                   />
-                  <button onClick={handleResetFilter}>Reset Filter</button>
+                  <RestoreIcon
+                    className="restore-button"
+                    onClick={handleResetFilter}
+                    fontSize="large"
+                  />
                 </div>
               </div>
             )}
@@ -415,7 +425,7 @@ export default function ScrumBoard() {
             <TaskModal
               open={isAddTaskModal}
               title_modal="Add task"
-              onClose={() => setIsAddTaskModal(false)}
+              onClose={handleCloseAddModal}
               onSubmit={AddTask}
               task={selectedTask}
             />

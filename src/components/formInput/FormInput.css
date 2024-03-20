@@ -3,9 +3,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid #000000;
 }
 
 .form-input img {
@@ -18,4 +17,20 @@
   flex-grow: 1;
   outline: none;
   box-shadow: none;
+}
+form button {
+  margin: 1rem;
+  border-radius: var(--border-radius-half);
+}
+
+select,
+form input {
+  width: 100%;
+  border: none;
+}
+select:focus {
+  outline: none;
+}
+select:hover {
+  cursor: pointer;
 }

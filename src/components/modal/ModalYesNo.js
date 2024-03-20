@@ -3,10 +3,9 @@ import Modal from "./Modal";
 
 function ModalYesNo({ open, onClose, title, message, onYes, onNo }) {
   return (
-    <Modal open={open} onClose={onClose} center>
-      <h4>{title}</h4>
+    <Modal open={open} onClose={onClose} title={title} center>
       <p>{message}</p>
-      <div>
+      <div className="button-container">
         <button onClick={onYes}>Yes</button>
         <button onClick={onNo}>No</button>
       </div>
