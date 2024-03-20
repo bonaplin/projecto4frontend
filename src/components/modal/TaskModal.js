@@ -60,56 +60,64 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   }, []);
 
   return (
-    <Modal open={open} onClose={onClose} title={title_modal}>
-      <form onSubmit={handleSubmit}>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {categories.map((category) => (
-            <option key={category.title} value={category.title}>
-              {category.title}
-            </option>
-          ))}
-        </select>
+    <>
+      <Modal open={open} onClose={onClose} title={title_modal}>
+        <form onSubmit={handleSubmit}>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            {categories.map((category) => (
+              <option key={category.title} value={category.title}>
+                {category.title}
+              </option>
+            ))}
+          </select>
 
-        <FormInput
-          placeholder={"Enter task title"}
-          label="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <FormInput
-          placeholder={"Enter task description"}
-          label="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <FormInput
-          type="date"
-          label="Start Date"
-          value={initialDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-        <FormInput
-          type="date"
-          label="End Date"
-          value={finalDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
+          <FormInput
+            placeholder={"Enter task title"}
+            label="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <FormInput
+            placeholder={"Enter task description"}
+            label="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <FormInput
+            type="date"
+            label="Start Date"
+            value={initialDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+          <FormInput
+            type="date"
+            label="End Date"
+            value={finalDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
 
-        <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-          <option value={100}>Low</option>
-          <option value={200}>Medium</option>
-          <option value={300}>High</option>
-        </select>
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value={100}>Low</option>
+            <option value={200}>Medium</option>
+            <option value={300}>High</option>
+          </select>
 
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value={100}>Todo</option>
-          <option value={200}>Doing</option>
-          <option value={300}>Done</option>
-        </select>
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value={100}>Todo</option>
+            <option value={200}>Doing</option>
+            <option value={300}>Done</option>
+          </select>
 
-        <button type="submit">Submit</button>
-      </form>
-    </Modal>
+          <button type="submit">Submit</button>
+        </form>
+      </Modal>
+    </>
   );
 };
 

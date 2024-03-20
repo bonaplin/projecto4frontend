@@ -1,8 +1,11 @@
 :root {
   --border-radius: 10px;
+  --border-radius-half: 5px;
   --padding: 12px 16px; /* Some padding */
   --box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.5); /* Shadow effect */
   --max-width: 20rem; /* Max width for the task column */
+  --task-height: 5rem;
+  --width-priority: 0.2rem;
   --plus: cadetblue;
   --primary-color: #ffffff; /* Primary color */
   --secondary-color: #ec9191; /* Secondary color */
@@ -61,4 +64,8 @@
   transform: translateY(-50%);
   transition: left 0.1s ease-in-out;
   opacity: 0;
+}
+
+.view {
+  font-size: 1.5rem !important;
 }

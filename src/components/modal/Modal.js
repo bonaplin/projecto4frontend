@@ -27,18 +27,20 @@ const Modal = ({ open, onClose, children, title }) => {
           zIndex: "2",
           borderRadius: "10px",
           border: "1px solid #000",
+          maxidth: "50%",
         }}
       >
         <div className="header-profile">
-          <h2
+          <h3
+            className="long-text"
             style={{
-              margin: "0 0 20px 0",
+              margin: "0 0 0.5rem 0",
               textAlign: "center",
               fontSize: "1.2em",
             }}
           >
             {title}
-          </h2>
+          </h3>
         </div>
         {children}
         <button

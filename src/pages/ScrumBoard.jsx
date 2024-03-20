@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { userStore } from "../stores/UserStore";
+import { categoriesStore } from "../stores/CategoriesStore";
 import "./ScrumBoard.css";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -10,8 +11,10 @@ import Footer from "../components/footer/Footer";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import TaskModal from "../components/modal/TaskModal.js";
 import ModalYesNo from "../components/modal/ModalYesNo.js";
+import TaskViewModal from "../components/modal/TaskViewModal.js";
 
 import Dropdown from "../components/dropdown/Dropdown.js";
+import Task from "../components/scrum-board/Task.js";
 
 export default function ScrumBoard() {
   const token = userStore.getState().token; // Get the token from the store
@@ -78,6 +81,9 @@ export default function ScrumBoard() {
         console.error("Failed to add task:", error);
       });
   }
+
+  // Task buttons -------------------------------------------------------------- BUTTONS
+  //EDIT
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleEdit = (task) => {
     setSelectedTask(task);
@@ -111,7 +117,7 @@ export default function ScrumBoard() {
         console.error("Failed to delete task:", error);
       });
   }
-
+  //DELETE
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleDelete = (task) => {
     setSelectedTask(task);
@@ -143,6 +149,40 @@ export default function ScrumBoard() {
         console.error("Failed to delete task:", error);
       });
   }
+  //VIEW
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const handleView = (task) => {
+    setSelectedTask(task);
+    setIsViewModalOpen(true);
+  };
+
+  async function handleViewTask(task) {
+    console.log("task", task);
+    const response = await fetch(
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/get?id=${task.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+      }
+    )
+      .then((response) => {
+        console.log(response.status);
+        if (response.ok) {
+          setIsViewModalOpen(false);
+          //setIsChanged(!isChanged);
+        } else {
+          console.error("Failed to view task:", response.statusText);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to view task:", error);
+      });
+  }
+  // ---------------------------------------------------------------------------- BUTTONS
+
   useEffect(() => {
     async function fetchTasks() {
       let url = "";
@@ -189,7 +229,7 @@ export default function ScrumBoard() {
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // Fetch users
+  // Fetch users ----------------------------
   useEffect(() => {
     async function fetchUsers() {
       const response = await fetch(
@@ -211,7 +251,7 @@ export default function ScrumBoard() {
     fetchUsers();
   }, [userStore.getState().users]);
 
-  // Fetch categories
+  // Fetch categories -----------------------
   useEffect(() => {
     async function fetchCategories() {
       const response = await fetch(
@@ -231,8 +271,9 @@ export default function ScrumBoard() {
       setCategories(categoryTitles);
     }
     fetchCategories();
-  }, []);
+  }, [categoriesStore.getState().categories]);
 
+  // Update task move to another column
   const fetchTasks = async (status, setTask) => {
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=${status}`,
@@ -249,13 +290,12 @@ export default function ScrumBoard() {
     const tasks = await response.json();
     setTask(tasks);
   };
-
   useEffect(() => {
     fetchTasks(100, setTodo);
     fetchTasks(200, setDoing);
     fetchTasks(300, setDone);
   }, [isChanged]);
-
+  //-----------------------------------------
   function handleDragEnd(result) {
     if (!result.destination) {
       return;
@@ -362,6 +402,15 @@ export default function ScrumBoard() {
               task={selectedTask}
             />
           )}
+          {isViewModalOpen && (
+            <TaskViewModal
+              open={isViewModalOpen}
+              onClose={() => setIsViewModalOpen(false)}
+              title_modal="View task"
+              onSubmit={handleViewTask}
+              task={selectedTask}
+            />
+          )}
           {
             <TaskModal
               open={isAddTaskModal}
@@ -379,6 +428,7 @@ export default function ScrumBoard() {
                 id={"100"}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                handleView={handleView}
               />
               <Column
                 title={"DOING"}
@@ -386,6 +436,7 @@ export default function ScrumBoard() {
                 id={"200"}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                handleView={handleView}
               />
               <Column
                 title={"DONE"}
@@ -393,6 +444,7 @@ export default function ScrumBoard() {
                 id={"300"}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                handleView={handleView}
               />{" "}
             </div>{" "}
           </DragDropContext>

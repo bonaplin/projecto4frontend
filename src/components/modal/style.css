@@ -1,0 +1,33 @@
+.task-card {
+  position: relative;
+  padding-top: 10px;
+  max-width: 100%;
+}
+
+.priority-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+}
+
+.task-detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.task-detail-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.time-left {
+  white-space: nowrap;
+}
+.text-content {
+  max-height: 200px; /* Adjust as needed */
+  overflow-y: auto; /* Add scroll if needed */
+  white-space: pre-wrap; /* Preserves line breaks and spaces, and wraps long lines */
+  word-wrap: break-word; /* Breaks the word at the end of the line */
+}

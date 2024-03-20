@@ -4,8 +4,15 @@ import "./Task.css";
 import { userStore } from "../../stores/UserStore";
 import Delete from "../icon-buttons/delete";
 import Edit from "../icon-buttons/edit";
+import View from "../icon-buttons/view";
 
-export default function Task({ task, index, handleDelete, handleEdit }) {
+export default function Task({
+  task,
+  index,
+  handleDelete,
+  handleEdit,
+  handleView,
+}) {
   const role = userStore.getState().role;
   const username = userStore.getState().username;
 
@@ -36,12 +43,20 @@ export default function Task({ task, index, handleDelete, handleEdit }) {
               ? task.owner.substring(0, 12) + "..."
               : task.owner}
           </div>
-          {role === "po" || username === task.owner ? (
-            <div className="task-buttons" style={{ display: "block" }}>
-              <Edit onClick={() => handleEdit(task)} />
-              <Delete onClick={() => handleDelete(task)} />
-            </div>
-          ) : null}
+
+          <div className="task-buttons" style={{ display: "block" }}>
+            {role === "po" || username === task.owner ? (
+              <>
+                <Edit onClick={() => handleEdit(task)} />
+                <Delete onClick={() => handleDelete(task)} />
+              </>
+            ) : null}
+            <View
+              onClick={() => {
+                handleView(task);
+              }}
+            />
+          </div>
           <div className="category text">
             {task.category.length > 12
               ? task.category.substring(0, 12) + "..."
