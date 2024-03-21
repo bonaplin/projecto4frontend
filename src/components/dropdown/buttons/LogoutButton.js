@@ -2,6 +2,7 @@ import React from "react";
 import { userStore } from "../../../stores/UserStore.js";
 import { useNavigate } from "react-router-dom";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import { tsuccess, terror } from "../../messages/Message";
 export default function LogoutButton() {
   const navigate = useNavigate();
 
@@ -24,6 +25,8 @@ export default function LogoutButton() {
       }
     );
 
+    const data = await response.json();
+
     // Check if the request was successful
     if (response.ok) {
       // Clear the userStore
@@ -35,8 +38,16 @@ export default function LogoutButton() {
       await userStore.getState().updatePhotoUrl("");
       // Navigate to the login page
       navigate("/login");
+      tsuccess(data.message); // User is logged out
     } else {
-      console.error("Logout failed");
+      switch (response.status) {
+        case 401:
+          terror(data.message); // Unauthorized
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
 

@@ -8,7 +8,6 @@ import Login from "./pages/Login";
 import Singup from "./pages/Singup";
 import { Route, Routes } from "react-router-dom";
 import Profile from "./pages/Profile";
-import Activity from "./pages/Activity";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import Categories from "./pages/Categories";
@@ -30,7 +29,6 @@ root.render(
       <Route path="/header" element={<Header />} />
       <Route path="/scrum-board" element={<ScrumBoard />} />
       <Route path="/users" element={<Users />} />
-      <Route path="/activity" element={<Activity />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/edit-profile" element={<EditProfile />} />
       <Route path="/categories" element={<Categories />} />

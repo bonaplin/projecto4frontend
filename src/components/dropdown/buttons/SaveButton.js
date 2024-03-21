@@ -1,5 +1,6 @@
 import { userStore } from "../../../stores/UserStore.js";
 import { useNavigate } from "react-router-dom";
+import { tsuccess, twarn, terror } from "../../messages/Message";
 
 export default function SaveButton({ inputs }) {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ export default function SaveButton({ inputs }) {
       }
     );
 
+    const data = await response.json();
+
     // Check if the request was successful
     if (response.ok) {
       // Update the userStore
@@ -36,6 +39,22 @@ export default function SaveButton({ inputs }) {
       await userStore.getState().updateLastname(inputs.lastname);
       // Navigate to another page if needed
       navigate("/home");
+      tsuccess(data.message); // User is updated
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid email format, Invalid phone number format, Invalid URL format
+          break;
+        case 401:
+          terror(data.message); // Unauthorized
+          break;
+        case 409:
+          twarn(data.message); // Email already exists
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
 

@@ -82,7 +82,6 @@ function Header() {
   }, []);
 
   const handleTasksDeletedClick = () => {
-    console.log("Tasks deleted");
     navigate("/deletedtasks");
   };
 
