@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { userStore } from "../stores/UserStore";
 import { categoriesStore } from "../stores/CategoriesStore";
 import "./ScrumBoard.css";
-
+import { tsuccess, twarn, terror } from "../components/messages/Message";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "../components/scrum-board/Column";
 import Header from "../components/header/Header";
@@ -15,7 +15,6 @@ import TaskModal from "../components/modal/TaskModal.js";
 import ModalYesNo from "../components/modal/ModalYesNo.js";
 import TaskViewModal from "../components/modal/TaskViewModal.js";
 import Dropdown from "../components/dropdown/Dropdown.js";
-import { tsuccess, terror } from "../components/messages/Message";
 export default function ScrumBoard() {
   const token = userStore.getState().token; // Get the token from the store
   const [isAddTaskModal, setIsAddTaskModal] = useState(false);
@@ -38,23 +37,31 @@ export default function ScrumBoard() {
   }
 
   async function updateStatus(id, newStatus) {
-    const response = fetch(
+    const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/updateStatus/?id=${id}&status=${newStatus}`,
       {
         "Content-Type": "application/json",
         method: "PUT",
         headers: { token: token },
       }
-    ).then((response) => {
-      if (response.ok) {
-        console.log("resposta" + response.status);
-        console.log("Task updated successfully");
-        tsuccess("Task updated successfully");
-      } else {
-        console.error("Failed to update task:", response.statusText);
-        terror("Failed to update task");
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("resposta" + response.status);
+      console.log("Task updated successfully");
+      // tsuccess("Task updated successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid status
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
       }
-    });
+    }
   }
   function handleAddClick() {
     setIsAddTaskModal(true);
@@ -71,20 +78,28 @@ export default function ScrumBoard() {
         },
         body: JSON.stringify(task),
       }
-    )
-      .then((response) => {
-        console.log(response.status);
-        if (response.status === 200) {
-          console.log("Task added successfully");
-          setIsAddTaskModal(false);
-          setIsChanged(!isChanged);
-          tsuccess("Task added successfully");
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to add task:", error);
-        terror("Failed to add task");
-      });
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Task added successfully");
+      setIsAddTaskModal(false);
+      setIsChanged(!isChanged);
+      tsuccess("Task added successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid task or Cannot add task
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
+    }
   }
 
   // Task buttons -------------------------------------------------------------- BUTTONS
@@ -106,23 +121,31 @@ export default function ScrumBoard() {
         },
         body: JSON.stringify(task),
       }
-    )
-      .then((response) => {
-        console.log(response.status);
-        if (response.ok) {
-          console.log("Task deleted successfully");
-          console.log(task);
-          setIsEditModalOpen(false);
-          setIsChanged(!isChanged);
-          tsuccess("Task updated successfully");
-        } else {
-          console.error("Failed to delete task:", response.statusText);
-          terror("Failed to delete task");
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to delete task:", error);
-      });
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Task updated successfully");
+      setIsEditModalOpen(false);
+      setIsChanged(!isChanged);
+      tsuccess("Task updated successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid task
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        case 403:
+          twarn(data.message); // Forbidden
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
+    }
   }
   //DELETE
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -141,23 +164,31 @@ export default function ScrumBoard() {
           token: token,
         },
       }
-    )
-      .then((response) => {
-        console.log(response.status);
-        if (response.ok) {
-          console.log("Task deleted successfully");
-          setIsDeleteModalOpen(false);
-          setIsChanged(!isChanged);
-          tsuccess("Task deleted successfully");
-        } else {
-          console.error("Failed to delete task:", response.statusText);
-          terror("Failed to delete task");
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to delete task:", error);
-        error("Failed to delete task");
-      });
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Task deleted successfully");
+      setIsDeleteModalOpen(false);
+      setIsChanged(!isChanged);
+      tsuccess("Task deleted successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Cannot desactivate task
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        case 403:
+          twarn(data.message); // Forbidden
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
+    }
   }
   //VIEW
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);

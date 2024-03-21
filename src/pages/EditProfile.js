@@ -10,7 +10,7 @@ import Header from "../components/header/Header";
 import "react-responsive-modal/styles.css";
 // import { Modal } from "react-responsive-modal";
 import Modal from "../components/modal/Modal";
-
+import { tsuccess, terror, twarn } from "../components/messages/Message";
 function EditProfile() {
   const [open, setOpen] = useState(false);
 
@@ -46,8 +46,8 @@ function EditProfile() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const token = userStore.getState().token; // Obtenha o token da store do Zustand
-    const selectedUser = userStore.getState().username; // Obtenha o nome de usuário da store do Zustand
+    const token = userStore.getState().token; // Get the token from the Zustand store
+    const selectedUser = userStore.getState().username; // Get the username from the Zustand store
 
     console.log("inputs", JSON.stringify(inputs));
     const response = await fetch(
@@ -59,18 +59,30 @@ function EditProfile() {
           token: token,
           selectedUser: selectedUser,
         },
-        body: JSON.stringify(inputs), // Envie os inputs como o corpo da requisição
+        body: JSON.stringify(inputs), // Send the inputs as the body of the request
       }
     );
+
+    const data = await response.json();
+
     if (response.ok) {
-      // Se a resposta for bem-sucedida, atualize os detalhes do usuário na store do Zustand
-      const data = await response.json();
+      // If the response is successful, update the user details in the Zustand store
+      tsuccess("Profile updated successfully");
     } else {
-      // Trate o erro aqui
-      console.error(
-        "Erro ao atualizar o perfil do usuário:",
-        response.statusText
-      );
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid email format, Invalid phone number format, Invalid URL format
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        case 409:
+          twarn(data.message); // Email already exists
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
     navigate("/scrum-board");
   }
@@ -92,7 +104,7 @@ function EditProfile() {
   const handleClickSavePassword = async () => {
     if (newPassword !== confirmPassword) {
       console.log(newPassword + " new " + confirmPassword + " confirm");
-      alert("New password and confirmation password do not match.");
+      twarn("New password and confirmation password do not match.");
       return;
     }
     console.log(oldPassword + " old " + newPassword + " new");
@@ -112,14 +124,25 @@ function EditProfile() {
       }
     );
 
-    if (!response.ok) {
-      alert("Failed to change password.");
-    } else {
-      alert("Password changed successfully.");
+    const data = await response.json();
+
+    if (response.ok) {
+      tsuccess("Password changed successfully.");
       onCloseModal();
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Old password is incorrect, Invalid Parameters
+          break;
+        case 401:
+          terror(data.message); // Unauthorized
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   };
-
   return (
     <>
       <Header />

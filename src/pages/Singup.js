@@ -37,13 +37,27 @@ function Singup() {
       },
       body: JSON.stringify(inputs),
     })
-      .then((response) => {
-        if (!response.ok) {
-          twarn("Registo failed. Please try again.");
-          throw new Error("Registo failed. Please try again.");
-        } else {
+      .then(async (response) => {
+        const data = await response.json();
+
+        if (response.ok) {
           tsuccess("Registration successful");
           navigate("/login", { replace: true });
+        } else {
+          switch (response.status) {
+            case 400:
+              twarn(data.message); // One or more parameters are null or blank, Invalid email format, Invalid phone number format, Invalid URL format
+              break;
+            case 409:
+              twarn(data.message); // Invalid Username or Email
+              break;
+            case 401:
+              twarn(data.message); // Unauthorized
+              break;
+            default:
+              terror("An error occurred: " + data.message);
+              break;
+          }
         }
       })
       .catch((error) => {

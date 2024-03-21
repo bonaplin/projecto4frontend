@@ -10,7 +10,7 @@ import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { userStore } from "../stores/UserStore";
 import ModalYesNo from "../components/modal/ModalYesNo";
-
+import { tsuccess, twarn, terror } from "../components/messages/Message";
 function DeletedTasks() {
   const navigate = useNavigate();
   const token = userStore.getState().token;
@@ -18,7 +18,7 @@ function DeletedTasks() {
   const [deletedTasksData, setDeletedTasksData] = useState([]);
   const [taskselected, setTaskselected] = useState(null);
 
-  const fetchCategories = async () => {
+  const fetchInactiveTasks = async () => {
     const response = await fetch(
       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/inactive",
       {
@@ -28,11 +28,23 @@ function DeletedTasks() {
       }
     );
 
-    if (!response.ok) {
-      alert(await response.text());
-    }
     const data = await response.json();
-    setDeletedTasksData(data);
+
+    if (response.ok) {
+      setDeletedTasksData(data);
+    } else {
+      switch (response.status) {
+        case 401:
+          terror(data.message); // Unauthorized
+          break;
+        case 403:
+          terror(data.message); // Forbidden
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
+    }
   };
 
   /* ******* ******* *********************************** *****/
@@ -40,7 +52,7 @@ function DeletedTasks() {
   /* ******* ******* *********************************** *****/
 
   useEffect(() => {
-    fetchCategories();
+    fetchInactiveTasks();
   }, []); // Add dependencies here if any
 
   /* ******* ******* *********************************** *****/
@@ -62,11 +74,28 @@ function DeletedTasks() {
         },
       }
     );
+
+    const data = await response.json();
+
     if (response.ok) {
-      fetchCategories();
+      fetchInactiveTasks();
       setIsDeleteTaskModalOpen(false);
+      tsuccess("Task deleted successfully.");
     } else {
-      alert(await response.text());
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Cannot delete task
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        case 403:
+          twarn(data.message); // Forbidden
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
   const [isRestoreTaskModalOpen, setIsRestoreTaskModalOpen] = useState(false);
@@ -84,11 +113,28 @@ function DeletedTasks() {
         },
       }
     );
+
+    const data = await response.json();
+
     if (response.ok) {
-      fetchCategories();
+      fetchInactiveTasks();
       setIsRestoreTaskModalOpen(false);
+      tsuccess("Task restored successfully.");
     } else {
-      alert(await response.text());
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Cannot restore task
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        case 403:
+          twarn(data.message); // Forbidden
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
   const [isDeleteAllTasksModalOpen, setIsDeleteAllTasksModalOpen] =
@@ -106,11 +152,28 @@ function DeletedTasks() {
         },
       }
     );
+
+    const data = await response.json();
+
     if (response.ok) {
-      fetchCategories();
+      fetchInactiveTasks();
       setIsDeleteAllTasksModalOpen(false);
+      tsuccess("All tasks deleted successfully.");
     } else {
-      alert(await response.text());
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Cannot delete all tasks
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        case 403:
+          twarn(data.message); // Forbidden
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
   const [isRestoreAllTaskModalOpen, setIsRestoreAllTaskModalOpen] =
@@ -128,11 +191,28 @@ function DeletedTasks() {
         },
       }
     );
+
+    const data = await response.json();
+
     if (response.ok) {
-      fetchCategories();
+      fetchInactiveTasks();
       setIsRestoreAllTaskModalOpen(false);
+      tsuccess("All tasks restored successfully.");
     } else {
-      alert(await response.text());
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Cannot restore all tasks
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        case 403:
+          twarn(data.message); // Forbidden
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
 

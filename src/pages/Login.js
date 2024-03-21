@@ -41,28 +41,34 @@ function Login() {
         username: inputs.username,
         password: inputs.password,
       },
-      //body: JSON.stringify(inputs), // inputs should contain the username and password
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Login failed. Please try again.");
+      .then(async (response) => {
+        const data = await response.json();
+
+        if (response.ok) {
+          updateUsername(data.username);
+          updateRole(data.role);
+          updateToken(data.token);
+          tsuccess("Login successful");
+          navigate("/scrum-board", { replace: true }); // Cant go back in browser.
+        } else {
+          switch (response.status) {
+            case 401:
+              twarn(data.message); // Login Failed
+              break;
+            case 403:
+              twarn(data.message); // User is not active
+              break;
+            default:
+              terror("An error occurred: " + data.message);
+              break;
+          }
         }
-        return response.json();
-      })
-      .then((data) => {
-        // Continue with your existing code...
-        updateUsername(data.username);
-        updateRole(data.role);
-        updateToken(data.token);
-        tsuccess("Login successful");
-        navigate("/scrum-board", { replace: true }); // Cant go back in browser.
       })
       .catch((error) => {
-        terror("Login failed. Please try again.");
-        // Optionally, we can set an error state variable to display the error message
+        terror("There was an error: " + error.message);
       });
   };
-
   return (
     <Layout>
       <div className="login-outer-container">
