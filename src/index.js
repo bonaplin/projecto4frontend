@@ -16,6 +16,7 @@ import Users from "./pages/Users";
 import EditProfile from "./pages/EditProfile";
 import DeletedTasks from "./pages/DeletedTasks";
 import ScrumBoard from "./pages/ScrumBoard";
+import { ToastContainer } from "react-toastify";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -38,6 +39,7 @@ root.render(
 
       <Route path="/footer" element={<Footer />} />
     </Routes>
+    <ToastContainer />
   </Router>
 );
 

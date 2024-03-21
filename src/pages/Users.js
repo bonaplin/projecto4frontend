@@ -6,7 +6,7 @@ import "./Users.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { userStore } from "../stores/UserStore";
 import UserModal from "../components/modal/UserModal";
-
+import { tsuccess, terror, twarn } from "../components/messages/Message";
 function Users() {
   let userData = userStore((state) => state.user);
   const [isChange, setIsChange] = useState(false); //to change the fetch
@@ -40,10 +40,11 @@ function Users() {
       console.log("User Created");
       setModalOpen(false);
       setIsChange(!isChange);
+      tsuccess("User Created");
     }
 
     if (!response.ok) {
-      alert(response.status);
+      terror("User not created. Please try again.");
     }
 
     let userDetails = await response.json();
@@ -68,13 +69,24 @@ function Users() {
         body: JSON.stringify(user),
       }
     );
+    const data = await response.json();
+
     if (response.ok) {
-      console.log("User Updated");
+      tsuccess("User Updated");
       setIsEditModalOpen(false);
       setIsChange(!isChange);
-    } else if (!response.ok) {
-      console.log(user);
-      alert(response.status);
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid format error
+          break;
+        case 409:
+          twarn(data.message); // Username or email already exists error
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
   /* ******* ******* *********************************** *****/
@@ -96,19 +108,28 @@ function Users() {
         },
       }
     );
+    const data = await response.json();
+
     if (response.ok) {
       console.log("User Deleted");
       setIsChange(!isChange);
       setIsDeleteModalOpen(false);
+      tsuccess("User deleted successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid format error
+          break;
+        case 409:
+          twarn(data.message); // Username or email already exists error
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
 
-    if (!response.ok) {
-      console.log(user);
-      alert(`HTTP error! status: ${response.status}`);
-    }
-
-    let userDetails = await response.json();
-    console.log("User Deleted", userDetails);
+    console.log("User Deleted", data);
   }
 
   /* ******* ******* *********************************** *****/
@@ -130,19 +151,29 @@ function Users() {
         },
       }
     );
+
+    const data = await response.json();
+
     if (response.ok) {
       console.log("User Tasks Deleted");
       setIsChange(!isChange);
       setIsDeleteModalTasksOpen(false);
+      tsuccess("User tasks deleted successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Tasks not deleted or Invalid Parameters error
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized error
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
 
-    if (!response.ok) {
-      console.log(user);
-      alert(`HTTP error! status: ${response.status}`);
-    }
-
-    let userDetails = await response.json();
-    console.log("User Tasks Deleted", userDetails);
+    console.log("User Tasks Deleted", data);
   }
 
   /* ******* ******* *********************************** *****/
@@ -169,18 +200,28 @@ function Users() {
         body: JSON.stringify(body),
       }
     );
+
+    const data = await response.json();
+
     if (response.ok) {
       console.log("User Active Updated");
       setIsChange(!isChange);
+      tsuccess("User active status updated successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Status not changed or Invalid Parameters error
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized error
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
 
-    if (!response.ok) {
-      console.log(user);
-      alert(`HTTP error! status: ${response.status}`);
-    }
-
-    let userDetails = await response.json();
-    console.log("User Active Edited", userDetails);
+    console.log("User Active Edited", data);
   }
   /* ******* ******* *********************************** *****/
 

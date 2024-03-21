@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { DragDropContext } from "react-beautiful-dnd";
-
+import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
 import ScrumBoard from "./pages/ScrumBoard";
 import Task from "./components/scrum-board/Task";

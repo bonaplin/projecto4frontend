@@ -7,16 +7,15 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "../components/scrum-board/Column";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import { ToastContainer } from "react-toastify";
-
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RestoreIcon from "@mui/icons-material/Restore";
 import TaskModal from "../components/modal/TaskModal.js";
 import ModalYesNo from "../components/modal/ModalYesNo.js";
 import TaskViewModal from "../components/modal/TaskViewModal.js";
-
 import Dropdown from "../components/dropdown/Dropdown.js";
-
+import { tsuccess, terror } from "../components/messages/Message";
 export default function ScrumBoard() {
   const token = userStore.getState().token; // Get the token from the store
   const [isAddTaskModal, setIsAddTaskModal] = useState(false);
@@ -49,8 +48,11 @@ export default function ScrumBoard() {
     ).then((response) => {
       if (response.ok) {
         console.log("resposta" + response.status);
+        console.log("Task updated successfully");
+        tsuccess("Task updated successfully");
       } else {
         console.error("Failed to update task:", response.statusText);
+        terror("Failed to update task");
       }
     });
   }
@@ -72,14 +74,16 @@ export default function ScrumBoard() {
     )
       .then((response) => {
         console.log(response.status);
-        if (response.ok) {
+        if (response.status === 200) {
           console.log("Task added successfully");
           setIsAddTaskModal(false);
           setIsChanged(!isChanged);
+          tsuccess("Task added successfully");
         }
       })
       .catch((error) => {
         console.error("Failed to add task:", error);
+        terror("Failed to add task");
       });
   }
 
@@ -110,8 +114,10 @@ export default function ScrumBoard() {
           console.log(task);
           setIsEditModalOpen(false);
           setIsChanged(!isChanged);
+          tsuccess("Task updated successfully");
         } else {
           console.error("Failed to delete task:", response.statusText);
+          terror("Failed to delete task");
         }
       })
       .catch((error) => {
@@ -142,12 +148,15 @@ export default function ScrumBoard() {
           console.log("Task deleted successfully");
           setIsDeleteModalOpen(false);
           setIsChanged(!isChanged);
+          tsuccess("Task deleted successfully");
         } else {
           console.error("Failed to delete task:", response.statusText);
+          terror("Failed to delete task");
         }
       })
       .catch((error) => {
         console.error("Failed to delete task:", error);
+        error("Failed to delete task");
       });
   }
   //VIEW
@@ -213,10 +222,11 @@ export default function ScrumBoard() {
           setDoing(doing);
           setDone(done);
         } else {
+          terror("Failed to fetch tasks");
           console.error("Failed to fetch tasks:", response.statusText);
         }
       } catch (error) {
-        console.error("Failed to fetch tasks:", error);
+        terror("Failed to fetch tasks");
       }
     }
     fetchTasks();
@@ -242,7 +252,7 @@ export default function ScrumBoard() {
         }
       );
       if (!response.ok) {
-        console.error("Failed to fetch users:", response.statusText);
+        terror("Failed to fetch users:", response.statusText);
         return;
       }
       const users = await response.json();
@@ -460,10 +470,6 @@ export default function ScrumBoard() {
           </DragDropContext>
         </div>
         <Footer />
-      </div>
-      <div>
-        <ToastContainer />
-        {/* rest of your app */}
       </div>
     </>
   );

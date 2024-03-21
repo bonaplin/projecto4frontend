@@ -10,12 +10,14 @@ import { Link } from "react-router-dom";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 
 import "react-notifications/lib/notifications.css";
+import { tsuccess, terror, twarn } from "../components/messages/Message";
 
 function Login() {
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
   });
+  console.log(inputs);
   const updateUsername = userStore((state) => state.updateUsername);
   const updateRole = userStore((state) => state.updateRole);
   const updateToken = userStore((state) => state.updateToken);
@@ -28,39 +30,37 @@ function Login() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      // Send a POST request to the login endpoint
-      const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            username: inputs.username,
-            password: inputs.password,
-          },
-          //body: JSON.stringify(inputs), // inputs should contain the username and password
+
+    // Send a POST request to the login endpoint
+    fetch("http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        username: inputs.username,
+        password: inputs.password,
+      },
+      //body: JSON.stringify(inputs), // inputs should contain the username and password
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Login failed. Please try again.");
         }
-      );
-
-      console.log(inputs);
-      if (!response.ok) {
-        throw new Error("Login failed. Please try again.");
-      }
-
-      const data = await response.json();
-
-      // Continue with your existing code...
-      updateUsername(data.username);
-      updateRole(data.role);
-      updateToken(data.token);
-      navigate("/scrum-board", { replace: true }); // Cant go back in browser.
-    } catch (error) {
-      console.log(error);
-      // Optionally, we can set an error state variable to display the error message
-    }
+        return response.json();
+      })
+      .then((data) => {
+        // Continue with your existing code...
+        updateUsername(data.username);
+        updateRole(data.role);
+        updateToken(data.token);
+        tsuccess("Login successful");
+        navigate("/scrum-board", { replace: true }); // Cant go back in browser.
+      })
+      .catch((error) => {
+        terror("Login failed. Please try again.");
+        // Optionally, we can set an error state variable to display the error message
+      });
   };
 
   return (
