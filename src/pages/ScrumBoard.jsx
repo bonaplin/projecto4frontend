@@ -15,6 +15,8 @@ import ModalYesNo from "../components/modal/ModalYesNo.js";
 import TaskViewModal from "../components/modal/TaskViewModal.js";
 import Dropdown from "../components/dropdown/Dropdown.js";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import Tooltip from "@mui/material/Tooltip";
+
 export default function ScrumBoard() {
   const token = userStore.getState().token;
   const [isAddTaskModal, setIsAddTaskModal] = useState(false);
@@ -413,6 +415,7 @@ export default function ScrumBoard() {
               onClick={handleAddClick}
               className="add-some"
               fontSize="large"
+              title="Add task"
             />
             {role === "po" || role === "sm" ? (
               <div className="filter-container">
@@ -427,25 +430,31 @@ export default function ScrumBoard() {
                     type={"All"}
                     onChange={(selectedValue) => setCategory(selectedValue)}
                   />
+                  <Tooltip title="Reset Filters / Order">
+                    <RestoreIcon
+                      className="restore-button"
+                      onClick={handleResetFilter}
+                      fontSize="large"
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+            ) : (
+              <>
+                <Tooltip title="My Tasks">
+                  <FilterAltIcon
+                    onClick={handleClickMyTasks}
+                    className="restore-button"
+                    fontSize="large"
+                  />
+                </Tooltip>
+                <Tooltip title="Reset Filter">
                   <RestoreIcon
                     className="restore-button"
                     onClick={handleResetFilter}
                     fontSize="large"
                   />
-                </div>
-              </div>
-            ) : (
-              <>
-                <FilterAltIcon
-                  onClick={handleClickMyTasks}
-                  className="restore-button"
-                  fontSize="large"
-                />{" "}
-                <RestoreIcon
-                  className="restore-button"
-                  onClick={handleResetFilter}
-                  fontSize="large"
-                />
+                </Tooltip>
               </>
             )}
           </div>

@@ -3,6 +3,7 @@ import Delete from "../../icon-buttons/delete.js";
 import Edit from "../../icon-buttons/edit.js";
 import Restore from "../../icon-buttons/restore.js";
 import DeleteTask from "../../icon-buttons/delete-tasks.js";
+import CloseIcon from "@mui/icons-material/Close";
 const UserRow = ({
   item,
   columns,

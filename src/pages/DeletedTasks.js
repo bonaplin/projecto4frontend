@@ -11,6 +11,8 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { userStore } from "../stores/UserStore";
 import ModalYesNo from "../components/modal/ModalYesNo";
 import { tsuccess, twarn, terror } from "../components/messages/Message";
+import Tooltip from "@mui/material/Tooltip";
+
 function DeletedTasks() {
   const navigate = useNavigate();
   const token = userStore.getState().token;
@@ -226,18 +228,23 @@ function DeletedTasks() {
             {role === "po" && (
               <div className="top-buttons">
                 <div>
-                  <DeleteForeverIcon
-                    onClick={handleDeleteAll}
-                    className="add-some"
-                    fontSize="large"
-                  />
+                  <Tooltip title="Delete All Tasks">
+                    <DeleteForeverIcon
+                      title="Delete All Tasks"
+                      onClick={handleDeleteAll}
+                      className="add-some"
+                      fontSize="large"
+                    />
+                  </Tooltip>
                 </div>
                 <div>
-                  <RestoreFromTrashIcon
-                    onClick={handleRestoreAll}
-                    className="restore-some"
-                    fontSize="large"
-                  />
+                  <Tooltip title="Restore All Tasks">
+                    <RestoreFromTrashIcon
+                      onClick={handleRestoreAll}
+                      className="restore-some"
+                      fontSize="large"
+                    />
+                  </Tooltip>
                 </div>
               </div>
             )}

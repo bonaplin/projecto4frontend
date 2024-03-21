@@ -1,8 +1,12 @@
 import React from "react";
-import RemoveShoppingCartOutlinedIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 const DeleteTasks = ({ onClick }) => (
-  <button className="icon-delete-tasks tasks-button" onClick={onClick}>
-    <RemoveShoppingCartOutlinedIcon />
+  <button
+    className="icon-delete-tasks tasks-button"
+    onClick={onClick}
+    title="Delete tasks"
+  >
+    <CloseIcon />
   </button>
 );
 
