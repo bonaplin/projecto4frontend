@@ -7,6 +7,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "../components/scrum-board/Column";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
+import { ToastContainer } from "react-toastify";
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RestoreIcon from "@mui/icons-material/Restore";
@@ -15,7 +16,6 @@ import ModalYesNo from "../components/modal/ModalYesNo.js";
 import TaskViewModal from "../components/modal/TaskViewModal.js";
 
 import Dropdown from "../components/dropdown/Dropdown.js";
-import Task from "../components/scrum-board/Task.js";
 
 export default function ScrumBoard() {
   const token = userStore.getState().token; // Get the token from the store
@@ -368,17 +368,17 @@ export default function ScrumBoard() {
               className="add-some"
               fontSize="large"
             />
-            {role === "po" && (
+            {(role === "po" || role === "sm") && (
               <div className="filter-container">
                 <div className="filter-side">
                   <Dropdown
                     data={users}
-                    type={"Username"}
+                    type={"All"}
                     onChange={(selectedValue) => setUsername(selectedValue)}
                   />
                   <Dropdown
                     data={categories}
-                    type={"Category"}
+                    type={"All"}
                     onChange={(selectedValue) => setCategory(selectedValue)}
                   />
                   <RestoreIcon
@@ -460,6 +460,10 @@ export default function ScrumBoard() {
           </DragDropContext>
         </div>
         <Footer />
+      </div>
+      <div>
+        <ToastContainer />
+        {/* rest of your app */}
       </div>
     </>
   );

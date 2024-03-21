@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
 import Layout from "../components/layout/Layout";
 import FormInput from "../components/formInput/FormInput";
+import FormSelect from "../components/formInput/FormSelect";
 import "./EditProfile.css";
 import Header from "../components/header/Header";
 import "react-responsive-modal/styles.css";
@@ -135,16 +136,16 @@ function EditProfile() {
             </div>
             <form onSubmit={handleSubmit}>
               {inputs.role === "po" && (
-                <select
+                <FormSelect
                   name="role"
                   value={inputs.role}
                   onChange={handleChange}
-                  className="form-input"
-                >
-                  <option value="po">Product Owner</option>
-                  <option value="sm">Scrum Master</option>
-                  <option value="dev">Developer</option>
-                </select>
+                  options={[
+                    { value: "po", label: "Product Owner" },
+                    { value: "sm", label: "Scrum Master" },
+                    { value: "dev", label: "Developer" },
+                  ]}
+                />
               )}
               <FormInput
                 placeholder="Enter your email address"

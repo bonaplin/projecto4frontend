@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../../../stores/UserStore"; // Import the store
-
+import GroupIcon from "@mui/icons-material/Group";
 export default function UsersButton() {
   const navigate = useNavigate();
   const token = userStore.getState().token; // Get the token from the store
@@ -26,5 +26,10 @@ export default function UsersButton() {
     navigate("/users");
   }
   console.log("UsersButton");
-  return <div onClick={handleClick}>Users</div>;
+  return (
+    <div onClick={handleClick} className="dropdown-button">
+      <GroupIcon />
+      Users
+    </div>
+  );
 }

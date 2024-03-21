@@ -1,7 +1,7 @@
 import React from "react";
 import { userStore } from "../../../stores/UserStore.js";
 import { useNavigate } from "react-router-dom";
-
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 export default function LogoutButton() {
   const navigate = useNavigate();
 
@@ -40,5 +40,10 @@ export default function LogoutButton() {
     }
   }
 
-  return <div onClick={handleClick}>Logout</div>;
+  return (
+    <div onClick={handleClick} className="dropdown-button">
+      <LogoutOutlinedIcon />
+      Logout
+    </div>
+  );
 }

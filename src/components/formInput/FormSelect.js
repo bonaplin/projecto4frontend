@@ -3,8 +3,7 @@ import "./FormInput.css"; // Import the same CSS file
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import ClassOutlinedIcon from "@mui/icons-material/ClassOutlined";
 import PriorityHighOutlinedIcon from "@mui/icons-material/PriorityHighOutlined";
-import TitleOutlinedIcon from "@mui/icons-material/TitleOutlined";
-
+import CategoryIcon from "@mui/icons-material/Category";
 const FormSelect = ({ name, options, value, onChange }) => {
   const getIcon = (name) => {
     switch (name) {
@@ -26,6 +25,10 @@ const FormSelect = ({ name, options, value, onChange }) => {
             style={{ marginRight: "10px", marginLeft: "10px" }}
           />
         );
+      case "role":
+        return (
+          <CategoryIcon style={{ marginRight: "10px", marginLeft: "10px" }} />
+        );
 
       // Add more cases if you have more select fields
       default:
@@ -37,6 +40,7 @@ const FormSelect = ({ name, options, value, onChange }) => {
     <div className="form-input">
       {getIcon(name)}
       <select value={value} onChange={onChange}>
+        {value === "" && <option value="">Select an option...</option>}
         {options.map((option, index) => (
           <option key={index} value={option.value}>
             {option.label}

@@ -19,7 +19,16 @@ const Table = ({
         <thead>
           <tr>
             {columns.map((column, index) => (
-              <th key={index}>
+              <th
+                key={index}
+                style={
+                  column === "role" ||
+                  column === "active" ||
+                  column === "actions"
+                    ? { textAlign: "center" }
+                    : {}
+                }
+              >
                 {column === "actions-category"
                   ? "Actions"
                   : column.charAt(0).toUpperCase() + column.slice(1)}

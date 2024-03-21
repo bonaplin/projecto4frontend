@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "./Modal";
 import "./Style.css";
-import moment from "moment"; // Import moment.js for date calculations
+// import moment from "moment"; // Import moment.js for date calculations
 
 const TaskViewModal = ({ open, onClose, task }) => {
   const getPriorityColor = (priority) => {
@@ -16,8 +16,8 @@ const TaskViewModal = ({ open, onClose, task }) => {
         return "gray";
     }
   };
-  //Time left calculation
-  const timeLeft = moment(task.finalDate).fromNow();
+  // //Time left calculation
+  // const timeLeft = moment(task.finalDate).fromNow();
 
   return (
     <Modal open={open} onClose={onClose} title={task.title}>
@@ -46,10 +46,10 @@ const TaskViewModal = ({ open, onClose, task }) => {
           <div className="task-detail-label">End Date:</div>
           <div className="date">{task.finalDate}</div>
         </div>
-        <div className="task-detail">
+        {/* <div className="task-detail">
           <div className="task-detail-label time-left">Time Left:</div>
           <div className="time-left">{timeLeft}</div>
-        </div>
+        </div> */}
       </div>
     </Modal>
   );

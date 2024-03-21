@@ -16,7 +16,17 @@ const UserRow = ({
   return (
     <tr>
       {columns.map((column) => (
-        <td key={column}>
+        <td
+          key={column}
+          style={
+            column === "role" ||
+            column === "active" ||
+            column === "actions" ||
+            column === "photoURL"
+              ? { textAlign: "center" }
+              : {}
+          }
+        >
           {column === "photoURL" ? (
             <img
               src={item[column]}

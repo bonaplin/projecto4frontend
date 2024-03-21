@@ -6,11 +6,9 @@ import "./Users.css";
 import Header from "../components/header/Header";
 import Table from "../components/table/Table";
 import Footer from "../components/footer/Footer";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { userStore } from "../stores/UserStore";
-import Modal from "../components/modal/Modal";
 import ModalYesNo from "../components/modal/ModalYesNo";
 
 function DeletedTasks() {

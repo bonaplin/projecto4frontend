@@ -12,6 +12,7 @@ import LogoutButton from "../dropdown/buttons/LogoutButton.js";
 import ProfileButton from "../dropdown/buttons/ProfileButton.js";
 import { userStore } from "../../stores/UserStore.js";
 import { useNavigate } from "react-router-dom";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 function Header() {
   const navigate = useNavigate();
@@ -111,7 +112,9 @@ function Header() {
             </li>
           ) : null}
           {role === "po" || role === "sm" ? (
-            <li onClick={handleTasksDeletedClick}>Deleted Tasks</li>
+            <li onClick={handleTasksDeletedClick} className="dropdown-button">
+              <DeleteOutlineOutlinedIcon /> Deleted Tasks
+            </li>
           ) : null}
         </DropdownMenu>
       </div>

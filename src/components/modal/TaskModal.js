@@ -16,9 +16,9 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   const [finalDate, setEndDate] = useState(
     task.finalDate ? new Date(task.finalDate).toISOString().split("T")[0] : ""
   );
-  const [priority, setPriority] = useState(task.priority || 200);
-  const [status, setStatus] = useState(task.status || 100);
-  const [category, setCategory] = useState(task.category || "Backlog");
+  const [priority, setPriority] = useState(task.priority || "");
+  const [status, setStatus] = useState(task.status || "");
+  const [category, setCategory] = useState(task.category || "");
   const [categories, setCategories] = useState([]);
   const id = task.id;
   const token = userStore.getState().token;
@@ -47,9 +47,20 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
     });
     resetForm();
   };
-
   const resetForm = () => {
-    document.querySelector("form").reset();
+    const form = document.querySelector("form");
+    if (form) form.reset();
+  };
+
+  const handleClose = () => {
+    setTitle("");
+    setDescription("");
+    setStartDate(null);
+    setEndDate(null);
+    setPriority("");
+    setStatus("");
+    setCategory("");
+    onClose();
   };
 
   //
@@ -71,7 +82,7 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
 
   return (
     <>
-      <Modal open={open} onClose={onClose} title={title_modal}>
+      <Modal open={open} onClose={handleClose} title={title_modal}>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <FormInput

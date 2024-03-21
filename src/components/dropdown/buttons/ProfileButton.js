@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../../../stores/UserStore"; // Import the store
-
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 export default function ProfileButton() {
   const navigate = useNavigate();
   const token = userStore.getState().token; // Get the token from the store
@@ -25,5 +25,10 @@ export default function ProfileButton() {
     navigate("/edit-profile", { state: { userDetails: userDetails } });
   }
   console.log("ProfileButton");
-  return <div onClick={handleClick}>Profile</div>;
+  return (
+    <div onClick={handleClick} className="dropdown-button">
+      <AccountCircleOutlinedIcon />
+      Profile
+    </div>
+  );
 }

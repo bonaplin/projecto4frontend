@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import FormInput from "../formInput/FormInput";
-
+import FormSelect from "../formInput/FormSelect";
 const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
   const [username, setUsername] = useState(user.username);
   const [password, setPassword] = useState(user.password);
@@ -63,16 +63,16 @@ const UserModal = ({ open, onClose, onSubmit, title, user = {} }) => {
         <>
           <img src={photoURL} alt="User" />
           <form onSubmit={handleSubmit}>
-            <select
+            <FormSelect
               name="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="form-input"
-            >
-              <option value="po">Product Owner</option>
-              <option value="sm">Scrum Master</option>
-              <option value="dev">Developer</option>
-            </select>
+              options={[
+                { value: "po", label: "Product Owner" },
+                { value: "sm", label: "Scrum Master" },
+                { value: "dev", label: "Developer" },
+              ]}
+            />
 
             {title === "Create User" && (
               <>

@@ -8,7 +8,10 @@ const Row = ({ item, columns, handleEdit, handleDelete, type }) => {
   return (
     <tr>
       {columns.map((column) => (
-        <td key={column}>
+        <td
+          key={column}
+          style={column === "actions" ? { textAlign: "center" } : {}}
+        >
           {column === "actions" ? (
             <>
               {type === "category" && role !== "sm" && (
