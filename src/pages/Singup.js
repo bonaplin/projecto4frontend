@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/formInput/FormInput";
 import Layout from "../components/layout/Layout";
+import icon from "../assets/icon/tccolor.png";
 import "../pages/Singup.css";
 import { userStore } from "../stores/UserStore";
 import { tsuccess, terror, twarn } from "../components/messages/Message";
@@ -69,7 +70,10 @@ function Singup() {
     <Layout>
       <div className="signup-outer-container">
         <div className="signup-page-wrap">
-          <h1>Sign Up </h1>
+          <div className="header-profile">
+            <h1>Sign Up </h1>
+            <img src={icon} alt="icon" />
+          </div>
           <form onSubmit={handleSubmit}>
             <FormInput
               placeholder="Enter your username"

@@ -8,7 +8,7 @@ import "./Login.css";
 import { userStore } from "../stores/UserStore";
 import { Link } from "react-router-dom";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
-
+import tcicon from "../assets/icon/tccolor.png";
 import "react-notifications/lib/notifications.css";
 import { tsuccess, terror, twarn } from "../components/messages/Message";
 
@@ -73,8 +73,10 @@ function Login() {
     <Layout>
       <div className="login-outer-container">
         <div className="login-page-wrap">
-          <h1>Login</h1>
-
+          <div className="header-profile">
+            <h1>Login</h1>
+            <img src={tcicon} alt="" />
+          </div>
           <form onSubmit={handleSubmit}>
             <FormInput
               icon={<Person2OutlinedIcon />}

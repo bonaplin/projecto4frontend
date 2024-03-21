@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "./Modal";
-import "./Style.css";
+
 // import moment from "moment"; // Import moment.js for date calculations
 
 const TaskViewModal = ({ open, onClose, task }) => {

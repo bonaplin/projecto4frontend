@@ -59,6 +59,12 @@ const FormInput = ({ placeholder, type, name, value, onChange }) => {
             style={{ marginRight: "10px", marginLeft: "10px" }}
           />
         );
+      case "finaldate":
+        return (
+          <EditCalendarOutlinedIcon
+            style={{ marginRight: "10px", marginLeft: "10px" }}
+          />
+        );
       case "description":
         return (
           <DescriptionOutlinedIcon
@@ -73,7 +79,9 @@ const FormInput = ({ placeholder, type, name, value, onChange }) => {
   return (
     <div className="form-input">
       {getIcon(name)}
+
       <input
+        required={name !== "finaldate"}
         type={type}
         name={name}
         defaultValue={value || ""}

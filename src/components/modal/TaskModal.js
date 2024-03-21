@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import FormInput from "../formInput/FormInput";
 import { userStore } from "../../stores/UserStore";
-import Dropdown from "../dropdown/Dropdown";
 import FormSelect from "../formInput/FormSelect";
+
 const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   const today = new Date().toISOString();
   const [title, setTitle] = useState(task.title || "");
@@ -11,31 +11,21 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   const [initialDate, setStartDate] = useState(
     task.initialDate
       ? new Date(task.initialDate).toISOString().split("T")[0]
-      : today
+      : today.split("T")[0]
   );
   const [finalDate, setEndDate] = useState(
     task.finalDate ? new Date(task.finalDate).toISOString().split("T")[0] : ""
   );
   const [priority, setPriority] = useState(task.priority || "");
-  const [status, setStatus] = useState(task.status || "");
+  const [status, setStatus] = useState(task.status || "100");
   const [category, setCategory] = useState(task.category || "");
   const [categories, setCategories] = useState([]);
   const id = task.id;
   const token = userStore.getState().token;
 
-  // if (title_modal === "Add task") {
-  //   setTitle("");
-  //   setDescription("");
-  //   setStartDate(today);
-  //   setEndDate("");
-  //   setPriority(200);
-  //   setStatus(100);
-  //   setCategory("Backlog");
-  // }
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({
+    const taskData = {
       title,
       description,
       initialDate,
@@ -43,27 +33,22 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
       priority,
       status,
       category,
-      id,
-    });
-    resetForm();
+    };
+    if (id) {
+      taskData.id = id;
+    }
+    const result = await onSubmit(taskData);
+    if (result && result.success) {
+      setTitle("");
+      setDescription("");
+      setStartDate(today);
+      setEndDate("");
+      setPriority("");
+      setStatus("100");
+      setCategory("");
+      onClose();
+    }
   };
-  const resetForm = () => {
-    const form = document.querySelector("form");
-    if (form) form.reset();
-  };
-
-  const handleClose = () => {
-    setTitle("");
-    setDescription("");
-    setStartDate(null);
-    setEndDate(null);
-    setPriority("");
-    setStatus("");
-    setCategory("");
-    onClose();
-  };
-
-  //
 
   useEffect(() => {
     fetch("http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all", {
@@ -79,6 +64,10 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
         setCategories(data);
       });
   }, []);
+
+  const handleClose = () => {
+    onClose();
+  };
 
   return (
     <>
@@ -141,7 +130,7 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
             />
             <FormInput
               type="date"
-              name="date"
+              name="finaldate"
               label="End Date"
               value={finalDate}
               onChange={(e) => setEndDate(e.target.value)}

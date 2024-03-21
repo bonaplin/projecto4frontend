@@ -3,11 +3,10 @@ import { userStore } from "../stores/UserStore";
 import { categoriesStore } from "../stores/CategoriesStore";
 import "./ScrumBoard.css";
 import { tsuccess, twarn, terror } from "../components/messages/Message";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 import Column from "../components/scrum-board/Column";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RestoreIcon from "@mui/icons-material/Restore";
@@ -15,8 +14,9 @@ import TaskModal from "../components/modal/TaskModal.js";
 import ModalYesNo from "../components/modal/ModalYesNo.js";
 import TaskViewModal from "../components/modal/TaskViewModal.js";
 import Dropdown from "../components/dropdown/Dropdown.js";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 export default function ScrumBoard() {
-  const token = userStore.getState().token; // Get the token from the store
+  const token = userStore.getState().token;
   const [isAddTaskModal, setIsAddTaskModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState({});
   const role = userStore.getState().role;
@@ -55,7 +55,7 @@ export default function ScrumBoard() {
     } else {
       switch (response.status) {
         case 400:
-          twarn(data.message); // Invalid status
+          twarn(data.message);
           break;
         default:
           terror("An error occurred: " + data.message);
@@ -83,22 +83,22 @@ export default function ScrumBoard() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Task added successfully");
       setIsAddTaskModal(false);
       setIsChanged(!isChanged);
       tsuccess("Task added successfully");
+      return { success: true }; // Return success to close the modal/update the tasks/clean inputs
     } else {
       switch (response.status) {
         case 400:
           twarn(data.message); // Invalid task or Cannot add task
           break;
         case 401:
-          twarn(data.message); // Unauthorized
+          twarn(data.message); // Unauthorizeds
           break;
         default:
           terror("An error occurred: " + data.message);
-          break;
       }
+      return { success: false }; // Return failure
     }
   }
 
@@ -266,6 +266,7 @@ export default function ScrumBoard() {
   function handleResetFilter() {
     setUsername(null);
     setCategory(null);
+    setIsChanged(!isChanged);
   }
 
   const [users, setUsers] = useState([]);
@@ -348,7 +349,6 @@ export default function ScrumBoard() {
     let newTodo = [...todo];
     let newDoing = [...doing];
     let newDone = [...done];
-
     // Find the task and remove it from its source column
     const allTasks = [...newTodo, ...newDoing, ...newDone];
     const task = findItemById(allTasks, draggableId);
@@ -397,6 +397,11 @@ export default function ScrumBoard() {
     setIsAddTaskModal(false);
     setSelectedTask({});
   }
+
+  function handleClickMyTasks() {
+    setUsername(userStore.getState().username);
+  }
+
   return (
     <>
       <Header />
@@ -409,7 +414,7 @@ export default function ScrumBoard() {
               className="add-some"
               fontSize="large"
             />
-            {(role === "po" || role === "sm") && (
+            {role === "po" || role === "sm" ? (
               <div className="filter-container">
                 <div className="filter-side">
                   <Dropdown
@@ -429,6 +434,19 @@ export default function ScrumBoard() {
                   />
                 </div>
               </div>
+            ) : (
+              <>
+                <FilterAltIcon
+                  onClick={handleClickMyTasks}
+                  className="restore-button"
+                  fontSize="large"
+                />{" "}
+                <RestoreIcon
+                  className="restore-button"
+                  onClick={handleResetFilter}
+                  fontSize="large"
+                />
+              </>
             )}
           </div>
           {isDeleteModalOpen && (

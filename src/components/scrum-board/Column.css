@@ -31,7 +31,6 @@
   border-radius: var(--border-radius);
 }
 .dragging-over:hover {
-  /* background-color: black; */
   margin: 0;
   padding: 0;
   border: none;

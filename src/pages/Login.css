@@ -35,14 +35,20 @@
 }
 
 .login-page-wrap form input[type="submit"] {
-  background-color: #4caf50;
+  background-color: var(--task-color);
   color: white;
   cursor: pointer;
 }
 
 .login-page-wrap form input[type="submit"]:hover {
-  background-color: #45a049;
+  opacity: 0.8;
 }
 .signup-link:hover {
   text-decoration: underline;
+}
+.logo-large {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+  border-radius: 0%;
 }

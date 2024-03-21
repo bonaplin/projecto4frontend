@@ -39,7 +39,7 @@ const FormSelect = ({ name, options, value, onChange }) => {
   return (
     <div className="form-input">
       {getIcon(name)}
-      <select value={value} onChange={onChange}>
+      <select value={value} onChange={onChange} required>
         {value === "" && <option value="">Select an option...</option>}
         {options.map((option, index) => (
           <option key={index} value={option.value}>

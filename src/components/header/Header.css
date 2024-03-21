@@ -42,10 +42,11 @@ img {
 .header-name {
   margin-right: 2rem;
   font-weight: bold;
-  text-shadow: #fff 0px 0px 2px;
+  text-shadow: #fff 0px 0px 1px;
 }
 .profile-icon,
 #logo-menu {
+  border: var(--primary-color) 2px solid;
   cursor: pointer;
   transition: transform 0.5s ease;
 }

@@ -32,6 +32,8 @@
 }
 .header-profile {
   margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

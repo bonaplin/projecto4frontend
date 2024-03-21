@@ -37,22 +37,19 @@
 }
 
 .signup-page-wrap form input[type="submit"] {
-  background-color: #a34caf;
+  background-color: var(--secondary-color);
   color: white;
   cursor: pointer;
 }
 
-.signup-page-wrap form input[type="submit"]:hover {
-  background-color: #8a4094;
-}
 .signup-page-wrap form input[type="button"] {
-  background-color: #4caf50;
+  background-color: var(--task-color);
   color: white;
   cursor: pointer;
 }
-
+.signup-page-wrap form input[type="submit"]:hover,
 .signup-page-wrap form input[type="button"]:hover {
-  background-color: #45a049;
+  opacity: 0.8;
 }
 
 .button-group {

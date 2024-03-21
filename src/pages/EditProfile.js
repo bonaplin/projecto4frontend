@@ -207,8 +207,9 @@ function EditProfile() {
               />
 
               <div className="button-group">
-                <input type="submit" value="Save" />
+                <input type="submit" value="Save" className="yes-no yes" />
                 <input
+                  className="yes-no no"
                   type="button"
                   value="Cancel"
                   onClick={() => navigate("/scrum-board")}
@@ -257,15 +258,24 @@ function EditProfile() {
                 value={confirmPassword}
                 onChange={handlePasswordChange}
               />
-
-              <button
-                type="submit"
-                value="Change Password"
-                onClick={handleClickSavePassword}
-                className="yes-no yes"
-              >
-                Save
-              </button>
+              <div className="button-group">
+                <button
+                  type="submit"
+                  value="Change Password"
+                  onClick={handleClickSavePassword}
+                  className="yes-no yes"
+                >
+                  Save
+                </button>
+                <button
+                  className="yes-no no"
+                  type="button"
+                  value="Cancel"
+                  onClick={onCloseModal}
+                >
+                  Cancel
+                </button>
+              </div>
             </Modal>
           </div>
         </div>

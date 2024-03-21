@@ -47,9 +47,7 @@
   width: 0.3rem;
 }
 .tasks-button:hover {
-  color: var(
-    --task-color
-  ); /* Change the color to whatever you prefer when hovering */
+  color: var(--task-color);
 }
 
 .category {
