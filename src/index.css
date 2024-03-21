@@ -33,6 +33,6 @@ html {
 }
 .filter-side {
   display: flex;
-  background-color: black;
+
   max-width: var(--max-width);
 }

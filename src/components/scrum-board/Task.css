@@ -4,9 +4,9 @@
   align-items: center;
   margin: 5px 0;
   border: 1px solid #ccc;
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-half);
   background-color: #f4f4f4;
-  height: 70px;
+  height: var(--task-height);
   position: relative;
   cursor: pointer;
 }
@@ -20,33 +20,50 @@
   position: absolute;
   font-size: small;
   padding: 0.2rem;
-  border-top-left-radius: var(--border-radius);
+  border-top-left-radius: var(--border-radius-half);
   border-bottom-right-radius: var(--border-radius);
 }
 .title {
   font-size: 1.2rem;
   margin: 0 0.5rem;
-  color: #4c59af;
+  color: var(--task-color);
 }
 
 .owner {
   top: 0;
   left: 0;
-  background-color: #4c59af;
-  color: white;
+  background-color: var(--task-color);
+  color: var(--task-versus-color);
+}
+.tasks-button {
+  background: none;
+  border: none;
+  margin-right: 0.9rem;
+  padding: 0;
+  cursor: pointer;
+  color: var(--task-versus-color);
+  font-size: small;
+  height: 0.3rem;
+  width: 0.3rem;
+}
+.tasks-button:hover {
+  color: var(
+    --task-color
+  ); /* Change the color to whatever you prefer when hovering */
 }
 
 .category {
   bottom: 0;
-  right: 0;
-  background-color: bisque;
+  right: var(--width-priority);
+  background-color: var(--task-versus-color);
+  color: var(--task-color);
+  border-bottom-right-radius: 0px !important;
 }
 .circle {
-  height: 12px;
-  width: 12px;
-  border-radius: 50%;
-  border: 1px solid #a09e9e;
-  margin: 10px;
+  width: var(--width-priority);
+  height: var(--task-height);
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 .task-buttons {
   display: flex;
@@ -55,8 +72,8 @@
   font-size: small;
   top: 0;
   right: 0;
-  padding: 0.2rem;
+  margin-right: 0.5rem;
+
   border-top-right-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
-  background-color: black;
 }

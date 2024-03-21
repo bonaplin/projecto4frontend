@@ -6,7 +6,7 @@ import FormInput from "../components/formInput/FormInput";
 import Layout from "../components/layout/Layout";
 import "../pages/Singup.css";
 import { userStore } from "../stores/UserStore";
-
+import { tsuccess, terror, twarn } from "../components/messages/Message";
 function Singup() {
   const navigate = useNavigate();
   const [imgURL, setImgURL] = useState("");
@@ -27,29 +27,42 @@ function Singup() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    try {
-      const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/add", // "http://localhost:8080/my_activities_backend/rest/user/login
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(inputs), // inputs should contain the username and password}
+    fetch("http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputs),
+    })
+      .then(async (response) => {
+        const data = await response.json();
+
+        if (response.ok) {
+          tsuccess("Registration successful");
+          navigate("/login", { replace: true });
+        } else {
+          switch (response.status) {
+            case 400:
+              twarn(data.message); // One or more parameters are null or blank, Invalid email format, Invalid phone number format, Invalid URL format
+              break;
+            case 409:
+              twarn(data.message); // Invalid Username or Email
+              break;
+            case 401:
+              twarn(data.message); // Unauthorized
+              break;
+            default:
+              terror("An error occurred: " + data.message);
+              break;
+          }
         }
-      );
-      console.log(inputs);
-      if (!response.ok) {
-        throw new Error("Registo failed. Please try again.");
-      } else if (response.ok) {
-        navigate("/login", { replace: true });
-      }
-    } catch (error) {
-      console.error("There was an error!", error);
-    }
+      })
+      .catch((error) => {
+        terror("There was an error: " + error.message);
+      });
   };
 
   return (

@@ -1,20 +1,6 @@
-/* .Home {
-  flex-direction: column;
-  position: sticky;
-  top: 0;
-} */
-
 .scrum-board .task-column {
   flex: 1;
   border: 1px solid white;
   border-radius: 10px;
   max-width: 20rem;
 }
-
-/* style={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-             */

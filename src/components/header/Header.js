@@ -3,7 +3,8 @@ import "./Header.css";
 // import Sidebar from "../navbar/Sidebar.js";
 //import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import DropdownMenu from "../dropdown/DropdownMenu.js";
-import icon from "../../assets/icon/tc.png";
+// import icon from "../../assets/icon/tc.png";
+import icon from "../../assets/icon/output-onlinepngtools.png";
 import UsersButton from "../dropdown/buttons/UsersButton.js";
 import TasksButton from "../dropdown/buttons/TasksButton.js";
 import CategoriesButton from "../dropdown/buttons/CategoriesButton.js";
@@ -11,6 +12,7 @@ import LogoutButton from "../dropdown/buttons/LogoutButton.js";
 import ProfileButton from "../dropdown/buttons/ProfileButton.js";
 import { userStore } from "../../stores/UserStore.js";
 import { useNavigate } from "react-router-dom";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 function Header() {
   const navigate = useNavigate();
@@ -80,7 +82,6 @@ function Header() {
   }, []);
 
   const handleTasksDeletedClick = () => {
-    console.log("Tasks deleted");
     navigate("/deletedtasks");
   };
 
@@ -110,7 +111,9 @@ function Header() {
             </li>
           ) : null}
           {role === "po" || role === "sm" ? (
-            <li onClick={handleTasksDeletedClick}>Deleted Tasks</li>
+            <li onClick={handleTasksDeletedClick} className="dropdown-button">
+              <DeleteOutlineOutlinedIcon /> Deleted Tasks
+            </li>
           ) : null}
         </DropdownMenu>
       </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 export default function CategoriesButton() {
   function handleClick() {
     console.log("CategoriesButton click");
@@ -9,5 +9,9 @@ export default function CategoriesButton() {
   const navigate = useNavigate();
 
   console.log("CategoriesButton");
-  return <div onClick={handleClick}>Categories</div>;
+  return (
+    <div onClick={handleClick} className="dropdown-button">
+      <CategoryOutlinedIcon /> Categories
+    </div>
+  );
 }

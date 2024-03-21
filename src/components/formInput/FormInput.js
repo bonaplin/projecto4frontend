@@ -6,7 +6,9 @@ import EmailIcon from "@mui/icons-material/Email";
 import BadgeIcon from "@mui/icons-material/Badge";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-
+import TitleOutlinedIcon from "@mui/icons-material/TitleOutlined";
+import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 const FormInput = ({ placeholder, type, name, value, onChange }) => {
   const getIcon = (name) => {
     switch (name) {
@@ -43,6 +45,25 @@ const FormInput = ({ placeholder, type, name, value, onChange }) => {
       case "photoURL":
         return (
           <AddAPhotoIcon style={{ marginRight: "10px", marginLeft: "10px" }} />
+        );
+      case "title":
+        return (
+          <TitleOutlinedIcon
+            style={{ marginRight: "10px", marginLeft: "10px" }}
+          />
+        );
+
+      case "date":
+        return (
+          <EditCalendarOutlinedIcon
+            style={{ marginRight: "10px", marginLeft: "10px" }}
+          />
+        );
+      case "description":
+        return (
+          <DescriptionOutlinedIcon
+            style={{ marginRight: "10px", marginLeft: "10px" }}
+          />
         );
       default:
         return null;

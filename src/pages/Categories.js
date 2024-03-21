@@ -10,6 +10,8 @@ import CategoryModal from "../components/modal/CategoryModal";
 import { userStore } from "../stores/UserStore";
 import ModalYesNo from "../components/modal/ModalYesNo";
 import { categoriesStore } from "../stores/CategoriesStore";
+import { tsuccess, twarn, terror } from "../components/messages/Message";
+
 function Categories() {
   const navigate = useNavigate();
   const token = userStore.getState().token;
@@ -19,27 +21,30 @@ function Categories() {
   const [editCategory, setEditCategory] = useState(null);
 
   const fetchCategories = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
-        {
-          headers: {
-            token: token,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        console.log("Fetch error: ", response);
-        alert(await response.text());
-        return;
+    const response = await fetch(
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
+      {
+        headers: {
+          token: token,
+        },
       }
+    );
 
-      const data = await response.json();
+    const data = await response.json();
+
+    if (response.ok) {
       setCategorieData(data);
       categoriesStore.getState().setCategories(data);
-    } catch (error) {
-      console.log("Fetch error: ", error);
+      // tsuccess("Categories fetched successfully");
+    } else {
+      switch (response.status) {
+        case 401:
+          terror(data.message); // Unauthorized
+          break;
+        default:
+          twarn("An error occurred: " + data.message);
+          break;
+      }
     }
   };
 
@@ -62,11 +67,24 @@ function Categories() {
       }
     );
 
+    const data = await response.json();
+
     if (response.ok) {
       fetchCategories();
       setIsDeleteModalOpen(false);
-    } else if (!response.ok) {
-      alert(await response.text());
+      tsuccess(data.message); // Category deleted
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // There are tasks with this category. Delete these tasks before deleting the category.
+          break;
+        case 401:
+          terror(data.message); // Unauthorized
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
   /* ******* ******* *********************************** *****/
@@ -83,19 +101,31 @@ function Categories() {
       {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json", // Add this line
+          "Content-Type": "application/json",
           token: token,
         },
         body: JSON.stringify(category),
       }
     );
 
+    const data = await response.json();
+
     if (response.ok) {
       fetchCategories();
       setIsEditModalOpen(false);
-      console.log("Categorie Updated");
-    } else if (!response.ok) {
-      alert(await response.text());
+      tsuccess(data.message); // Category updated
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid category or Failed to update category
+          break;
+        case 401:
+          terror(data.message); // Unauthorized
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
   /* ******* ******* *********************************** *****/
@@ -122,11 +152,25 @@ function Categories() {
         body: JSON.stringify(category),
       }
     );
+
+    const data = await response.json();
+
     if (response.ok) {
       fetchCategories();
       setIsModalOpen(false);
+      tsuccess(data.message); // Category added
     } else {
-      alert(await response.text());
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid category
+          break;
+        case 401:
+          terror(data.message); // Unauthorized
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
     }
   }
 
@@ -141,66 +185,65 @@ function Categories() {
   return (
     <>
       <Header />
-      {(role === "po" || role === "sm") && (
-        <div className="Home users">
-          <div className="page-wrap">
-            <h2>All Category</h2>
-            {role === "po" && (
-              <>
-                <span>
-                  <AddCircleIcon
-                    className="add-some"
-                    onClick={handleAddCategoryButton}
-                    fontSize="large"
-                  />
-                </span>
 
-                <CategoryModal
-                  open={isModalOpen}
-                  onClose={handleCloseModal}
-                  onSubmit={handleCreateCategory}
-                  title_modal="Create Category"
-                  user={{}} // Pass an empty user object to the UserModal
+      <div className="Home users">
+        <div className="page-wrap">
+          <h2>All Category</h2>
+          {role === "po" && (
+            <>
+              <span>
+                <AddCircleIcon
+                  className="add-some"
+                  onClick={handleAddCategoryButton}
+                  fontSize="large"
                 />
-              </>
-            )}
-            {isEditModalOpen && (
+              </span>
+
               <CategoryModal
-                open={isEditModalOpen}
-                title_modal="Edit Category"
-                onClose={() => setIsEditModalOpen(false)}
-                onSubmit={handleEditCategory}
-                category={editCategory}
+                open={isModalOpen}
+                onClose={handleCloseModal}
+                onSubmit={handleCreateCategory}
+                title_modal="Create Category"
+                user={{}} // Pass an empty user object to the UserModal
               />
-            )}
-            {isDeleteModalOpen && (
-              <>
-                <ModalYesNo
-                  title="Delete Category"
-                  message="Are you sure you want to delete this category?"
-                  open={isDeleteModalOpen}
-                  onClose={() => setIsDeleteModalOpen(false)}
-                  onYes={handleDeleteCategory}
-                  onNo={() => setIsDeleteModalOpen(false)}
-                />
-              </>
-            )}
-            <div className="main-board">
-              <div className="table-board">
-                <Table
-                  class="table"
-                  type="category"
-                  data={categorieData}
-                  columns={columns}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                />
-              </div>
+            </>
+          )}
+          {isEditModalOpen && (
+            <CategoryModal
+              open={isEditModalOpen}
+              title_modal="Edit Category"
+              onClose={() => setIsEditModalOpen(false)}
+              onSubmit={handleEditCategory}
+              category={editCategory}
+            />
+          )}
+          {isDeleteModalOpen && (
+            <>
+              <ModalYesNo
+                title="Delete Category"
+                message="Are you sure you want to delete this category?"
+                open={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onYes={handleDeleteCategory}
+                onNo={() => setIsDeleteModalOpen(false)}
+              />
+            </>
+          )}
+          <div className="main-board">
+            <div className="table-board">
+              <Table
+                class="table"
+                type="category"
+                data={categorieData}
+                columns={columns}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+              />
             </div>
           </div>
-          <Footer />
         </div>
-      )}
+        <Footer />
+      </div>
     </>
   );
 }

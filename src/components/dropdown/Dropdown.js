@@ -6,9 +6,7 @@ const Dropdown = ({ data, onChange, type }) => {
   };
   return (
     <select onChange={handleChange} style={{ width: "100%" }}>
-      <option value="" disabled selected>
-        {type}
-      </option>
+      <option value="">{type}</option>
       {data.map((item, index) => (
         <option key={index} value={item.value}>
           {item}

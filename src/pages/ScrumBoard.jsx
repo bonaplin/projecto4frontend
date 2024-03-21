@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { userStore } from "../stores/UserStore";
+import { categoriesStore } from "../stores/CategoriesStore";
 import "./ScrumBoard.css";
-
+import { tsuccess, twarn, terror } from "../components/messages/Message";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "../components/scrum-board/Column";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RestoreIcon from "@mui/icons-material/Restore";
 import TaskModal from "../components/modal/TaskModal.js";
 import ModalYesNo from "../components/modal/ModalYesNo.js";
-
+import TaskViewModal from "../components/modal/TaskViewModal.js";
 import Dropdown from "../components/dropdown/Dropdown.js";
-
 export default function ScrumBoard() {
   const token = userStore.getState().token; // Get the token from the store
   const [isAddTaskModal, setIsAddTaskModal] = useState(false);
@@ -35,20 +37,31 @@ export default function ScrumBoard() {
   }
 
   async function updateStatus(id, newStatus) {
-    const response = fetch(
+    const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/updateStatus/?id=${id}&status=${newStatus}`,
       {
         "Content-Type": "application/json",
         method: "PUT",
         headers: { token: token },
       }
-    ).then((response) => {
-      if (response.ok) {
-        console.log("resposta" + response.status);
-      } else {
-        console.error("Failed to update task:", response.statusText);
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("resposta" + response.status);
+      console.log("Task updated successfully");
+      // tsuccess("Task updated successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid status
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
       }
-    });
+    }
   }
   function handleAddClick() {
     setIsAddTaskModal(true);
@@ -65,19 +78,32 @@ export default function ScrumBoard() {
         },
         body: JSON.stringify(task),
       }
-    )
-      .then((response) => {
-        console.log(response.status);
-        if (response.ok) {
-          console.log("Task added successfully");
-          setIsAddTaskModal(false);
-          setIsChanged(!isChanged);
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to add task:", error);
-      });
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Task added successfully");
+      setIsAddTaskModal(false);
+      setIsChanged(!isChanged);
+      tsuccess("Task added successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid task or Cannot add task
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
+    }
   }
+
+  // Task buttons -------------------------------------------------------------- BUTTONS
+  //EDIT
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleEdit = (task) => {
     setSelectedTask(task);
@@ -95,23 +121,33 @@ export default function ScrumBoard() {
         },
         body: JSON.stringify(task),
       }
-    )
-      .then((response) => {
-        console.log(response.status);
-        if (response.ok) {
-          console.log("Task deleted successfully");
-          console.log(task);
-          setIsEditModalOpen(false);
-          setIsChanged(!isChanged);
-        } else {
-          console.error("Failed to delete task:", response.statusText);
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to delete task:", error);
-      });
-  }
+    );
 
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Task updated successfully");
+      setIsEditModalOpen(false);
+      setIsChanged(!isChanged);
+      tsuccess("Task updated successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Invalid task
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        case 403:
+          twarn(data.message); // Forbidden
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
+    }
+  }
+  //DELETE
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleDelete = (task) => {
     setSelectedTask(task);
@@ -128,21 +164,66 @@ export default function ScrumBoard() {
           token: token,
         },
       }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Task deleted successfully");
+      setIsDeleteModalOpen(false);
+      setIsChanged(!isChanged);
+      tsuccess("Task deleted successfully");
+    } else {
+      switch (response.status) {
+        case 400:
+          twarn(data.message); // Cannot desactivate task
+          break;
+        case 401:
+          twarn(data.message); // Unauthorized
+          break;
+        case 403:
+          twarn(data.message); // Forbidden
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
+    }
+  }
+  //VIEW
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const handleView = (task) => {
+    setSelectedTask(task);
+    setIsViewModalOpen(true);
+  };
+
+  async function handleViewTask(task) {
+    console.log("task", task);
+    const response = await fetch(
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/get?id=${task.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+      }
     )
       .then((response) => {
         console.log(response.status);
         if (response.ok) {
-          console.log("Task deleted successfully");
-          setIsDeleteModalOpen(false);
-          setIsChanged(!isChanged);
+          setIsViewModalOpen(false);
+          //setIsChanged(!isChanged);
         } else {
-          console.error("Failed to delete task:", response.statusText);
+          console.error("Failed to view task:", response.statusText);
         }
       })
       .catch((error) => {
-        console.error("Failed to delete task:", error);
+        console.error("Failed to view task:", error);
       });
   }
+  // ---------------------------------------------------------------------------- BUTTONS
+
   useEffect(() => {
     async function fetchTasks() {
       let url = "";
@@ -172,10 +253,11 @@ export default function ScrumBoard() {
           setDoing(doing);
           setDone(done);
         } else {
+          terror("Failed to fetch tasks");
           console.error("Failed to fetch tasks:", response.statusText);
         }
       } catch (error) {
-        console.error("Failed to fetch tasks:", error);
+        terror("Failed to fetch tasks");
       }
     }
     fetchTasks();
@@ -189,7 +271,7 @@ export default function ScrumBoard() {
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // Fetch users
+  // Fetch users ----------------------------
   useEffect(() => {
     async function fetchUsers() {
       const response = await fetch(
@@ -201,7 +283,7 @@ export default function ScrumBoard() {
         }
       );
       if (!response.ok) {
-        console.error("Failed to fetch users:", response.statusText);
+        terror("Failed to fetch users:", response.statusText);
         return;
       }
       const users = await response.json();
@@ -211,7 +293,7 @@ export default function ScrumBoard() {
     fetchUsers();
   }, [userStore.getState().users]);
 
-  // Fetch categories
+  // Fetch categories -----------------------
   useEffect(() => {
     async function fetchCategories() {
       const response = await fetch(
@@ -231,8 +313,9 @@ export default function ScrumBoard() {
       setCategories(categoryTitles);
     }
     fetchCategories();
-  }, []);
+  }, [categoriesStore.getState().categories]);
 
+  // Update task move to another column
   const fetchTasks = async (status, setTask) => {
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=${status}`,
@@ -249,13 +332,12 @@ export default function ScrumBoard() {
     const tasks = await response.json();
     setTask(tasks);
   };
-
   useEffect(() => {
     fetchTasks(100, setTodo);
     fetchTasks(200, setDoing);
     fetchTasks(300, setDone);
   }, [isChanged]);
-
+  //-----------------------------------------
   function handleDragEnd(result) {
     if (!result.destination) {
       return;
@@ -310,6 +392,11 @@ export default function ScrumBoard() {
     setDoing(newDoing);
     setDone(newDone);
   }
+
+  function handleCloseAddModal() {
+    setIsAddTaskModal(false);
+    setSelectedTask({});
+  }
   return (
     <>
       <Header />
@@ -322,20 +409,24 @@ export default function ScrumBoard() {
               className="add-some"
               fontSize="large"
             />
-            {role === "po" && (
+            {(role === "po" || role === "sm") && (
               <div className="filter-container">
                 <div className="filter-side">
                   <Dropdown
                     data={users}
-                    type={"Username"}
+                    type={"All"}
                     onChange={(selectedValue) => setUsername(selectedValue)}
                   />
                   <Dropdown
                     data={categories}
-                    type={"Category"}
+                    type={"All"}
                     onChange={(selectedValue) => setCategory(selectedValue)}
                   />
-                  <button onClick={handleResetFilter}>Reset Filter</button>
+                  <RestoreIcon
+                    className="restore-button"
+                    onClick={handleResetFilter}
+                    fontSize="large"
+                  />
                 </div>
               </div>
             )}
@@ -362,11 +453,20 @@ export default function ScrumBoard() {
               task={selectedTask}
             />
           )}
+          {isViewModalOpen && (
+            <TaskViewModal
+              open={isViewModalOpen}
+              onClose={() => setIsViewModalOpen(false)}
+              title_modal="View task"
+              onSubmit={handleViewTask}
+              task={selectedTask}
+            />
+          )}
           {
             <TaskModal
               open={isAddTaskModal}
               title_modal="Add task"
-              onClose={() => setIsAddTaskModal(false)}
+              onClose={handleCloseAddModal}
               onSubmit={AddTask}
               task={selectedTask}
             />
@@ -379,6 +479,7 @@ export default function ScrumBoard() {
                 id={"100"}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                handleView={handleView}
               />
               <Column
                 title={"DOING"}
@@ -386,6 +487,7 @@ export default function ScrumBoard() {
                 id={"200"}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                handleView={handleView}
               />
               <Column
                 title={"DONE"}
@@ -393,6 +495,7 @@ export default function ScrumBoard() {
                 id={"300"}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                handleView={handleView}
               />{" "}
             </div>{" "}
           </DragDropContext>

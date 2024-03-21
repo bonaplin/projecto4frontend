@@ -38,7 +38,7 @@ const CategoryModal = ({
           <FormInput
             placeholder="Enter category name"
             type="text"
-            name="name"
+            name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -49,17 +49,21 @@ const CategoryModal = ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <button type="submit">Save</button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+          <div className="button-container">
+            <button type="submit" className="yes-no yes">
+              Save
+            </button>
+            <button type="button" className="yes-no no" onClick={onClose}>
+              Cancel
+            </button>
+          </div>
         </form>
       ) : title_modal === "Edit Category" ? (
         <form onSubmit={handleSubmit}>
           <FormInput
             placeholder="Enter category name"
             type="text"
-            name="name"
+            name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -70,10 +74,14 @@ const CategoryModal = ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <button type="submit">Save</button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+          <div className="button-container">
+            <button type="submit" className="yes-no yes">
+              Save
+            </button>
+            <button type="button" className="yes-no no" onClick={onClose}>
+              Cancel
+            </button>
+          </div>
         </form>
       ) : (
         <h1>oops</h1>

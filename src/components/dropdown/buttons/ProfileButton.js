@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../../../stores/UserStore"; // Import the store
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { tsuccess, terror, twarn } from "../../messages/Message";
 
 export default function ProfileButton() {
   const navigate = useNavigate();
@@ -19,11 +21,28 @@ export default function ProfileButton() {
         },
       }
     );
-    let userDetails = await response.json();
 
-    console.log(userDetails); // Log the userDetails to the console
-    navigate("/edit-profile", { state: { userDetails: userDetails } });
+    if (response.ok) {
+      let userDetails = await response.json();
+      console.log(userDetails); // Log the userDetails to the console
+      navigate("/edit-profile", { state: { userDetails: userDetails } });
+    } else {
+      const data = await response.json();
+      switch (response.status) {
+        case 401:
+          terror(data.message); // Unauthorized
+          break;
+        default:
+          terror("An error occurred: " + data.message);
+          break;
+      }
+    }
   }
   console.log("ProfileButton");
-  return <div onClick={handleClick}>Profile</div>;
+  return (
+    <div onClick={handleClick} className="dropdown-button">
+      <AccountCircleOutlinedIcon />
+      Profile
+    </div>
+  );
 }
