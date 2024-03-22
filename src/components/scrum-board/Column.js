@@ -5,7 +5,7 @@ import Task from "./Task";
 
 export default function Column({
   title,
-  tasks,
+  tasks = [],
   id,
   handleDelete,
   handleEdit,

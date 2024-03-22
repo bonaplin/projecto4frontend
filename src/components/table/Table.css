@@ -7,10 +7,9 @@
 
 .table th,
 .table td {
-  border-right: 1px solid var(--task-color);
-  border-left: 1px solid var(--task-color);
   padding: 8px;
-  text-align: left; /* Aligns the text to the left */
+  text-align: left;
+  transition: transform 0.5s ease;
 }
 
 .table th {
@@ -21,19 +20,22 @@
   position: sticky;
   top: 0;
 }
+tr:hover {
+  border-bottom: 1px solid var(--task-color);
+}
 
 .table tr:nth-child(even) {
-  background-color: #f2f2f2; /* Adds a light grey background to every other row for better readability */
+  background-color: #f2f2f2;
 }
 
 .table td:first-child,
 .table th:first-child {
-  border-left: none; /* Removes the left border from the first cell of each row */
+  border-left: none;
 }
 
 .table td:last-child,
 .table th:last-child {
-  border-right: none; /* Removes the right border from the last cell of each row */
+  border-right: none;
 }
 
 button {

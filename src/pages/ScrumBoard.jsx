@@ -411,12 +411,14 @@ export default function ScrumBoard() {
         <div className="page-wrap">
           <h2>Tasks</h2>
           <div>
-            <AddCircleIcon
-              onClick={handleAddClick}
-              className="add-some"
-              fontSize="large"
-              title="Add task"
-            />
+            <Tooltip title="Add task">
+              <AddCircleIcon
+                onClick={handleAddClick}
+                className="add-some"
+                fontSize="large"
+                title="Add task"
+              />
+            </Tooltip>
             <Tooltip title="My Tasks">
               <FilterAltIcon
                 onClick={handleClickMyTasks}

@@ -4,6 +4,7 @@ import Edit from "../../icon-buttons/edit.js";
 import Restore from "../../icon-buttons/restore.js";
 import DeleteTask from "../../icon-buttons/delete-tasks.js";
 import CloseIcon from "@mui/icons-material/Close";
+import "./Slider.css";
 const UserRow = ({
   item,
   columns,
@@ -35,12 +36,15 @@ const UserRow = ({
               style={{ width: "50px", height: "50px" }}
             />
           ) : column === "active" ? (
-            <input
-              type="checkbox"
-              className="my-checkbox"
-              checked={item[column]}
-              onChange={() => handleActiveChange(item)}
-            />
+            <label className="switch">
+              <input
+                type="checkbox"
+                className="my-checkbox"
+                checked={item[column]}
+                onChange={() => handleActiveChange(item)}
+              />
+              <span className="slider round"></span>
+            </label>
           ) : column === "actions" ? (
             <>
               <Edit onClick={() => handleEdit(item)}>Edit</Edit>

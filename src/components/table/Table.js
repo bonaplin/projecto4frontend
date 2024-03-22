@@ -1,7 +1,7 @@
-import React from "react";
-import "./Table.css"; // Importing the CSS
-import UserRow from "../table/rowelement/UserRow"; // Import the UserRow component
-import Row from "./rowelement/Row"; // Import the DeletedTasksRow component
+import React, { useState } from "react";
+import "./Table.css";
+import UserRow from "../table/rowelement/UserRow";
+import Row from "./rowelement/Row";
 const Table = ({
   data,
   columns,
@@ -11,7 +11,9 @@ const Table = ({
   handleActiveChange,
   type,
 }) => {
-  // If data is not empty, get the columns from the first object
+  if (data.length === 0) {
+    return <p>No data available</p>;
+  }
 
   return (
     <div className="table-container">
