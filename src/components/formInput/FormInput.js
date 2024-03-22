@@ -82,6 +82,7 @@ const FormInput = ({ placeholder, type, name, value, onChange }) => {
 
       <input
         required={name !== "finaldate"}
+        style={{}}
         type={type}
         name={name}
         defaultValue={value || ""}

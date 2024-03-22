@@ -228,6 +228,8 @@ export default function ScrumBoard() {
 
   useEffect(() => {
     async function fetchTasks() {
+      console.log("usernameDD", usernameDD);
+      console.log("categoryDD", categoryDD);
       let url = "";
       if (usernameDD !== null && categoryDD !== null) {
         url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${usernameDD}&category=${categoryDD}`;
@@ -264,12 +266,6 @@ export default function ScrumBoard() {
     }
     fetchTasks();
   }, [usernameDD, categoryDD, isChanged]);
-
-  function handleResetFilter() {
-    setUsername(null);
-    setCategory(null);
-    setIsChanged(!isChanged);
-  }
 
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -403,6 +399,10 @@ export default function ScrumBoard() {
   function handleClickMyTasks() {
     setUsername(userStore.getState().username);
   }
+  function handleResetFilter() {
+    setUsername("");
+    setCategory("");
+  }
 
   return (
     <>
@@ -417,45 +417,37 @@ export default function ScrumBoard() {
               fontSize="large"
               title="Add task"
             />
-            {role === "po" || role === "sm" ? (
+            <Tooltip title="My Tasks">
+              <FilterAltIcon
+                onClick={handleClickMyTasks}
+                className="restore-button"
+                fontSize="large"
+              />
+            </Tooltip>
+            <Tooltip title="Reset Filter">
+              <RestoreIcon
+                className="restore-button"
+                onClick={handleResetFilter}
+                fontSize="large"
+              />
+            </Tooltip>
+            {(role === "sm" || role === "po") && (
               <div className="filter-container">
                 <div className="filter-side">
                   <Dropdown
+                    value={usernameDD}
                     data={users}
-                    type={"All"}
+                    type={"Username"}
                     onChange={(selectedValue) => setUsername(selectedValue)}
                   />
                   <Dropdown
+                    value={categoryDD}
                     data={categories}
-                    type={"All"}
+                    type={"Category"}
                     onChange={(selectedValue) => setCategory(selectedValue)}
                   />
-                  <Tooltip title="Reset Filters / Order">
-                    <RestoreIcon
-                      className="restore-button"
-                      onClick={handleResetFilter}
-                      fontSize="large"
-                    />
-                  </Tooltip>
                 </div>
               </div>
-            ) : (
-              <>
-                <Tooltip title="My Tasks">
-                  <FilterAltIcon
-                    onClick={handleClickMyTasks}
-                    className="restore-button"
-                    fontSize="large"
-                  />
-                </Tooltip>
-                <Tooltip title="Reset Filter">
-                  <RestoreIcon
-                    className="restore-button"
-                    onClick={handleResetFilter}
-                    fontSize="large"
-                  />
-                </Tooltip>
-              </>
             )}
           </div>
           {isDeleteModalOpen && (

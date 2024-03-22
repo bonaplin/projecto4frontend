@@ -31,6 +31,8 @@ function Login() {
   };
 
   const handleSubmit = (event) => {
+    console.log("handleSubmit called");
+
     event.preventDefault();
 
     // Send a POST request to the login endpoint
@@ -70,14 +72,14 @@ function Login() {
       });
   };
   return (
-    <Layout>
+    <Layout data-testid="login">
       <div className="login-outer-container">
         <div className="login-page-wrap">
           <div className="header-profile">
             <h1>Login</h1>
             <img src={tcicon} alt="" />
           </div>
-          <form onSubmit={handleSubmit}>
+          <form data-testid="login-form" onSubmit={handleSubmit}>
             <FormInput
               icon={<Person2OutlinedIcon />}
               placeholder={"Enter your username"}

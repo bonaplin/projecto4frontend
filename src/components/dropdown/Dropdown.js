@@ -1,12 +1,14 @@
 import React from "react";
 
-const Dropdown = ({ data, onChange, type }) => {
+const Dropdown = ({ data, onChange, type, value }) => {
   const handleChange = (e) => {
     onChange(e.target.value);
   };
   return (
-    <select onChange={handleChange} style={{ width: "100%" }}>
-      <option value="">{type}</option>
+    <select value={value} onChange={handleChange} style={{ width: "100%" }}>
+      <option value="" disabled selected>
+        {type}
+      </option>
       {data.map((item, index) => (
         <option key={index} value={item.value}>
           {item}
