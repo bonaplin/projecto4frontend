@@ -25,7 +25,7 @@ function Users() {
   };
   async function handleCreateUser(user) {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/add",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/",
       {
         method: "POST",
         headers: {
@@ -58,13 +58,12 @@ function Users() {
   };
   async function handleUpdateUser(user) {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/update",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${user.username}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           token: token,
-          selectedUser: user.username,
         },
         body: JSON.stringify(user),
       }
@@ -98,13 +97,12 @@ function Users() {
   };
   async function handleDeleteUser(user) {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/delete",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${user.username}`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           token: token,
-          selectedUser: user.username,
         },
       }
     );
@@ -141,13 +139,12 @@ function Users() {
   };
   async function handleDeleteTasksUser(user) {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/deleteTasks",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${user.username}/tasks`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           token: token,
-          selectedUser: user.username,
         },
       }
     );
@@ -190,9 +187,9 @@ function Users() {
       active: user.active,
     };
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/updateactive",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${user.username}/status`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           token: token,
@@ -261,7 +258,7 @@ function Users() {
   useEffect(() => {
     async function fetchUsers() {
       const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/",
         {
           method: "GET",
           headers: {

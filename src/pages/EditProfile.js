@@ -51,13 +51,12 @@ function EditProfile() {
 
     console.log("inputs", JSON.stringify(inputs));
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/update",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${selectedUser}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           token: token,
-          selectedUser: selectedUser,
         },
         body: JSON.stringify(inputs), // Send the inputs as the body of the request
       }
@@ -109,8 +108,9 @@ function EditProfile() {
     }
     console.log(oldPassword + " old " + newPassword + " new");
     // Send the old password and new password to the backend
+    const selectedUser = userStore.getState().username; // Get the username from the Zustand store
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/updatePassword",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${selectedUser}/password`,
       {
         method: "PUT",
         headers: {

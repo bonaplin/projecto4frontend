@@ -45,13 +45,12 @@ function Header() {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/getDetails",
+        `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${user.username}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             token: token, // Use the token from the store
-            selectedUser: user.username, // Use the username from the store
           },
         }
       );

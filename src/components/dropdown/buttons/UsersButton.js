@@ -9,7 +9,7 @@ export default function UsersButton() {
   async function handleClick() {
     console.log("UsersButton click");
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/",
       {
         method: "GET",
         headers: {
