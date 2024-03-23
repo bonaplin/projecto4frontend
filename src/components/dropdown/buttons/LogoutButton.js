@@ -14,7 +14,7 @@ export default function LogoutButton() {
 
     // Make a request to the logout endpoint
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/logout",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/logout",
       {
         method: "POST", // or 'GET'
         headers: {

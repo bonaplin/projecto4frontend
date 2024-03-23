@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import FormInput from "../formInput/FormInput";
 import { userStore } from "../../stores/UserStore";
+import { categoriesStore } from "../../stores/CategoriesStore";
 import FormSelect from "../formInput/FormSelect";
 
 const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
@@ -51,19 +52,8 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all", {
-      headers: {
-        "Content-Type": "application/json",
-        token: token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setCategories(data);
-      });
-  }, []);
+    setCategories(categoriesStore.getState().categories);
+  }, [categoriesStore.getState().categories]);
 
   const handleClose = () => {
     onClose();

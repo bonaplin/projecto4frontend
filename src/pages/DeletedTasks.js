@@ -22,7 +22,7 @@ function DeletedTasks() {
 
   const fetchInactiveTasks = async () => {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/inactive",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/?active=false",
       {
         headers: {
           token: token,
@@ -68,7 +68,7 @@ function DeletedTasks() {
   }
   async function handleDeleteTask() {
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/delete/${taskselected.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${taskselected.id}`,
       {
         method: "DELETE",
         headers: {
@@ -107,7 +107,7 @@ function DeletedTasks() {
   }
   async function handleRestoreTask() {
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/restore/${taskselected.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${taskselected.id}/restore`,
       {
         method: "PUT",
         headers: {
@@ -146,7 +146,7 @@ function DeletedTasks() {
   }
   async function handleDeleteAllTasks() {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/deleteAll",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/",
       {
         method: "DELETE",
         headers: {
@@ -185,7 +185,7 @@ function DeletedTasks() {
   }
   async function handleRestoreAllTask() {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/restoreAll",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/restore",
       {
         method: "PUT",
         headers: {

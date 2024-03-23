@@ -30,21 +30,13 @@ export default function ScrumBoard() {
   const [usernameDD, setUsername] = useState(null);
   const [categoryDD, setCategory] = useState(null);
 
-  function removeItemById(array, id) {
-    return array.filter((item) => String(item.id) !== id);
-  }
-
-  function findItemById(array, id) {
-    return array.find((item) => String(item.id) === id);
-  }
-
   async function updateStatus(id, newStatus) {
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/updateStatus/?id=${id}&status=${newStatus}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${id}/status/`,
       {
-        "Content-Type": "application/json",
         method: "PUT",
-        headers: { token: token },
+        headers: { "Content-Type": "application/json", token: token },
+        body: JSON.stringify({ status: newStatus }),
       }
     );
 
@@ -71,7 +63,7 @@ export default function ScrumBoard() {
   async function AddTask(task) {
     console.log("task", task);
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/add",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/",
       {
         method: "POST",
         headers: {
@@ -114,7 +106,7 @@ export default function ScrumBoard() {
   async function handleEditTask(task) {
     console.log("task", task);
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/update/${task.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${task.id}`,
       {
         method: "PUT",
         headers: {
@@ -158,7 +150,7 @@ export default function ScrumBoard() {
   async function handleDeleteTask(task) {
     console.log("task", task);
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/desactivate/${task.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${task.id}/desactivate`,
       {
         method: "PUT",
         headers: {
@@ -202,7 +194,7 @@ export default function ScrumBoard() {
   async function handleViewTask(task) {
     console.log("task", task);
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/get?id=${task.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/get?id=${task.id}`,
       {
         method: "GET",
         headers: {
@@ -228,17 +220,14 @@ export default function ScrumBoard() {
 
   useEffect(() => {
     async function fetchTasks() {
-      console.log("usernameDD", usernameDD);
-      console.log("categoryDD", categoryDD);
-      let url = "";
+      let url = "http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/";
+
       if (usernameDD !== null && categoryDD !== null) {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${usernameDD}&category=${categoryDD}`;
-      } else if (usernameDD !== null && categoryDD === null) {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${usernameDD}`;
-      } else if (usernameDD === null && categoryDD !== null) {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?category=${categoryDD}`;
-      } else {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/active/`;
+        url += `?username=${usernameDD}&category=${categoryDD}`;
+      } else if (usernameDD !== null) {
+        url += `?username=${usernameDD}`;
+      } else if (categoryDD !== null) {
+        url += `?category=${categoryDD}`;
       }
       try {
         const response = await fetch(url, {
@@ -270,11 +259,11 @@ export default function ScrumBoard() {
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // Fetch users ----------------------------
+  // Fetch users --------------------------------------------------------------------------------------------------------
   useEffect(() => {
     async function fetchUsers() {
       const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/",
         {
           headers: {
             token: token,
@@ -296,7 +285,7 @@ export default function ScrumBoard() {
   useEffect(() => {
     async function fetchCategories() {
       const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/categories/",
         {
           headers: {
             token: token,
@@ -304,39 +293,23 @@ export default function ScrumBoard() {
         }
       );
       if (!response.ok) {
-        console.error("Failed to fetch categories:", response.statusText);
+        terror("Failed to fetch users:", response.statusText);
         return;
       }
       const categories = await response.json();
-      const categoryTitles = categories.map((category) => category.title);
-      setCategories(categoryTitles);
+      const categoriesNames = categories.map((category) => category.title);
+      setCategories(categoriesNames);
     }
     fetchCategories();
   }, [categoriesStore.getState().categories]);
+  //------------------------------------------------------------------------dnd beautiful
 
-  // Update task move to another column
-  const fetchTasks = async (status, setTask) => {
-    const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=${status}`,
-      {
-        headers: {
-          token: token,
-        },
-      }
-    );
-    if (!response.ok) {
-      console.error("Failed to fetch tasks:", response.statusText);
-      return;
-    }
-    const tasks = await response.json();
-    setTask(tasks);
-  };
-  useEffect(() => {
-    fetchTasks(100, setTodo);
-    fetchTasks(200, setDoing);
-    fetchTasks(300, setDone);
-  }, [isChanged]);
-  //-----------------------------------------
+  function removeItemById(array, id) {
+    return array.filter((item) => String(item.id) !== id);
+  }
+  function findItemById(array, id) {
+    return array.find((item) => String(item.id) === id);
+  }
   function handleDragEnd(result) {
     if (!result.destination) {
       return;
@@ -390,6 +363,7 @@ export default function ScrumBoard() {
     setDoing(newDoing);
     setDone(newDone);
   }
+  //------------------------------------------------------------------------dnd beautiful
 
   function handleCloseAddModal() {
     setIsAddTaskModal(false);
