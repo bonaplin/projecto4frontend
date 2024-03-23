@@ -411,12 +411,14 @@ export default function ScrumBoard() {
               <div className="filter-container">
                 <div className="filter-side">
                   <Dropdown
+                    className="filter-dropdown"
                     value={usernameDD}
                     data={users}
                     type={"Username"}
                     onChange={(selectedValue) => setUsername(selectedValue)}
                   />
                   <Dropdown
+                    className="filter-dropdown"
                     value={categoryDD}
                     data={categories}
                     type={"Category"}

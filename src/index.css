@@ -32,6 +32,5 @@ html {
 }
 .filter-side {
   display: flex;
-
-  max-width: var(--max-width);
+  max-width: 13rem;
 }
