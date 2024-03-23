@@ -43,8 +43,8 @@ export default function ScrumBoard() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("resposta" + response.status);
-      console.log("Task updated successfully");
+      //console.log("resposta" + response.status);
+      //console.log("Task updated successfully");
       // tsuccess("Task updated successfully");
     } else {
       switch (response.status) {
@@ -61,7 +61,7 @@ export default function ScrumBoard() {
     setIsAddTaskModal(true);
   }
   async function AddTask(task) {
-    console.log("task", task);
+    //console.log("task", task);
     const response = await fetch(
       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/",
       {
@@ -104,7 +104,7 @@ export default function ScrumBoard() {
     setIsEditModalOpen(true);
   };
   async function handleEditTask(task) {
-    console.log("task", task);
+    //console.log("task", task);
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${task.id}`,
       {
@@ -120,7 +120,7 @@ export default function ScrumBoard() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Task updated successfully");
+      //console.log("Task updated successfully");
       setIsEditModalOpen(false);
       setIsChanged(!isChanged);
       tsuccess("Task updated successfully");
@@ -148,7 +148,7 @@ export default function ScrumBoard() {
     setIsDeleteModalOpen(true);
   };
   async function handleDeleteTask(task) {
-    console.log("task", task);
+    //console.log("task", task);
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${task.id}/desactivate`,
       {
@@ -163,7 +163,7 @@ export default function ScrumBoard() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Task deleted successfully");
+      //console.log("Task deleted successfully");
       setIsDeleteModalOpen(false);
       setIsChanged(!isChanged);
       tsuccess("Task deleted successfully");
@@ -192,7 +192,7 @@ export default function ScrumBoard() {
   };
 
   async function handleViewTask(task) {
-    console.log("task", task);
+    //console.log("task", task);
     const response = await fetch(
       `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/get?id=${task.id}`,
       {
@@ -204,7 +204,7 @@ export default function ScrumBoard() {
       }
     )
       .then((response) => {
-        console.log(response.status);
+        //console.log(response.status);
         if (response.ok) {
           setIsViewModalOpen(false);
           //setIsChanged(!isChanged);
@@ -235,7 +235,7 @@ export default function ScrumBoard() {
             token: token,
           },
         });
-        console.log(response.status);
+        //console.log(response.status);
         if (response.ok) {
           const data = await response.json();
           const todo = data.filter((task) => task.status === 100);
@@ -247,7 +247,7 @@ export default function ScrumBoard() {
           setDone(done);
         } else {
           terror("Failed to fetch tasks");
-          console.error("Failed to fetch tasks:", response.statusText);
+          //console.error("Failed to fetch tasks:", response.statusText);
         }
       } catch (error) {
         terror("Failed to fetch tasks");
@@ -257,7 +257,6 @@ export default function ScrumBoard() {
   }, [usernameDD, categoryDD, isChanged]);
 
   const [users, setUsers] = useState([]);
-  const [categories, setCategories] = useState([]);
 
   // Fetch users --------------------------------------------------------------------------------------------------------
   useEffect(() => {
@@ -282,6 +281,8 @@ export default function ScrumBoard() {
   }, [userStore.getState().users]);
 
   // Fetch categories -----------------------
+
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     async function fetchCategories() {
       const response = await fetch(
@@ -299,6 +300,7 @@ export default function ScrumBoard() {
       const categories = await response.json();
       const categoriesNames = categories.map((category) => category.title);
       setCategories(categoriesNames);
+      console.log("ver");
     }
     fetchCategories();
   }, [categoriesStore.getState().categories]);
@@ -390,7 +392,6 @@ export default function ScrumBoard() {
                 onClick={handleAddClick}
                 className="add-some"
                 fontSize="large"
-                title="Add task"
               />
             </Tooltip>
             <Tooltip title="My Tasks">
@@ -400,7 +401,7 @@ export default function ScrumBoard() {
                 fontSize="large"
               />
             </Tooltip>
-            <Tooltip title="Reset Filter">
+            <Tooltip title="Reset Filter / Order">
               <RestoreIcon
                 className="restore-button"
                 onClick={handleResetFilter}

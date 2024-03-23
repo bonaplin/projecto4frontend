@@ -16,7 +16,7 @@ const TaskViewModal = ({ open, onClose, task }) => {
         return "gray";
     }
   };
-  // //Time left calculation
+
   // const timeLeft = moment(task.finalDate).fromNow();
 
   return (
@@ -46,10 +46,6 @@ const TaskViewModal = ({ open, onClose, task }) => {
           <div className="task-detail-label">End Date:</div>
           <div className="date">{task.finalDate}</div>
         </div>
-        {/* <div className="task-detail">
-          <div className="task-detail-label time-left">Time Left:</div>
-          <div className="time-left">{timeLeft}</div>
-        </div> */}
       </div>
     </Modal>
   );

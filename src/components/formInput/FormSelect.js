@@ -1,5 +1,5 @@
 import React from "react";
-import "./FormInput.css"; // Import the same CSS file
+import "./FormInput.css";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import ClassOutlinedIcon from "@mui/icons-material/ClassOutlined";
 import PriorityHighOutlinedIcon from "@mui/icons-material/PriorityHighOutlined";
@@ -30,7 +30,6 @@ const FormSelect = ({ name, options, value, onChange }) => {
           <CategoryIcon style={{ marginRight: "10px", marginLeft: "10px" }} />
         );
 
-      // Add more cases if you have more select fields
       default:
         return null;
     }

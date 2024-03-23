@@ -11,6 +11,7 @@ import { userStore } from "../stores/UserStore";
 import ModalYesNo from "../components/modal/ModalYesNo";
 import { categoriesStore } from "../stores/CategoriesStore";
 import { tsuccess, twarn, terror } from "../components/messages/Message";
+import Tooltip from "@mui/material/Tooltip";
 
 function Categories() {
   const navigate = useNavigate();
@@ -191,13 +192,13 @@ function Categories() {
           <h2>All Category</h2>
           {role === "po" && (
             <>
-              <span>
+              <Tooltip title="Add Category">
                 <AddCircleIcon
                   className="add-some"
                   onClick={handleAddCategoryButton}
                   fontSize="large"
                 />
-              </span>
+              </Tooltip>
 
               <CategoryModal
                 open={isModalOpen}

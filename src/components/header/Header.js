@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
-// import Sidebar from "../navbar/Sidebar.js";
-//import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import DropdownMenu from "../dropdown/DropdownMenu.js";
-// import icon from "../../assets/icon/tc.png";
 import icon from "../../assets/icon/output-onlinepngtools.png";
 import UsersButton from "../dropdown/buttons/UsersButton.js";
 import TasksButton from "../dropdown/buttons/TasksButton.js";
@@ -16,18 +13,18 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 
 function Header() {
   const navigate = useNavigate();
-  const role = userStore.getState().role; // Get the role from the store
+  const role = userStore.getState().role;
   /*dropdown main*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-    console.log("Dropdown clicked", isDropdownOpen);
+    // console.log("Dropdown clicked", isDropdownOpen);
   };
   /*dropdown profile*/
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const handleProfileDropdown = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
-    console.log("Profile Dropdown clicked", isProfileDropdownOpen);
+    // console.log("Profile Dropdown clicked", isProfileDropdownOpen);
   };
 
   const token = userStore.getState().token; // Get the token from the store
@@ -41,7 +38,7 @@ function Header() {
 
     return unsubscribe;
   }, []);
-  // Get the username from the DB and the imgURL
+
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
@@ -55,16 +52,16 @@ function Header() {
         }
       );
       const data = await response.json();
-      userStore.getState().updatePhotoUrl(data.photoURL); // Update the photo URL in the store
-      userStore.getState().updateUsername(data.username); // Update the username in the store
-      userStore.getState().updateFirstname(data.firstname); // Update the firstname in the store
-      userStore.getState().updateLastname(data.lastname); // Update the lastname in the store
-      userStore.getState().updateEmail(data.email); // Update the email in the store
-      userStore.getState().updatePhone(data.phone); // Update the phone in the store
-      userStore.getState().updateRole(data.role); // Update the role in the store
+      userStore.getState().updatePhotoUrl(data.photoURL);
+      userStore.getState().updateUsername(data.username);
+      userStore.getState().updateFirstname(data.firstname);
+      userStore.getState().updateLastname(data.lastname);
+      userStore.getState().updateEmail(data.email);
+      userStore.getState().updatePhone(data.phone);
+      userStore.getState().updateRole(data.role);
     }
     fetchData();
-  }, [token]); // Run the effect when the token changes
+  }, [token]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

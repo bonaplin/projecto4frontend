@@ -7,6 +7,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { userStore } from "../stores/UserStore";
 import UserModal from "../components/modal/UserModal";
 import { tsuccess, terror, twarn } from "../components/messages/Message";
+import Tooltip from "@mui/material/Tooltip";
+
 function Users() {
   let userData = userStore((state) => state.user);
   const [isChange, setIsChange] = useState(false); //to change the fetch
@@ -37,7 +39,7 @@ function Users() {
       }
     );
     if (response.ok) {
-      console.log("User Created");
+      // console.log("User Created");
       setModalOpen(false);
       setIsChange(!isChange);
       tsuccess("User Created");
@@ -48,7 +50,7 @@ function Users() {
     }
 
     let userDetails = await response.json();
-    console.log("User Created", userDetails);
+    //console.log("User Created", userDetails);
   }
   // Modal -> EDIT /* ******* ******* *********************************** *****/
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -109,7 +111,7 @@ function Users() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("User Deleted");
+      //console.log("User Deleted");
       setIsChange(!isChange);
       setIsDeleteModalOpen(false);
       tsuccess("User deleted successfully");
@@ -127,7 +129,7 @@ function Users() {
       }
     }
 
-    console.log("User Deleted", data);
+    //console.log("User Deleted", data);
   }
 
   /* ******* ******* *********************************** *****/
@@ -152,7 +154,7 @@ function Users() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("User Tasks Deleted");
+      //console.log("User Tasks Deleted");
       setIsChange(!isChange);
       setIsDeleteModalTasksOpen(false);
       tsuccess("User tasks deleted successfully");
@@ -170,7 +172,7 @@ function Users() {
       }
     }
 
-    console.log("User Tasks Deleted", data);
+    //console.log("User Tasks Deleted", data);
   }
 
   /* ******* ******* *********************************** *****/
@@ -201,7 +203,7 @@ function Users() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("User Active Updated");
+      //console.log("User Active Updated");
       setIsChange(!isChange);
       tsuccess("User active status updated successfully");
     } else {
@@ -218,7 +220,7 @@ function Users() {
       }
     }
 
-    console.log("User Active Edited", data);
+    //console.log("User Active Edited", data);
   }
   /* ******* ******* *********************************** *****/
 
@@ -282,13 +284,13 @@ function Users() {
           <h2>All Users</h2>
           {role === "po" && (
             <>
-              <span>
+              <Tooltip title="Add User">
                 <AddCircleIcon
                   className="add-some"
                   onClick={handleAddUserButton}
                   fontSize="large"
                 />
-              </span>
+              </Tooltip>
 
               <UserModal
                 open={isModalOpen}

@@ -230,7 +230,6 @@ function DeletedTasks() {
                 <div>
                   <Tooltip title="Delete All Tasks">
                     <DeleteForeverIcon
-                      title="Delete All Tasks"
                       onClick={handleDeleteAll}
                       className="add-some"
                       fontSize="large"

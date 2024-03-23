@@ -1,5 +1,4 @@
 import React from "react";
-// import "./Login.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/formInput/FormInput";
@@ -17,7 +16,7 @@ function Login() {
     username: "",
     password: "",
   });
-  console.log(inputs);
+  //console.log(inputs);
   const updateUsername = userStore((state) => state.updateUsername);
   const updateRole = userStore((state) => state.updateRole);
   const updateToken = userStore((state) => state.updateToken);
@@ -31,7 +30,7 @@ function Login() {
   };
 
   const handleSubmit = (event) => {
-    console.log("handleSubmit called");
+    //console.log("handleSubmit called");
 
     event.preventDefault();
 
