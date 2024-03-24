@@ -6,20 +6,15 @@ export default function SaveButton({ inputs }) {
   const navigate = useNavigate();
 
   async function handleClick() {
-    console.log("SaveButton click");
-
-    // Get the token from the userStore
+    // console.log("SaveButton click");
     const token = userStore.getState().token;
-    // Get the selected user from the userStore
     const selectedUser = userStore.getState().username;
-    // Make a request to the save endpoint
     const response = await fetch(
       "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/update",
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // Use the token in the Authorization header
           token: token,
           selectedUser: selectedUser,
         },
@@ -28,8 +23,6 @@ export default function SaveButton({ inputs }) {
     );
 
     const data = await response.json();
-
-    // Check if the request was successful
     if (response.ok) {
       // Update the userStore
       await userStore.getState().updateUsername(inputs.username);
@@ -37,7 +30,6 @@ export default function SaveButton({ inputs }) {
       await userStore.getState().updateRole(inputs.role);
       await userStore.getState().updateFirstname(inputs.firstname);
       await userStore.getState().updateLastname(inputs.lastname);
-      // Navigate to another page if needed
       navigate("/home");
       tsuccess(data.message); // User is updated
     } else {

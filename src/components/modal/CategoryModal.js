@@ -11,7 +11,7 @@ const CategoryModal = ({
 }) => {
   const [title, setTitle] = useState(category.title);
   const [description, setDescription] = useState(category.description);
-  const [id, setId] = useState(category.id); // Add always a default value 0 for id.
+  const [id, setId] = useState(category.id);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ const CategoryModal = ({
       description,
       id,
     });
-    console.log("title " + title + "description " + description + "id" + id);
+    // console.log("title " + title + "description " + description + "id" + id);
     resetForm();
   };
 

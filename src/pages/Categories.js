@@ -11,6 +11,7 @@ import { userStore } from "../stores/UserStore";
 import ModalYesNo from "../components/modal/ModalYesNo";
 import { categoriesStore } from "../stores/CategoriesStore";
 import { tsuccess, twarn, terror } from "../components/messages/Message";
+import Tooltip from "@mui/material/Tooltip";
 
 function Categories() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function Categories() {
 
   const fetchCategories = async () => {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/categories/",
       {
         headers: {
           token: token,
@@ -58,7 +59,7 @@ function Categories() {
   async function handleDeleteCategory() {
     const category = editCategory;
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/delete/${category.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/categories/${category.id}`,
       {
         method: "DELETE",
         headers: {
@@ -97,7 +98,7 @@ function Categories() {
 
   async function handleEditCategory(category) {
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/update/${category.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/categories/${category.id}`,
       {
         method: "PUT",
         headers: {
@@ -142,7 +143,7 @@ function Categories() {
     console.log("Create Category", category);
     category.owner = username;
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/add",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/categories/",
       {
         method: "POST",
         headers: {
@@ -191,13 +192,13 @@ function Categories() {
           <h2>All Category</h2>
           {role === "po" && (
             <>
-              <span>
+              <Tooltip title="Add Category">
                 <AddCircleIcon
                   className="add-some"
                   onClick={handleAddCategoryButton}
                   fontSize="large"
                 />
-              </span>
+              </Tooltip>
 
               <CategoryModal
                 open={isModalOpen}

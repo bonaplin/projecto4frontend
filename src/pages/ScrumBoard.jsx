@@ -30,29 +30,21 @@ export default function ScrumBoard() {
   const [usernameDD, setUsername] = useState(null);
   const [categoryDD, setCategory] = useState(null);
 
-  function removeItemById(array, id) {
-    return array.filter((item) => String(item.id) !== id);
-  }
-
-  function findItemById(array, id) {
-    return array.find((item) => String(item.id) === id);
-  }
-
   async function updateStatus(id, newStatus) {
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/updateStatus/?id=${id}&status=${newStatus}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${id}/status/`,
       {
-        "Content-Type": "application/json",
         method: "PUT",
-        headers: { token: token },
+        headers: { "Content-Type": "application/json", token: token },
+        body: JSON.stringify({ status: newStatus }),
       }
     );
 
     const data = await response.json();
 
     if (response.ok) {
-      console.log("resposta" + response.status);
-      console.log("Task updated successfully");
+      //console.log("resposta" + response.status);
+      //console.log("Task updated successfully");
       // tsuccess("Task updated successfully");
     } else {
       switch (response.status) {
@@ -69,9 +61,9 @@ export default function ScrumBoard() {
     setIsAddTaskModal(true);
   }
   async function AddTask(task) {
-    console.log("task", task);
+    //console.log("task", task);
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/add",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/",
       {
         method: "POST",
         headers: {
@@ -112,9 +104,9 @@ export default function ScrumBoard() {
     setIsEditModalOpen(true);
   };
   async function handleEditTask(task) {
-    console.log("task", task);
+    //console.log("task", task);
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/update/${task.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${task.id}`,
       {
         method: "PUT",
         headers: {
@@ -128,7 +120,7 @@ export default function ScrumBoard() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Task updated successfully");
+      //console.log("Task updated successfully");
       setIsEditModalOpen(false);
       setIsChanged(!isChanged);
       tsuccess("Task updated successfully");
@@ -156,9 +148,9 @@ export default function ScrumBoard() {
     setIsDeleteModalOpen(true);
   };
   async function handleDeleteTask(task) {
-    console.log("task", task);
+    //console.log("task", task);
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/desactivate/${task.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/${task.id}/desactivate`,
       {
         method: "PUT",
         headers: {
@@ -171,7 +163,7 @@ export default function ScrumBoard() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Task deleted successfully");
+      //console.log("Task deleted successfully");
       setIsDeleteModalOpen(false);
       setIsChanged(!isChanged);
       tsuccess("Task deleted successfully");
@@ -200,9 +192,9 @@ export default function ScrumBoard() {
   };
 
   async function handleViewTask(task) {
-    console.log("task", task);
+    //console.log("task", task);
     const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/get?id=${task.id}`,
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/get?id=${task.id}`,
       {
         method: "GET",
         headers: {
@@ -212,7 +204,7 @@ export default function ScrumBoard() {
       }
     )
       .then((response) => {
-        console.log(response.status);
+        //console.log(response.status);
         if (response.ok) {
           setIsViewModalOpen(false);
           //setIsChanged(!isChanged);
@@ -228,17 +220,14 @@ export default function ScrumBoard() {
 
   useEffect(() => {
     async function fetchTasks() {
-      console.log("usernameDD", usernameDD);
-      console.log("categoryDD", categoryDD);
-      let url = "";
+      let url = "http://localhost:8080/demo-1.0-SNAPSHOT/rest/tasks/";
+
       if (usernameDD !== null && categoryDD !== null) {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${usernameDD}&category=${categoryDD}`;
-      } else if (usernameDD !== null && categoryDD === null) {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?username=${usernameDD}`;
-      } else if (usernameDD === null && categoryDD !== null) {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/all/?category=${categoryDD}`;
-      } else {
-        url = `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/active/`;
+        url += `?username=${usernameDD}&category=${categoryDD}`;
+      } else if (usernameDD !== null) {
+        url += `?username=${usernameDD}`;
+      } else if (categoryDD !== null) {
+        url += `?category=${categoryDD}`;
       }
       try {
         const response = await fetch(url, {
@@ -246,7 +235,7 @@ export default function ScrumBoard() {
             token: token,
           },
         });
-        console.log(response.status);
+        //console.log(response.status);
         if (response.ok) {
           const data = await response.json();
           const todo = data.filter((task) => task.status === 100);
@@ -258,7 +247,7 @@ export default function ScrumBoard() {
           setDone(done);
         } else {
           terror("Failed to fetch tasks");
-          console.error("Failed to fetch tasks:", response.statusText);
+          //console.error("Failed to fetch tasks:", response.statusText);
         }
       } catch (error) {
         terror("Failed to fetch tasks");
@@ -268,13 +257,12 @@ export default function ScrumBoard() {
   }, [usernameDD, categoryDD, isChanged]);
 
   const [users, setUsers] = useState([]);
-  const [categories, setCategories] = useState([]);
 
-  // Fetch users ----------------------------
+  // Fetch users --------------------------------------------------------------------------------------------------------
   useEffect(() => {
     async function fetchUsers() {
       const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/",
         {
           headers: {
             token: token,
@@ -293,10 +281,12 @@ export default function ScrumBoard() {
   }, [userStore.getState().users]);
 
   // Fetch categories -----------------------
+
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     async function fetchCategories() {
       const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all",
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/categories/",
         {
           headers: {
             token: token,
@@ -304,39 +294,24 @@ export default function ScrumBoard() {
         }
       );
       if (!response.ok) {
-        console.error("Failed to fetch categories:", response.statusText);
+        terror("Failed to fetch users:", response.statusText);
         return;
       }
       const categories = await response.json();
-      const categoryTitles = categories.map((category) => category.title);
-      setCategories(categoryTitles);
+      const categoriesNames = categories.map((category) => category.title);
+      setCategories(categoriesNames);
+      console.log("ver");
     }
     fetchCategories();
   }, [categoriesStore.getState().categories]);
+  //------------------------------------------------------------------------dnd beautiful
 
-  // Update task move to another column
-  const fetchTasks = async (status, setTask) => {
-    const response = await fetch(
-      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/task/status/?status=${status}`,
-      {
-        headers: {
-          token: token,
-        },
-      }
-    );
-    if (!response.ok) {
-      console.error("Failed to fetch tasks:", response.statusText);
-      return;
-    }
-    const tasks = await response.json();
-    setTask(tasks);
-  };
-  useEffect(() => {
-    fetchTasks(100, setTodo);
-    fetchTasks(200, setDoing);
-    fetchTasks(300, setDone);
-  }, [isChanged]);
-  //-----------------------------------------
+  function removeItemById(array, id) {
+    return array.filter((item) => String(item.id) !== id);
+  }
+  function findItemById(array, id) {
+    return array.find((item) => String(item.id) === id);
+  }
   function handleDragEnd(result) {
     if (!result.destination) {
       return;
@@ -390,6 +365,7 @@ export default function ScrumBoard() {
     setDoing(newDoing);
     setDone(newDone);
   }
+  //------------------------------------------------------------------------dnd beautiful
 
   function handleCloseAddModal() {
     setIsAddTaskModal(false);
@@ -416,7 +392,6 @@ export default function ScrumBoard() {
                 onClick={handleAddClick}
                 className="add-some"
                 fontSize="large"
-                title="Add task"
               />
             </Tooltip>
             <Tooltip title="My Tasks">
@@ -426,7 +401,7 @@ export default function ScrumBoard() {
                 fontSize="large"
               />
             </Tooltip>
-            <Tooltip title="Reset Filter">
+            <Tooltip title="Reset Filter / Order">
               <RestoreIcon
                 className="restore-button"
                 onClick={handleResetFilter}
@@ -437,12 +412,14 @@ export default function ScrumBoard() {
               <div className="filter-container">
                 <div className="filter-side">
                   <Dropdown
+                    className="filter-dropdown"
                     value={usernameDD}
                     data={users}
                     type={"Username"}
                     onChange={(selectedValue) => setUsername(selectedValue)}
                   />
                   <Dropdown
+                    className="filter-dropdown"
                     value={categoryDD}
                     data={categories}
                     type={"Category"}

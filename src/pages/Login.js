@@ -1,7 +1,6 @@
 import React from "react";
-// import "./Login.css";
 import { useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FormInput from "../components/formInput/FormInput";
 import Layout from "../components/layout/Layout";
 import "./Login.css";
@@ -17,7 +16,7 @@ function Login() {
     username: "",
     password: "",
   });
-  console.log(inputs);
+  //console.log(inputs);
   const updateUsername = userStore((state) => state.updateUsername);
   const updateRole = userStore((state) => state.updateRole);
   const updateToken = userStore((state) => state.updateToken);
@@ -31,12 +30,12 @@ function Login() {
   };
 
   const handleSubmit = (event) => {
-    console.log("handleSubmit called");
+    //console.log("handleSubmit called");
 
     event.preventDefault();
 
     // Send a POST request to the login endpoint
-    fetch("http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/login", {
+    fetch("http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

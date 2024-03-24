@@ -51,7 +51,7 @@ const TaskModal = ({ open, onClose, onSubmit, title_modal, task = {} }) => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8080/demo-1.0-SNAPSHOT/rest/category/all", {
+    fetch("http://localhost:8080/demo-1.0-SNAPSHOT/rest/categories/", {
       headers: {
         "Content-Type": "application/json",
         token: token,

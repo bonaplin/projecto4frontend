@@ -34,7 +34,7 @@ function EditProfile() {
     role: userStore.getState().role,
   });
 
-  console.log("inputs", JSON.stringify(inputs));
+  // console.log("inputs", JSON.stringify(inputs));
   const handleChange = (event) => {
     setInputs({
       ...inputs,
@@ -49,15 +49,14 @@ function EditProfile() {
     const token = userStore.getState().token; // Get the token from the Zustand store
     const selectedUser = userStore.getState().username; // Get the username from the Zustand store
 
-    console.log("inputs", JSON.stringify(inputs));
+    // console.log("inputs", JSON.stringify(inputs));
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/update",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${selectedUser}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           token: token,
-          selectedUser: selectedUser,
         },
         body: JSON.stringify(inputs), // Send the inputs as the body of the request
       }
@@ -89,28 +88,29 @@ function EditProfile() {
 
   const handlePasswordChange = (event) => {
     const { name, value } = event.target;
-    console.log("name", name);
+    //console.log("name", name);
     if (name === "password") {
       setOldPassword(value);
-      console.log("old", value);
+      //console.log("old", value);
     } else if (name === "password-new") {
       setNewPassword(value);
-      console.log("new", value);
+      //c//onsole.log("new", value);
     } else if (name === "password-again") {
       setConfirmPassword(value);
-      console.log("new confirm", value);
+      //console.log("new confirm", value);
     }
   };
   const handleClickSavePassword = async () => {
     if (newPassword !== confirmPassword) {
-      console.log(newPassword + " new " + confirmPassword + " confirm");
+      //console.log(newPassword + " new " + confirmPassword + " confirm");
       twarn("New password and confirmation password do not match.");
       return;
     }
-    console.log(oldPassword + " old " + newPassword + " new");
+    //console.log(oldPassword + " old " + newPassword + " new");
     // Send the old password and new password to the backend
+    const selectedUser = userStore.getState().username; // Get the username from the Zustand store
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/updatePassword",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${selectedUser}/password`,
       {
         method: "PUT",
         headers: {

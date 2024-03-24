@@ -20,19 +20,19 @@
 
 .header__left > .burger-icon,
 .header__right > .profile-icon {
-  margin-right: 20px; /* Some margin to the right of the icons */
+  margin-right: 20px;
 }
 
 .header__center {
   flex: 1;
-  margin: 0 20px; /* Some margin on the sides */
+  margin: 0 20px;
 }
 
 .header__center > input {
   flex: 1;
-  padding: 5px 10px; /* Some padding */
-  border-radius: 4px; /* Rounded corners */
-  border: none; /* Remove border */
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
 }
 img {
   width: 50px;

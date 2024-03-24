@@ -5,8 +5,12 @@ const Dropdown = ({ data, onChange, type, value }) => {
     onChange(e.target.value);
   };
   return (
-    <select value={value} onChange={handleChange} style={{ width: "100%" }}>
-      <option value="" disabled selected>
+    <select
+      value={value || ""}
+      onChange={handleChange}
+      style={{ width: "100%" }}
+    >
+      <option value="" disabled>
         {type}
       </option>
       {data.map((item, index) => (

@@ -7,19 +7,14 @@ export default function LogoutButton() {
   const navigate = useNavigate();
 
   async function handleClick() {
-    console.log("LogoutButton click");
-
-    // Get the token from the userStore
+    // console.log("LogoutButton click");
     const token = userStore.getState().token;
-
-    // Make a request to the logout endpoint
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/logout",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/logout",
       {
-        method: "POST", // or 'GET'
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Use the token in the Authorization header
           token: token,
         },
       }
@@ -27,7 +22,6 @@ export default function LogoutButton() {
 
     const data = await response.json();
 
-    // Check if the request was successful
     if (response.ok) {
       // Clear the userStore
       await userStore.getState().updateUsername("");
@@ -36,7 +30,7 @@ export default function LogoutButton() {
       await userStore.getState().updateFirstname("");
       await userStore.getState().updateLastname("");
       await userStore.getState().updatePhotoUrl("");
-      // Navigate to the login page
+
       navigate("/login");
       tsuccess(data.message); // User is logged out
     } else {

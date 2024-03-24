@@ -6,7 +6,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(180deg, #ffffff, var(--secondary-color));
-
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -33,6 +32,5 @@ html {
 }
 .filter-side {
   display: flex;
-
-  max-width: var(--max-width);
+  max-width: 13rem;
 }

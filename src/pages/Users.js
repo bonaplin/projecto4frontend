@@ -7,6 +7,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { userStore } from "../stores/UserStore";
 import UserModal from "../components/modal/UserModal";
 import { tsuccess, terror, twarn } from "../components/messages/Message";
+import Tooltip from "@mui/material/Tooltip";
+
 function Users() {
   let userData = userStore((state) => state.user);
   const [isChange, setIsChange] = useState(false); //to change the fetch
@@ -25,7 +27,7 @@ function Users() {
   };
   async function handleCreateUser(user) {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/add",
+      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/",
       {
         method: "POST",
         headers: {
@@ -37,7 +39,7 @@ function Users() {
       }
     );
     if (response.ok) {
-      console.log("User Created");
+      // console.log("User Created");
       setModalOpen(false);
       setIsChange(!isChange);
       tsuccess("User Created");
@@ -48,7 +50,7 @@ function Users() {
     }
 
     let userDetails = await response.json();
-    console.log("User Created", userDetails);
+    //console.log("User Created", userDetails);
   }
   // Modal -> EDIT /* ******* ******* *********************************** *****/
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -58,13 +60,12 @@ function Users() {
   };
   async function handleUpdateUser(user) {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/update",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${user.username}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           token: token,
-          selectedUser: user.username,
         },
         body: JSON.stringify(user),
       }
@@ -98,20 +99,19 @@ function Users() {
   };
   async function handleDeleteUser(user) {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/delete",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${user.username}`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           token: token,
-          selectedUser: user.username,
         },
       }
     );
     const data = await response.json();
 
     if (response.ok) {
-      console.log("User Deleted");
+      //console.log("User Deleted");
       setIsChange(!isChange);
       setIsDeleteModalOpen(false);
       tsuccess("User deleted successfully");
@@ -129,7 +129,7 @@ function Users() {
       }
     }
 
-    console.log("User Deleted", data);
+    //console.log("User Deleted", data);
   }
 
   /* ******* ******* *********************************** *****/
@@ -141,13 +141,12 @@ function Users() {
   };
   async function handleDeleteTasksUser(user) {
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/deleteTasks",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${user.username}/tasks`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           token: token,
-          selectedUser: user.username,
         },
       }
     );
@@ -155,7 +154,7 @@ function Users() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("User Tasks Deleted");
+      //console.log("User Tasks Deleted");
       setIsChange(!isChange);
       setIsDeleteModalTasksOpen(false);
       tsuccess("User tasks deleted successfully");
@@ -173,7 +172,7 @@ function Users() {
       }
     }
 
-    console.log("User Tasks Deleted", data);
+    //console.log("User Tasks Deleted", data);
   }
 
   /* ******* ******* *********************************** *****/
@@ -190,9 +189,9 @@ function Users() {
       active: user.active,
     };
     const response = await fetch(
-      "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/updateactive",
+      `http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/${user.username}/status`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           token: token,
@@ -204,7 +203,7 @@ function Users() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("User Active Updated");
+      //console.log("User Active Updated");
       setIsChange(!isChange);
       tsuccess("User active status updated successfully");
     } else {
@@ -221,7 +220,7 @@ function Users() {
       }
     }
 
-    console.log("User Active Edited", data);
+    //console.log("User Active Edited", data);
   }
   /* ******* ******* *********************************** *****/
 
@@ -261,7 +260,7 @@ function Users() {
   useEffect(() => {
     async function fetchUsers() {
       const response = await fetch(
-        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/user/all",
+        "http://localhost:8080/demo-1.0-SNAPSHOT/rest/users/",
         {
           method: "GET",
           headers: {
@@ -285,13 +284,13 @@ function Users() {
           <h2>All Users</h2>
           {role === "po" && (
             <>
-              <span>
+              <Tooltip title="Add User">
                 <AddCircleIcon
                   className="add-some"
                   onClick={handleAddUserButton}
                   fontSize="large"
                 />
-              </span>
+              </Tooltip>
 
               <UserModal
                 open={isModalOpen}
